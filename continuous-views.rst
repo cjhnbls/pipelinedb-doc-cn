@@ -3,7 +3,7 @@
 Continuous views
 =================
 
-Creating continuous views
+CREATE CONTINUOUS VIEW
 ---------------------------
 
 Inferred schemas

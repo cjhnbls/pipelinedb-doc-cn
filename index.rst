@@ -8,10 +8,12 @@ blurb
 	:maxdepth: 2
 	
 	introduction
+	installation
 	architecture
 	continuous-views
 	activation-deactivation
 	streams
 	aggregates
+	sliding-windows
 	configuration
 
