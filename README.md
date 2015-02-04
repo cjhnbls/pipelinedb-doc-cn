@@ -13,6 +13,6 @@ Now you can build the docs:
 You should now be able to point your browser to the `_build` directory and view the generated html pages.
 To automatically rebuild the docs whenever a file is updated, you can run `sphinx-autobuild`:
 
-    sphinx-autobuild /path/to/pipeline-doc _build
+    sphinx-autobuild /path/to/docs _build
     
 This will also serve the docs over HTTP at `http://localhost:8000`
