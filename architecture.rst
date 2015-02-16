@@ -1,6 +1,6 @@
 .. _architecture:
 
-Architecture overview
+Architecture
 ================================
 
 This is an overiew of PipelineDB's architecture
@@ -8,8 +8,10 @@ This is an overiew of PipelineDB's architecture
 PostgreSQL compatibility
 ----------------------------
 
-Geospatial support
-----------------------
+Mention geospatial support in a paragraph here
+
+Getting data in
+-----------------
 
 Stream buffer
 ----------------
@@ -22,3 +24,6 @@ Combiners
 
 Transactions
 ----------------
+
+Getting data out
+-----------------

@@ -2,18 +2,18 @@
 PipelineDB documentation
 ========================
 
-blurb
+blurb, mention something about being new and please email any questions or comments to eng@pipelinedb.com
 
 .. toctree::
 	:maxdepth: 2
 	
 	introduction
 	installation
-	architecture
 	continuous-views
 	activation-deactivation
 	streams
 	aggregates
+	bonus-functionality
 	sliding-windows
+	architecture
 	configuration
-

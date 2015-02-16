@@ -6,12 +6,6 @@ Installation
 deb
 --------
 
-rpm
---------
-
-yum
---------
-
 Initializing PipelineDB
 ------------------------
 
