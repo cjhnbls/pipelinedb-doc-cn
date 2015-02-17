@@ -6,12 +6,12 @@ blurb, mention something about being new and please email any questions or comme
 
 .. toctree::
 	:maxdepth: 2
-	
+
 	introduction
 	installation
 	continuous-views
-	activation-deactivation
 	streams
+	activation-deactivation
 	aggregates
 	bonus-functionality
 	sliding-windows

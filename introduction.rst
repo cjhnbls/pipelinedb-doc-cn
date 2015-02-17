@@ -12,7 +12,9 @@ PipelineDB is built to run SQL queries continuously on streaming data. The outpu
 What PipelineDB is
 -------------------
 
-PipelineDB is designed to excel at SQL queries that reduce the cardinality of streaming datasets. For example: summarizations and aggregations; performing computations across sliding time windows; text search filtering; geospatial filtering, etc. By reducing the cardinality of its input streams, PipelineDB can dramatically reduce the amount of information that needs to be persisted to disk because only the output of continuous queries is stored. Much of the data that is passed through PipelineDB can thus be thought of as **virtual data**. This idea of data virtualization is at the core of what PipelineDB is all about, and is what allows it to process large volumes of data quite quickly using a relatively small hardware footprint.
+PipelineDB is designed to excel at SQL queries that reduce the cardinality of streaming datasets. For example: summarizations and aggregations; performing computations across sliding time windows; text search filtering; geospatial filtering, etc. By reducing the cardinality of its input streams, PipelineDB can dramatically reduce the amount of information that needs to be persisted to disk because only the output of continuous queries is stored. Raw data is discared once it has been read by the continuous queries that need to read it.
+
+Much of the data that is passed through PipelineDB can thus be thought of as **virtual data**. This idea of data virtualization is at the core of what PipelineDB is all about, and is what allows it to process large volumes of data very efficiently using a relatively small hardware footprint.
 
 Furthermore, as you may have already realized, PipelineDB is capable of eliminating the ETL_ stage for many common data pipelines. Raw data can be streamed directly into PipelineDB, where it is continuously refined and distilled in real time by the continuous queries you've declared. This makes it unnecessary to periodically process granular data before loading its refined output into the database--as long as that processing can be defined by SQL queries, of course.
 
