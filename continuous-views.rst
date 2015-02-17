@@ -89,7 +89,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 Inferred schemas
 --------------------
 
-Since streams and their columns appear in a :code:`CONTINUOUS VIEW` 's :code:`FROM` clause, it seems natural that they would have to have a defined schema already declared. But with PipelineDB, it is strictly unnecessary to ever explicitly define any sort of schema for a stream. All of the type information necessary for a :code:`CONTINUOUS VIEW` to read from a stream is acquired by what is known as an **inferred schema**. Perhaps this is best illustrated by a simple example.
+Since streams and their columns appear in a :code:`CONTINUOUS VIEW` 's :code:`FROM` clause, it seems natural that they would have to have a schema already declared, just like selecting from a table. But with PipelineDB, it is strictly unnecessary to ever explicitly define any sort of schema for a stream. All of the type information necessary for a :code:`CONTINUOUS VIEW` to read from a stream is acquired by what is known as an **inferred schema**. Perhaps this is best illustrated by a simple example.
 
 Consider the following simple :code:`CONTINUOUS VIEW`:
 
