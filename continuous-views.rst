@@ -3,12 +3,12 @@
 Continuous views
 =================
 
-CREATE CONTINUOUS VIEW
----------------------------
-
 PipelineDB's fundamental abstraction is called a :code:`CONTINUOUS VIEW`. A :code:`CONTINUOUS VIEW` is much like a regular view, except that it selects from a combination of streams and tables as its inputs and is incrementally updated in realtime as new data is written to those inputs.
 
 As soon as a stream row has been read by the :code:`CONTINUOUS VIEW` s that must read it, it is discarded. It is not stored anywhere. The only data that is persisted for a :code:`CONTINUOUS VIEW` is whatever is returned by running a :code:`SELECT * FROM that_view`. Thus you can think of a :code:`CONTINUOUS VIEW` as a very high-throughput, realtime materialized view.
+
+CREATE CONTINUOUS VIEW
+---------------------------
 
 Here's the syntax for creating a :code:`CONTINUOUS VIEW`:
 
@@ -140,7 +140,7 @@ Examples
 
 Putting this all together, let's go through a few examples of :code:`CONTINUOUS VIEW` s and understand what each one accomplishes.
 
-.. important:: It is important to understand that the only data persisted by PipelineDB for a :code:`CONTINUOUS VIEW` is whatever would be returned by running a :code:`SELECT *` on it (plus a small amount of metadata). This is a relatively new concept, but it is at the core of what makes :code:`CONTNUOUS VIEW` s so powerful!
+.. important:: It is important to understand that the only data persisted by PipelineDB for a :code:`CONTINUOUS VIEW` is whatever would be returned by running a :code:`SELECT *` on it (plus a small amount of metadata). This is a relatively new concept, but it is at the core of what makes :code:`CONTINUOUS VIEW` s so powerful!
 
 Emphasizing the above notice, this :code:`CONTINUOUS VIEW` would only ever store a single row in PipelineDB (just a few bytes), even if it read a trillion events over time:
 
@@ -188,7 +188,7 @@ Emphasizing the above notice, this :code:`CONTINUOUS VIEW` would only ever store
 
 .. code-block:: pipeline
 
-  -- Yes, PipelineDB ships natively with geospatial support :)
+  -- PipelineDB ships natively with geospatial support
   CREATE CONTINUOUS VIEW sf_proximity_count AS
   SELECT COUNT(DISTINCT sensor_id::integer)
   FROM geo_stream WHERE ST_DWithin(

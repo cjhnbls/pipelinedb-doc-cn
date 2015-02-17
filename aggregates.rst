@@ -22,3 +22,5 @@ Geospatial
 -----------
 
 
+Unsupported aggregates (and why)
+---------------------------------

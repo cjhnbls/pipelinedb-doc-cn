@@ -16,4 +16,5 @@ blurb, mention something about being new and please email any questions or comme
 	bonus-functionality
 	sliding-windows
 	architecture
+	examples
 	configuration

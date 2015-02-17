@@ -1,4 +1,4 @@
-.. _sliding-windows
+.. _sliding-windows:
 
 Sliding windows
 ============================
