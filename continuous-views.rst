@@ -86,6 +86,29 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
 .. _PostgreSQL SELECT documentation: http://www.postgresql.org/docs/9.4/static/sql-select.html
 
+DROP CONTINUOUS VIEW
+---------------------------
+
+To :code:`DROP` a :code:`CONTINUOUS VIEW` from the system, use the :code:`DROP CONTINUOUS VIEW` command. Its syntax is simple:
+
+.. code-block:: pipeline
+
+	DROP CONTINUOUS VIEW name
+
+This will remove the :code:`CONTINUOUS VIEW` from the system along with all of its associated resources.
+
+
+Viewing continuous views
+---------------------------
+
+To view the :code:`CONTINUOUS VIEW` s currently in the system, you can run a :code:`SELECT` on the :code:`pipeline_query` catalog table:
+
+.. code-block:: pipeline
+
+	SELECT * FROM pipeline_query;
+
+Don't worry about all of the columns in :code:`pipeline_query` --most of them are only for internal use. The important columns are :code:`name`, which contains the name you gave the :code:`CONTINUOUS VIEW` when you created it; and :code:`query`, which contains the :code:`CONTINUOUS VIEW`'s query definition.
+
 Inferred schemas
 --------------------
 
