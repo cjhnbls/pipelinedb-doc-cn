@@ -119,7 +119,7 @@ Here is an example of an :code:`ACTIVATE` commands using these parameters:
 
 .. code-block:: pipeline
 
-	ACTIVATE name WITH ( batchsize = 100000, parallelism = 2);
+	ACTIVATE name WITH ( batchsize = 100000, parallelism = 2 );
 
 .. note:: Usually it won't be necessary to set any of these yourself. If you do decide to change these parameters, **batchsize** and **parallelism** are likely the only ones that will be useful to you.
 
