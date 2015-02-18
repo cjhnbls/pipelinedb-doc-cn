@@ -2,7 +2,7 @@
 PipelineDB documentation
 ========================
 
-Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything you need to know about how to use PipelineDB and how it works. If there's something you think is missing, or you find a bug in these docs, or you think we've said something stupid, please don't hesitate to reach out to us at eng@pipelinedb.com.
+Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything you need to know about how to use PipelineDB and how it works. If there's something you think is missing, confusing, you find a bug in these docs, or you think we've said something stupid, please don't hesitate to reach out to us at docs@pipelinedb.com.
 
 .. toctree::
 	:maxdepth: 2

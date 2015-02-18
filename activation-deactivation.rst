@@ -3,12 +3,14 @@
 Activation and deactivation
 ============================
 
-Because :ref:`continuous-views` are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. This level of control is accomplished by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When a :code:`CONTINUOUS VIEW` is *active*, it is actively reading from its input streams and incrementally updating its result accordingly. Conversely, an *inactive* :code:`CONTINUOUS VIEW` is not reading its input streams and is not updating its result.
+Because :ref:`continuous-views` are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. This level of control is provided by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When a :code:`CONTINUOUS VIEW` is *active*, it is actively reading from its input streams and incrementally updating its result accordingly. Conversely, an *inactive* :code:`CONTINUOUS VIEW` is not reading its input streams and is not updating its result.
 
-.. important:: If a :code:`CONTINUOUS VIEW` is inactive, any events written to its input streams while it's inactive will never be read by that :code:`CONTINUOUS VIEW`, even after it is activated again.
+.. important:: If a :code:`CONTINUOUS VIEW` is inactive, any events written to its input streams while it's inactive will never be read by that :code:`CONTINUOUS VIEW`, even after it is activated again. Other active :code:`CONTINUOUS VIEW` s reading from the same input streams will continue to read events regularly, of course.
 
 ACTIVATE
 -----------
+
+Here's the syntax for the :code:`ACTIVATE` command:
 
 .. code-block:: pipeline
 
@@ -65,6 +67,7 @@ Calling :code:`ACTIVATE` on an active :code:`CONTINUOUS VIEW` s is a noop:
 	4
 	pipeline=# ACTIVATE;
 	0
+	pipeline=#
 
 :code:`ACTIVATE` :code:`view0` and :code:`view1`:
 
@@ -72,6 +75,7 @@ Calling :code:`ACTIVATE` on an active :code:`CONTINUOUS VIEW` s is a noop:
 
 	pipeline=# ACTIVATE view0, view1;
 	2
+	pipeline=#
 
 :code:`ACTIVATE` :code:`continuous_view0` and :code:`continuous_view1`:
 
@@ -79,6 +83,7 @@ Calling :code:`ACTIVATE` on an active :code:`CONTINUOUS VIEW` s is a noop:
 
 	pipeline=# ACTIVATE WHERE name LIKE '%continuous%';
 	2
+	pipeline=#
 
 :code:`DEACTIVATE` :code:`continuous_view0` and :code:`view0`:
 
@@ -86,6 +91,7 @@ Calling :code:`ACTIVATE` on an active :code:`CONTINUOUS VIEW` s is a noop:
 
 	pipeline=# ACTIVATE WHERE name LIKE '%view0%';
 	2
+	pipeline=#
 
 
 .. _parameters:
