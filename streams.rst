@@ -18,9 +18,9 @@ Stream writes use a simplified version of a PostgreSQL :code:`INSERT` statement.
 
 	INSERT INTO stream_name ( column_name [, ...] ) VALUES ( expression [, ...] ) [, ...]
 
-Let's look at a few examples.
-
 .. important:: It is an error to write to a stream that no *active* :code:`CONTINUOUS VIEW` s are reading from, and the write will be rejected. This is to prevent against unknowingly writing data that is being silently ignored. See :ref:`activation-deactivation` for more information about active :code:`CONTINUOUS VIEW` s.
+
+Let's look at a few examples...
 
 Stream writes can be a single event at a time:
 
@@ -53,7 +53,7 @@ Stream inserts can also contain arbitrary expressions:
 	INSERT INTO rad_stream (circle, sphere) VALUES
 	  (pi() * pow(11.2, 2), 4 / 3 * pi() * pow(11.2, 3));
 
-Since PipelineDB is compatible with PostgreSQL, writing to streams is possible from any client that works with PostgreSQL (and probably most clients that work with any SQL database for that matter), so it's not necessary to manually construct stream inserts. To get an idea of what that looks like, you should check out the :ref:`examples` section.
+Since PipelineDB is compatible with PostgreSQL, writing to streams is possible from any client that works with PostgreSQL (and probably most clients that work with any SQL database for that matter), so it's not necessary to manually construct stream inserts. To get an idea of what that looks like, you should check out the :ref:`clients` section.
 
 Arrival ordering
 ------------------

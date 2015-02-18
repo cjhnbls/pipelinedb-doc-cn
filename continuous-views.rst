@@ -42,7 +42,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 .. _expression: http://www.postgresql.org/docs/9.4/static/sql-expressions.html
 
 **output_name**
-  An optional identifer to name an expression with
+  An optional identifier to name an expression with
 
 **condition**
   Any expression that evaluates to a result of type :code:`boolean`. Any row that does not satisfy this condition will be eliminated from the output. A row satisfies the condition if it returns :code:`true` when the actual row values are substituted for any variable references.

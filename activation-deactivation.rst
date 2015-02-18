@@ -58,6 +58,7 @@ This will :code:`ACTIVATE` all 4 of them:
 
 	pipeline=# ACTIVATE;
 	4
+	pipeline=#
 
 Calling :code:`ACTIVATE` on an active :code:`CONTINUOUS VIEW` s is a noop:
 
@@ -121,7 +122,7 @@ It is possible to supply performance tuning parameters to :code:`CONTINUOUS VIEW
 
 	*Defaults to 1*
 
-Here is an example of an :code:`ACTIVATE` commands using these parameters:
+Here is an example of an :code:`ACTIVATE` command using these parameters:
 
 .. code-block:: pipeline
 

@@ -1,4 +1,4 @@
-.. _probabalistic.rst:
+.. _probabilistic.rst:
 
 Probabilistic data structures and algorithms
 ================================================
@@ -10,19 +10,17 @@ PipelineDB ships with a number of types and aggregates that aren't commonly expo
 HyperLogLog
 ----------------------------
 
-MinHash
--------------------
-
 .. _t-digest:
 
 T-Digest
 ----------------------
 
-Bloom Filters
+.. _bloom-filter:
+
+Bloom filter
 ----------------
 
-Inverse Bloom Filters
-----------------
+.. _count-min-sketch:
 
-Count-min Sketch
-----------------
+Count-min sketch
+------------------
