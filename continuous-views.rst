@@ -37,19 +37,19 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 .. note:: You may want to visit :ref:`streams` to understand PipelineDB's stream abstraction if you haven't already, although it's not critical.
 
 **expression**
-  a PostgreSQL expression_
+  A PostgreSQL expression_
 
 .. _expression: http://www.postgresql.org/docs/9.4/static/sql-expressions.html
 
 **output_name**
-  an optional identifer to name an expression with
+  An optional identifer to name an expression with
 
 **condition**
-  any expression that evaluates to a result of type :code:`boolean`. Any row that does not satisfy this condition will be eliminated from the output. A row satisfies the condition if it returns :code:`true` when the actual row values are substituted for any variable references.
+  Any expression that evaluates to a result of type :code:`boolean`. Any row that does not satisfy this condition will be eliminated from the output. A row satisfies the condition if it returns :code:`true` when the actual row values are substituted for any variable references.
 
 
 **window_name**
-  a name that can be referenced from :code:`OVER` clauses or subsequent window definitions.
+  A name that can be referenced from :code:`OVER` clauses or subsequent window definitions.
 
 **window_definition**
   .. code-block:: pipeline
@@ -62,7 +62,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 .. note:: PipelineDB's **window_definition's** do not support an :code:`ORDER BY` clause if the input rows come from a stream. In such cases, the stream row's :code:`arrival_timestamp` field is implictly used as the :code:`ORDER BY` clause.
 
 **frame_clause**
-  defines the window frame for window functions that depend on the frame (not all do). The window frame is a set of related rows for each row of the query (called the current row). The **frame_clause** can be one of
+  Defines the window frame for window functions that depend on the frame (not all do). The window frame is a set of related rows for each row of the query (called the current row). The **frame_clause** can be one of
 
   .. code-block:: pipeline
 
@@ -80,7 +80,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
     UNBOUNDED FOLLOWING
 
 **value**
-  an integral value
+  An integral value
 
 .. note:: This has mainly covered only the syntax for :code:`CREATE CONTINUOUS VIEW`. To learn more about the semantics of each of these query elements, you should consult the `PostgreSQL SELECT documentation`_.
 
@@ -97,6 +97,8 @@ To :code:`DROP` a :code:`CONTINUOUS VIEW` from the system, use the :code:`DROP C
 
 This will remove the :code:`CONTINUOUS VIEW` from the system along with all of its associated resources.
 
+
+.. _pipeline-query:
 
 Viewing continuous views
 ---------------------------

@@ -20,6 +20,8 @@ Stream writes use a simplified version of a PostgreSQL :code:`INSERT` statement.
 
 Let's look at a few examples.
 
+.. important:: It is an error to write to a stream that no *active* :code:`CONTINUOUS VIEW` s are reading from, and the write will be rejected. This is to prevent against unknowingly writing data that is being silently ignored. See :ref:`activation-deactivation` for more information about active :code:`CONTINUOUS VIEW` s.
+
 Stream writes can be a single event at a time:
 
 .. code-block:: pipeline
@@ -48,7 +50,7 @@ Stream inserts can also contain arbitrary expressions:
 	INSERT INTO str_stream (encoded, location) VALUES
 	  (encode('encode me', 'base64'), position('needle' in 'haystack'));
 
-	INSERT INTO rad_stream (area2d, area3d) VALUES
+	INSERT INTO rad_stream (circle, sphere) VALUES
 	  (pi() * pow(11.2, 2), 4 / 3 * pi() * pow(11.2, 3));
 
 Since PipelineDB is compatible with PostgreSQL, writing to streams is possible from any client that works with PostgreSQL (and probably most clients that work with any SQL database for that matter), so it's not necessary to manually construct stream inserts. To get an idea of what that looks like, you should check out the :ref:`examples` section.
@@ -58,7 +60,7 @@ Arrival ordering
 
 By design, PipelineDB uses **arrival ordering** for event ordering. What this means is that events are timestamped when they arrive at the PipelineDB server, and are given an additional attribute called :code:`arrival_timestamp` containing that timestamp. The :code:`arrival_timestamp` can then be used in :ref:`continuous-views` with a temporal component, such as :ref:`sliding-windows` .
 
-:code:`arrival_timestamp` is also implicitly used as the :code:`ORDER BY` clause in :ref:`continuous-views` involving and :code:`PARTITION BY` :code:`OVER`, as that is the only field that can be reasonably used for applying order to an infinite stream.
+.. note:: :code:`arrival_timestamp` is also implicitly used as the :code:`ORDER BY` clause in :ref:`continuous-views` involving :code:`PARTITION BY` and :code:`OVER`, as it is the only field that can be reasonably used for applying order to an infinite stream.
 
 Event expiration
 ------------------
