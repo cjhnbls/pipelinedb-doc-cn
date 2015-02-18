@@ -19,6 +19,6 @@ In addition to PostgreSQL 9.4 compatibility, PipelineDB is also natively compati
 Aggregates
 -------------
 
-As one of PipelineDB's fundamental design goals is to **facilitate high-performance continuous aggregation**, PostgreSQL and PostGIS aggregate functions are fully supported for use in :ref:`continuous-views` (with a couple of rare exceptions). In addition to this large suite of standard aggregates, PipelineDB has also added some of its own useful aggregation functionality that is purpose-built for streaming datasets.
+As one of PipelineDB's fundamental design goals is to **facilitate high-performance continuous aggregation**, PostgreSQL and PostGIS aggregate functions are fully supported for use in :ref:`continuous-views` (with a couple of rare exceptions). In addition to this large suite of standard aggregates, PipelineDB has also added some of its own useful aggregation functionality that is purpose-built for continuous data processing.
 
 See :ref:`aggregates` for more information about some of PipelineDB's most useful features.
