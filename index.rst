@@ -13,7 +13,6 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 	continuous-views
 	streams
 	activation-deactivation
-	clients
 	builtin
 	aggregates
 	probabilistic
