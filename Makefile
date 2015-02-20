@@ -23,6 +23,11 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
 all: html
 
+s3: all
+	aws s3 cp _build/html/ s3://pipelinedb-docs/ --recursive --region us-west-2
+
+serve:
+	sphinx-autobuild . _build/html
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
