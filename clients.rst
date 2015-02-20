@@ -81,7 +81,7 @@ For this example you'll need this example assumes that you have JDBC_ installed 
     static final String DATABASE = "test";
     static final String USER = "user";
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws SQLException {
   
       // Connect to "test" database on port 6543
       String url = "jdbc:postgresql://" + HOST + ":6543/" + DATABASE;
@@ -121,7 +121,8 @@ For this example you'll need this example assumes that you have JDBC_ installed 
         System.out.println(id + " = " + count);
       }
   
-      // Clean up our CONTINUOUS VIEW
+      // Clean up
       stmt.executeUpdate("DROP CONTINUOUS VIEW v");
+      conn.close();
     }
   }
