@@ -17,14 +17,18 @@ Here's a simple Java application that first creates a :code:`CONTINUOUS VIEW` th
   
   public class Example {
   
+		static final String HOST = "localhost";
+    static final String DATABASE = "test";
+    static final String USER = "user";
+
     public static void main(String[] args) throws Exception {
   
       // Connect to "test" database on port 6543
-      String url = "jdbc:postgresql://localhost:6543/test";
+      String url = "jdbc:postgresql://" + HOST + ":6543/" + DATABASE;
       ResultSet  rs;
       Properties props = new Properties();
   
-      props.setProperty("user", "user");
+      props.setProperty("user", USER);
       Connection conn = DriverManager.getConnection(url, props);
   
       Statement stmt = conn.createStatement();
