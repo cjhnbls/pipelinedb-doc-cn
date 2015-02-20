@@ -61,6 +61,8 @@ For this example in Python, you'll need to have psycopg2_ installed.
   pipeline.execute('DROP CONTINUOUS VIEW continuous_view')
   pipeline.close()
 
+----------------------
+
 Java
 ----------------
 
