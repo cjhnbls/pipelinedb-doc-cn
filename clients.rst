@@ -20,11 +20,11 @@ Here's a simple Java application that first creates a :code:`CONTINUOUS VIEW` th
     public static void main(String[] args) throws Exception {
   
       // Connect to "test" database on port 6543
-      String url = "jdbc:postgresql://localhost:6543/derek";
+      String url = "jdbc:postgresql://localhost:6543/test";
       ResultSet  rs;
       Properties props = new Properties();
   
-      props.setProperty("user", "derek");
+      props.setProperty("user", "user");
       Connection conn = DriverManager.getConnection(url, props);
   
       Statement stmt = conn.createStatement();
