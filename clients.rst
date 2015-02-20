@@ -17,7 +17,7 @@ Here's a simple Java application that first creates a :code:`CONTINUOUS VIEW` th
   
   public class Example {
   
-		static final String HOST = "localhost";
+    static final String HOST = "localhost";
     static final String DATABASE = "test";
     static final String USER = "user";
 
