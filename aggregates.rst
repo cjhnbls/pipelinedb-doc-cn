@@ -72,7 +72,7 @@ Combine
 
 Since PipelineDB can incrementally update aggregate values, it has the capability to combine existing aggregates using more information than simply their current raw values. For example, combining multiple averages isn't simply a matter of taking the average of the averages. Their weights must be taken into account.
 
-For this type of operation, PipelineDB exposes the special **combine** aggregate. It's description is as follows:
+For this type of operation, PipelineDB exposes the special **combine** aggregate. Its description is as follows:
 
 **combine ( aggregate column )**
 
@@ -391,10 +391,13 @@ Unsupported aggregates (and why)
 ---------------------------------
 
 **mode ( )**
+
 	Future releases of PipelineDB will include an implementation of an online mode estimation algorithm, but for now it's not supported
 
 **percentile_disc ( arguments )**
+
 	Given an input percentile (such as 0.99), **percentile_disc** returns the very first value in the input set that is within that percentile. This requires actually sorting the input set, which is obviously impractical on an infinite stream, and doesn't even allow for a highly accurate estimation algorithm such as the one we use for **percentile_cont**.
 
 **xml_agg**
+
 	:(

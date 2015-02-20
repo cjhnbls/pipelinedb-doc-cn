@@ -8,6 +8,8 @@ Overview
 
 PipelineDB is built to run SQL queries continuously on streaming data. The output of these continuous queries is stored in regular tables which can be queried like any other table or view. Thus continuous queries can be thought of as very high-throughput, incrementally updated materialized views. As with any data processing system, PipelineDB is built to shine under particular workloads, and simply not intended for others.
 
+Check out the :ref:`clients` section for code examples of PipelineDB in action. 
+
 
 What PipelineDB is
 -------------------
