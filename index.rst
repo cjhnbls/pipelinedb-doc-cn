@@ -9,12 +9,12 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 
 	introduction
 	installation
-	clients
 	continuous-views
 	streams
 	activation-deactivation
 	builtin
 	aggregates
+	clients
 	probabilistic
 	sliding-windows
 	joins
