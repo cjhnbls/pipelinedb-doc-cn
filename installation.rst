@@ -28,7 +28,7 @@ Once PipelineDB is installed, you can initialize a database directory. This is w
 
 	pipeline-init -D <data directory>
 
-where :code:`<data directory>` is an empty directory. Once this directory has been successfully initialized, you can run a PipelineDB server.
+where :code:`<data directory>` is a nonexistent directory. Once this directory has been successfully initialized, you can run a PipelineDB server.
 
 Running PipelineDB
 ---------------------
