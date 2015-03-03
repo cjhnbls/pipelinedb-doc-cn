@@ -66,7 +66,7 @@ For this example in Python, you'll need to have psycopg2_ installed.
 Java
 ----------------
 
-For this example you'll to have JDBC_ installed and on your :code:`CLASSPATH`.
+For this example you'll need to have JDBC_ installed and on your :code:`CLASSPATH`.
 
 ..  _JDBC: http://docs.oracle.com/javase/tutorial/jdbc/basics/gettingstarted.html
 
