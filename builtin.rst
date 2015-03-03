@@ -51,7 +51,7 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns the cardinality of the given :ref:`bloom-filter`. This is the number of **unique** elements that were added to the Bloom filter, with a small margin or error.
 
-**bloom_contains ( expression )**
+**bloom_contains ( bloom filter, expression )**
 
 	Returns true if the Bloom filter **probably** contains the given value, with a small false positive rate.
 
