@@ -21,7 +21,7 @@ These concepts are probably best illustrated by an example.
 Examples
 ------------
 
-Even though sliding windows are a new concept for a SQL database, PipelineDB does not use any sort of new or proprietary windowing syntax. Instead, PipelineDB uses standard PostgreSQL 9.4 syntax:
+Even though sliding windows are a new concept for a SQL database, PipelineDB does not use any sort of new or proprietary windowing syntax. Instead, PipelineDB uses standard PostgreSQL 9.4 syntax. Here's a simple example:
 
 **What users have I seen in the last minute?**
 

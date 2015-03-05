@@ -37,7 +37,7 @@ To run the PipelineDB server in the background, use the :code:`pipeline-ctl` dri
 
 .. code-block:: pipeline
 
-	pipeline-ctl -D <data directory> start
+	pipeline-ctl -D <data directory> -l pipelinedb.log start
 
 The :code:`pipeline-ctl` driver can also be used to stop running servers:
 
@@ -51,11 +51,11 @@ Run :code:`pipeline-ctl --help` to see other available functionality. Finally, t
 
 	pipeline-server -D <data directory>
 
-To connect to a running server, the :code:`pipeline` command can be used:
+To connect to a running server using the default database "pipeline", the :code:`pipeline` command can be used:
 
 .. code-block:: pipeline
 
-	pipeline
+	pipeline pipeline
 
 `PostgreSQL's`_ standard client, :code:`psql`, can also be used to connect to PipelineDB. Note that PipelineDB's default port is :code:`6543`:
 
