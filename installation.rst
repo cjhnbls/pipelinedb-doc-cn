@@ -39,7 +39,7 @@ To run the PipelineDB server in the background, use the :code:`pipeline-ctl` dri
 
 	pipeline-ctl -D <data directory> -l pipelinedb.log start
 
-The :code:`pipeline-ctl` driver can also be used to stop running servers:
+The :code:`-l` option specifies the path of a logfile to log to. The :code:`pipeline-ctl` driver can also be used to stop running servers:
 
 .. code-block:: pipeline
 
