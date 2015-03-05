@@ -22,4 +22,4 @@ To publish the docs, you'll need to have the [AWS client](http://aws.amazon.com/
 
     make s3
     
-This will upload the docs to a public S3 bucket that serves as a static website host.
+This will upload the docs to a public S3 bucket that serves as a static [website](http://pipelinedb-docs.s3-website-us-west-2.amazonaws.com/index.html) host.
