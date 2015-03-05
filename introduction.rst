@@ -25,4 +25,4 @@ Much of the data that is passed through PipelineDB can thus be thought of as **v
 What PipelineDB is not
 -------------------------
 
-Given that continuous queries must be known *a priori*, PipelineDB is not an ad-hoc data warehouse. While the output of continuous queries may be explored in an ad-hoc fashion, all of the raw data that has ever passed through PipelineDB may not be because datapoints are ideally discarded after they've been read. Additionally, if streaming computations which cannot be expressed in SQL are needed, PipelineDB probably isn't the right tool for the job!
+Given that continuous queries must be known *a priori*, PipelineDB is not an ad-hoc data warehouse. While the output of continuous queries may be explored in an ad-hoc fashion, all of the raw data that has ever passed through PipelineDB may not be because datapoints are discarded after they've been read. Additionally, if streaming computations which cannot be expressed in SQL are needed, PipelineDB probably isn't the right tool for the job!

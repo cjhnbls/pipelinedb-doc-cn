@@ -3,7 +3,9 @@
 Activation and deactivation
 ============================
 
-Because :ref:`continuous-views` are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. This level of control is provided by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When a :code:`CONTINUOUS VIEW` is *active*, it is actively reading from its input streams and incrementally updating its result accordingly. Conversely, an *inactive* :code:`CONTINUOUS VIEW` is not reading its input streams and is not updating its result.
+Because :ref:`continuous-views` are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to stop that particular continuous view until the issue is resolved--without having to stop any other continuous views.
+
+This level of control is provided by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When a :code:`CONTINUOUS VIEW` is *active*, it is actively reading from its input streams and incrementally updating its result accordingly. Conversely, an *inactive* :code:`CONTINUOUS VIEW` is not reading its input streams and is not updating its result.
 
 .. important:: If a :code:`CONTINUOUS VIEW` is inactive, any events written to its input streams while it's inactive will never be read by that :code:`CONTINUOUS VIEW`, even after it is activated again. Other active :code:`CONTINUOUS VIEW` s reading from the same input streams will continue to read events regularly, of course.
 
