@@ -53,6 +53,18 @@ Stream inserts can also contain arbitrary expressions:
 	INSERT INTO rad_stream (circle, sphere) VALUES
 	  (pi() * pow(11.2, 2), 4 / 3 * pi() * pow(11.2, 3));
 
+Finally, stream inserts even work with prepared inserts in order to reduce network overhead:
+
+.. code-block:: pipeline
+
+	PREPARE write_to_stream AS INSERT INTO stream (x, y, z) VALUES ($1, $2, $3);
+
+	EXECUTE write_to_stream(0, 1, 2);
+	EXECUTE write_to_stream(3, 4, 5);
+	EXECUTE write_to_stream(6, 7, 8);
+
+-----------------
+
 Since PipelineDB is compatible with PostgreSQL, writing to streams is possible from any client that works with PostgreSQL (and probably most clients that work with any SQL database for that matter), so it's not necessary to manually construct stream inserts. To get an idea of what that looks like, you should check out the :ref:`clients` section.
 
 .. _arrival-ordering:
