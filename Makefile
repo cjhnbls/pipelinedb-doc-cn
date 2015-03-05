@@ -24,7 +24,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 all: html
 
 s3: all
-	aws s3 cp _build/html/ s3://pipelinedb-docs/ --recursive --region us-west-2
+	aws s3 cp _build/html/ s3://docs.pipelinedb.com/ --recursive --region us-west-2
 
 serve:
 	sphinx-autobuild . _build/html
