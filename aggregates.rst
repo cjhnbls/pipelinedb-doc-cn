@@ -78,7 +78,7 @@ For this type of operation, PipelineDB exposes the special **combine** aggregate
 
 	Given an aggregate column, combines all values into a single value as if all of the individual aggregates' inputs were aggregated a single time.
 
-.. note:: **combine** only works on aggregate columns that are part of :code:`CONTINUOUS VIEW` s.
+.. note:: **combine** only works on aggregate columns that belong to continuous views.
 
 Let's look at an example:
 
