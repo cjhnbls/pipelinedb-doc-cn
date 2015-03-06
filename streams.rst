@@ -7,7 +7,7 @@ Streams are the abstraction that allows clients to push data through :ref:`conti
 
 Namely, events only "exist" within a stream until they are consumed by all of the :ref:`continuous-views` that are reading from that stream. Even then, it is still not possible for users to :code:`SELECT` from streams. Streams serve exclusively as inputs to :ref:`continuous-views`.
 
-Finally, unlike tables, it is not necessary to create a schema for streams. As long as there is at least one :code:`CONTINUOUS VIEW` reading from a stream, you can write to it. The only restriction is that all stream insertions require a column header.
+Finally, unlike tables, it is not necessary to create a schema for streams. As long as there is at least one continuous view reading from a stream, you can write to it. The only restriction is that all stream insertions require a column header.
 
 Writing to streams
 ----------------------
@@ -18,7 +18,7 @@ Stream writes use a simplified version of a PostgreSQL :code:`INSERT` statement.
 
 	INSERT INTO stream_name ( column_name [, ...] ) VALUES ( expression [, ...] ) [, ...]
 
-.. important:: It is an error to write to a stream that no *active* :code:`CONTINUOUS VIEW` s are reading from, and the write will be rejected. This is to prevent against unknowingly writing data that is being silently ignored. See :ref:`activation-deactivation` for more information about active :code:`CONTINUOUS VIEW` s.
+.. important:: It is an error to write to a stream that no *active* continuous views are reading from--the write will be rejected. This is to prevent against unknowingly writing data that is being silently ignored. See :ref:`activation-deactivation` for more information about active continuous views.
 
 Let's look at a few examples...
 

@@ -33,7 +33,7 @@ HyperLogLog works by subdividing its input stream of added elements and storing 
 
 **How HyperLogLog is used in PipelineDB**
 
-Continuous views containing a :code:`COUNT(DISTINCT ...)` clause use HyperLogLog to accurately estimate the number of unique expressions read using a constant amount of space for an infinite stream of expressions. The hypothetical-set aggregate, :ref:`dense-rank` also uses HyperLogLog to accurately estimate the number of lower-ranking expressions that have been read in order to determine the rank of the hypothetical value.
+Continuous views containing a :code:`COUNT(DISTINCT ...)` clause use HyperLogLog to accurately estimate the number of unique expressions read using a constant amount of space for an infinite stream of expressions. The hypothetical-set aggregate, **dense_rank** also uses HyperLogLog to accurately estimate the number of unique lower-ranking expressions that have been read in order to determine the rank of the hypothetical value.
 
 Users are also free to construct their own HyperLogLog data structures and manipulate them with the :ref:`pipeline-funcs` that expose them. 
 

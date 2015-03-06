@@ -5,7 +5,7 @@ Continuous views
 
 PipelineDB's fundamental abstraction is called a continuous view. A continuous view is much like a regular view, except that it selects from a combination of streams and tables as its inputs and is incrementally updated in realtime as new data is written to those inputs.
 
-As soon as a stream row has been read by the continuous view s that must read it, it is discarded. It is not stored anywhere. The only data that is persisted for a continuous view is whatever is returned by running a :code:`SELECT * FROM that_view`. Thus you can think of a continuous view as a very high-throughput, realtime materialized view.
+As soon as a stream row has been read by the continuous views that must read it, it is discarded. It is not stored anywhere. The only data that is persisted for a continuous view is whatever is returned by running a :code:`SELECT * FROM that_view`. Thus you can think of a continuous view as a very high-throughput, realtime materialized view.
 
 CREATE CONTINUOUS VIEW
 ---------------------------
@@ -34,7 +34,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
       table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
       from_item [ NATURAL ] join_type from_item [ ON join_condition ]
 
-.. note:: This section references streams, which are similar to tables and are what continuous view read from in their :code:`FROM` clause. They're explained in more depth in the :ref:`streams` section, but you can think of them as append-only tables for now.
+.. note:: This section references streams, which are similar to tables and are what continuous views read from in their :code:`FROM` clause. They're explained in more depth in the :ref:`streams` section, but you can think of them as append-only tables for now.
 
 **expression**
   A PostgreSQL expression_
@@ -104,7 +104,7 @@ This will remove the continuous view from the system along with all of its assoc
 Viewing continuous views
 ---------------------------
 
-To view the continuous view s currently in the system, you can run a :code:`SELECT` on the :code:`pipeline_query` catalog table:
+To view the continuous views currently in the system, you can run a :code:`SELECT` on the :code:`pipeline_query` catalog table:
 
 .. code-block:: pipeline
 
@@ -125,14 +125,14 @@ Consider the following simple continuous view:
   SELECT user_id::integer, COUNT(*), SUM(value::float8), AVG(value) FROM stream
   GROUP BY user_id
 
-PipelineDB uses PostgreSQL's :code:`::` casting syntax to tell the continuous view what types to convert raw values to. Note that a stream column must only be typed a single time. All other references to it will use the same type.
+PipelineDB uses :code:`::` casting syntax to tell the continuous view what types to convert raw values to. Note that a stream column must only be typed a single time. All other references to it will use the same type.
 
 .. note:: All stream columns must appear in the continuous view 's definition. It is not possible to :code:`SELECT * FROM a_stream`.
 
 Data retrieval
 -------------------
 
-Since continuous view s are a lot like regular views, retrieving data from them is simply a matter of performing a :code:`SELECT` on them:
+Since continuous views are a lot like regular views, retrieving data from them is simply a matter of performing a :code:`SELECT` on them:
 
 .. code-block:: pipeline
 
@@ -164,9 +164,9 @@ derek     30
 Examples
 ---------------------
 
-Putting this all together, let's go through a few examples of continuous view s and understand what each one accomplishes.
+Putting this all together, let's go through a few examples of continuous views and understand what each one accomplishes.
 
-.. important:: It is important to understand that the only data persisted by PipelineDB for a continuous view is whatever would be returned by running a :code:`SELECT *` on it (plus a small amount of metadata). This is a relatively new concept, but it is at the core of what makes continuous view s so powerful!
+.. important:: It is important to understand that the only data persisted by PipelineDB for a continuous view is whatever would be returned by running a :code:`SELECT *` on it (plus a small amount of metadata). This is a relatively new concept, but it is at the core of what makes continuous views so powerful!
 
 Emphasizing the above notice, this continuous view would only ever store a single row in PipelineDB (just a few bytes), even if it read a trillion events over time:
 
@@ -226,4 +226,4 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
 ----------
 
-We hope you enjoyed learning all about continuous view s. Next, you should probably check out how :ref:`streams` work.
+We hope you enjoyed learning all about continuous views. Next, you should probably check out how :ref:`streams` work.
