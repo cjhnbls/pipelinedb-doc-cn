@@ -23,8 +23,6 @@ As one of PipelineDB's fundamental design goals is to **facilitate high-performa
 
 See :ref:`aggregates` for more information about some of PipelineDB's most useful features.
 
-.. _pipeline-funcs:
-
 PipelineDB-specific types
 ----------------------------
 
@@ -41,6 +39,8 @@ PipelineDB supports a number of native types for efficiently leveraging :ref:`pr
 
 **tdigest**
 	:ref:`t-digest`
+
+.. _pipeline-funcs:
 
 PipelineDB-specific functions
 ---------------------------------

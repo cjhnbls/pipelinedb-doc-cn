@@ -336,6 +336,8 @@ This :code:`CONTINUOUS VIEW` will continuously update the rank of :code:`42` giv
 
 	Rank of the hypothetical row, with gaps for duplicate rows
 
+.. _dense-rank:
+
 **dense_rank ( arguments )**
 
 	Rank of the hypothetical row, without gaps
