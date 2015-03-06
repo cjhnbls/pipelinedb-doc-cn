@@ -3,9 +3,9 @@
 Continuous aggregates
 ======================
 
-One of the fundamental goals of PipelineDB is to **facilitate high-performance continuous aggregation**, so not suprisingly aggregates are a central component of PipelineDB's utility. Continuous aggregates can be very powerful--in the most general sense they make it possible to keep the amount of data persisted in PipelineDB constant and independent relative to the amount of data that has been pushed through it. This can enable very high data throughput on modest hardware.
+One of the fundamental goals of PipelineDB is to **facilitate high-performance continuous aggregation**, so not suprisingly aggregates are a central component of PipelineDB's utility. Continuous aggregates can be very powerful--in the most general sense they make it possible to keep the amount of data persisted in PipelineDB constant relative to the amount of data that has been pushed through it. This can enable sustainable and very high data throughput on modest hardware.
 
-Continuous aggregates are **incrementally updated** in real time as new events are read by the the :code:`CONTINUOUS VIEW` that they're a part of. For simple aggregates such as count_ and sum_, it is easy to see how their results can be incrementally updated--just add the new value to the existing result.
+Continuous aggregates are **incrementally updated** in real time as new events are read by the the continuous view that they're a part of. For simple aggregates such as count_ and sum_, it is easy to see how their results can be incrementally updated--just add the new value to the existing result.
 
 But for more complicated aggregates, such as avg_, stddev_, percentile_cont_, etc., more advanced infrastructure is required to support efficient incremental updates, and PipelineDB handles all of that complexity for you transparently.
 
@@ -162,7 +162,7 @@ General aggregates
 
 	Number of rows for which **expression** is distinct.
 
-	.. note:: Counting the distinct number of expressions on an infinite stream would require infinite memory, so :code:`CONTINUOUS VIEW` s use :ref:`hll` to accomplish distinct counting in constant space and time, at the expense of a small margin of error. Empirically, PipelineDB's implementation of :ref:`hll` has an error rate of ~0.2%. For example, **count distinct** might show :code:`1002` when the actual number of unique expressions was :code:`1000`.
+	.. note:: Counting the distinct number of expressions on an infinite stream would require infinite memory, so continuous views use :ref:`hll` to accomplish distinct counting in constant space and time, at the expense of a small margin of error. Empirically, PipelineDB's implementation of :ref:`hll` has an error rate of ~0.2%. For example, **count distinct** might show :code:`1002` when the actual number of unique expressions was :code:`1000`.
 
 **count ( expression )**
 
@@ -288,7 +288,7 @@ Compute the 99th percentile of **value**:
 
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value) FROM some_table;
 
-Or with a :code:`CONTINUOUS VIEW`:
+Or with a continuous view:
 
 .. code-block:: pipeline
 
@@ -307,7 +307,7 @@ Or with a :code:`CONTINUOUS VIEW`:
 
 	Multiple continuous percentile: returns an array of results matching the shape of the fractions parameter, with each non-null element replaced by the value corresponding to that percentile
 
-	.. note:: Computing percentiles on infinite streams would require infinite memory, so both forms of **percentile_cont**, when used by :code:`CONTINUOUS VIEW` s, use :ref:`t-digest` as a way to estimate percentiles with a very high degree of accuracy. In general, percentiles in :code:`CONTINUOUS VIEW` s are more accurate the closer they are to the upper or lower bounds of :code:`[0, 1)`.
+	.. note:: Computing percentiles on infinite streams would require infinite memory, so both forms of **percentile_cont**, when used by continuous views, use :ref:`t-digest` as a way to estimate percentiles with a very high degree of accuracy. In general, percentiles in continuous views are more accurate the closer they are to the upper or lower bounds of :code:`[0, 1)`.
 
 ----------------------------
 
@@ -322,7 +322,7 @@ The hypothetical-set aggregates use the :code:`WITHIN GROUP` clause to define th
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
-Here is an example of of a hypothetical-set aggregate being used by a :code:`CONTINUOUS VIEW`:
+Here is an example of of a hypothetical-set aggregate being used by a continuous view:
 
 .. code-block:: pipeline
 
@@ -330,7 +330,7 @@ Here is an example of of a hypothetical-set aggregate being used by a :code:`CON
 	SELECT rank(42) WITHIN GROUP (ORDER BY value::float8)
 	FROM some_stream;
 
-This :code:`CONTINUOUS VIEW` will continuously update the rank of :code:`42` given all of the events it has read.
+This continuous view will continuously update the rank of :code:`42` given all of the events it has read.
 
 **rank ( arguments )**
 
@@ -342,7 +342,7 @@ This :code:`CONTINUOUS VIEW` will continuously update the rank of :code:`42` giv
 
 	Rank of the hypothetical row, without gaps
 
-	.. note:: Computing the hypothetical **dense_rank** of a value given an infinite stream of values would require infinite memory, so :code:`CONTINUOUS VIEW` s use :ref:`hll` to do it in constant time and space, at the expense of a small margin of error. Empirically, PipelineDB's implementation of :ref:`hll` has an error rate of ~0.2%. In other words, **dense_rank (1000)** in a :code:`CONTINUOUS VIEW` might show 998 when the actual number of unique lower-ranking values seen was :code:`1000`.
+	.. note:: Computing the hypothetical **dense_rank** of a value given an infinite stream of values would require infinite memory, so continuous views use :ref:`hll` to do it in constant time and space, at the expense of a small margin of error. Empirically, PipelineDB's implementation of :ref:`hll` has an error rate of ~0.2%. In other words, **dense_rank (1000)** in a continuous view might show 998 when the actual number of unique lower-ranking values seen was :code:`1000`.
 
 **percent_rank ( arguments )**
 
