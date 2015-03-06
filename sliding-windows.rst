@@ -1,6 +1,6 @@
 .. _sliding-windows:
 
-Sliding windows
+Sliding Windows
 ============================
 
 Since :ref:`continuous-views` are continuously and incrementally updated over time, PipelineDB has the capability to consider the current time when updating the result of a continuous view. Queries that include a :code:`WHERE` clause with a temporal component relating to the **current time** are called **sliding-window queries**. The set of events that a sliding :code:`WHERE` clause filters or accepts perpetually changes over time.
@@ -39,7 +39,7 @@ Each time :code:`clock_timestamp() - interval '1 minute'` is evaluated, it will 
 .. note:: PipelineDB exposes the :code:`current_date`, :code:`current_time`, and :code:`current_timestamp` values to use within queries, but by design these don't work with sliding-window queries because they remain constant within a transaction and thus don't necessarily represent the current moment in time.
 
 
-Sliding aggregates
+Sliding Aggregates
 -------------------
 
 Sliding-window queries also work with aggregate functions. Sliding aggregates work by aggregating their inputs as much as possible, but without losing the granularity needed to know how to remove information from the window as time progresses. This partial aggregatation is all transparent to the user--only fully aggregated results will be visible within sliding-window aggregates.
@@ -82,7 +82,7 @@ Each time a :code:`SELECT` is run on this continuous view, the count it returns 
 	WHERE (arrival_timestamp > clock_timestamp() - interval '5 minutes')
 	GROUP BY server_id;
 
-Temporal invalidation
+Temporal Invalidation
 -----------------------
 
 Obviously, sliding-window rows in continuous views become invalid after a certain amount of time because they've become too old to ever be included in a continuous view's result. Such rows must thus be **garbage collected**, which can happen in two ways:
