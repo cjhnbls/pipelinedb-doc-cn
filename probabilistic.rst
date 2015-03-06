@@ -1,4 +1,4 @@
-.. _probabilistic.rst:
+.. _probabilistic:
 
 Probabilistic data structures and algorithms
 ================================================
