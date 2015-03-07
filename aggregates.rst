@@ -1,6 +1,6 @@
 .. _aggregates:
 
-Continuous aggregates
+Continuous Aggregates
 ======================
 
 One of the fundamental goals of PipelineDB is to **facilitate high-performance continuous aggregation**, so not suprisingly aggregates are a central component of PipelineDB's utility. Continuous aggregates can be very powerful--in the most general sense they make it possible to keep the amount of data persisted in PipelineDB constant relative to the amount of data that has been pushed through it. This can enable sustainable and very high data throughput on modest hardware.
@@ -20,7 +20,7 @@ Below you'll find a description of all the aggregates that PipelineDB supports. 
 
 .. _pipeline-aggs:
 
-PipelineDB-specific aggregates
+PipelineDB-specific Aggregates
 ----------------------------------
 
 **bloom_agg ( expression )**
@@ -123,7 +123,7 @@ Let's look at an example:
 
 ------------------------------
 
-General aggregates
+General Aggregates
 ----------------------
 
 **array_agg ( expression )**
@@ -200,7 +200,7 @@ General aggregates
 
 ----------------------------
 
-Statistical aggregates
+Statistical Aggregates
 -------------------------
 
 **corr ( y, x )**
@@ -271,7 +271,7 @@ Statistical aggregates
 
 ----------------------------
 
-Ordered-set aggregates
+Ordered-set Aggregates
 ------------------------
 
 **ordered-set** aggregates apply ordering to their input in order to obtain their results, so they use the :code:`WITHIN GROUP` clause. Its syntax is as follows:
@@ -311,7 +311,7 @@ Or with a continuous view:
 
 ----------------------------
 
-Hypothetical-set aggregates
+Hypothetical-set Aggregates
 -------------------------------
 
 **hypothetical-set** aggregates take an expression and compute something about it within the context of a set of input rows. For example, **rank(2)** computes the :code:`rank` of :code:`2` within the context of whatever the input rows end up being.
@@ -354,7 +354,7 @@ This continuous view will continuously update the rank of :code:`42` given all o
 
 ----------------------------
 
-Geospatial aggregates
+Geospatial Aggregates
 -------------------------
 
 **st_accum ( geometry )**
@@ -391,7 +391,7 @@ Geospatial aggregates
 
 ----------------------------
 
-Unsupported aggregates (and why)
+Unsupported Aggregates
 ---------------------------------
 
 **mode ( )**

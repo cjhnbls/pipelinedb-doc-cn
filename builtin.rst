@@ -1,6 +1,6 @@
 .. _builtin:
 
-Built-in functionality
+Built-in Functionality
 =======================
 
 General
@@ -23,7 +23,7 @@ As one of PipelineDB's fundamental design goals is to **facilitate high-performa
 
 See :ref:`aggregates` for more information about some of PipelineDB's most useful features.
 
-PipelineDB-specific types
+PipelineDB-specific Types
 ----------------------------
 
 PipelineDB supports a number of native types for efficiently leveraging :ref:`probabilistic` on streams. You'll likely never need to manually create tables with these types but often they're the result of :ref:`pipeline-aggs`, so they'll be transparently created by :ref:`continuous-views`. Here they are:
@@ -42,7 +42,7 @@ PipelineDB supports a number of native types for efficiently leveraging :ref:`pr
 
 .. _pipeline-funcs:
 
-PipelineDB-specific functions
+PipelineDB-specific Functions
 ---------------------------------
 
 PipelineDB ships with a number of functions that are useful for interacting with these types. They are described below.

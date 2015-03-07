@@ -1,6 +1,6 @@
 .. _activation-deactivation:
 
-Activation and deactivation
+Activation and Deactivation
 ============================
 
 Because :ref:`continuous-views` are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to stop that particular continuous view until the issue is resolved--without having to stop any other continuous views.

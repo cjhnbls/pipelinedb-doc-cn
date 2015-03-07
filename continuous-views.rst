@@ -1,6 +1,6 @@
 .. _continuous-views:
 
-Continuous views
+Continuous Views
 =================
 
 PipelineDB's fundamental abstraction is called a continuous view. A continuous view is much like a regular view, except that it selects from a combination of streams and tables as its inputs and is incrementally updated in realtime as new data is written to those inputs.
@@ -101,7 +101,7 @@ This will remove the continuous view from the system along with all of its assoc
 
 .. _pipeline-query:
 
-Viewing continuous views
+Viewing Continuous Views
 ---------------------------
 
 To view the continuous views currently in the system, you can run a :code:`SELECT` on the :code:`pipeline_query` catalog table:
@@ -112,7 +112,7 @@ To view the continuous views currently in the system, you can run a :code:`SELEC
 
 Don't worry about all of the columns in :code:`pipeline_query` --most of them are only for internal use. The important columns are :code:`name`, which contains the name you gave the continuous view when you created it; and :code:`query`, which contains the continuous view's query definition.
 
-Inferred schemas
+Inferred Schemas
 --------------------
 
 Since streams and their columns appear in a continuous view 's :code:`FROM` clause, it seems natural that they would have to have a schema already declared, just like selecting from a table. But with PipelineDB, it is strictly unnecessary to ever explicitly define any sort of schema for a stream. All of the type information necessary for a continuous view to read from a stream is acquired by what is known as an **inferred schema**. Perhaps this is best illustrated by a simple example.
@@ -129,7 +129,7 @@ PipelineDB uses :code:`::` casting syntax to tell the continuous view what types
 
 .. note:: All stream columns must appear in the continuous view 's definition. It is not possible to :code:`SELECT * FROM a_stream`.
 
-Data retrieval
+Data Retrieval
 -------------------
 
 Since continuous views are a lot like regular views, retrieving data from them is simply a matter of performing a :code:`SELECT` on them:

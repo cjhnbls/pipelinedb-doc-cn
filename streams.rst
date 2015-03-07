@@ -9,7 +9,7 @@ Namely, events only "exist" within a stream until they are consumed by all of th
 
 Finally, unlike tables, it is not necessary to create a schema for streams. As long as there is at least one continuous view reading from a stream, you can write to it. The only restriction is that all stream insertions require a column header.
 
-Writing to streams
+Writing To Streams
 ----------------------
 
 Stream writes use a simplified version of a PostgreSQL :code:`INSERT` statement. Here's the syntax:
@@ -69,14 +69,14 @@ Since PipelineDB is compatible with PostgreSQL, writing to streams is possible f
 
 .. _arrival-ordering:
 
-Arrival ordering
+Arrival Ordering
 ------------------
 
 By design, PipelineDB uses **arrival ordering** for event ordering. What this means is that events are timestamped when they arrive at the PipelineDB server, and are given an additional attribute called :code:`arrival_timestamp` containing that timestamp. The :code:`arrival_timestamp` can then be used in :ref:`continuous-views` with a temporal component, such as :ref:`sliding-windows` .
 
 .. note:: :code:`arrival_timestamp` is also implicitly used as the :code:`ORDER BY` clause in :ref:`continuous-views` involving :code:`PARTITION BY` and :code:`OVER`, as it is the only field that can be reasonably used for applying order to an infinite stream.
 
-Event expiration
+Event Expiration
 ------------------
 
 After each event arrives at the PipelineDB server, it is given a small bitmap representing all of the :ref:`continuous-views` that still need to read the event. When a :code:`CONTINUOUS VIEW` is done reading an event, it flips a single bit in the bitmap. When all of the bits in the bitmap are set to :code:`1`, the event is discarded and can never be accessed again.
