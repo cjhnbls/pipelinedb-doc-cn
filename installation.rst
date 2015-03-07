@@ -10,13 +10,13 @@ To install the PipelineDB RPM package, run:
 
 .. code-block:: pipeline
 
-	sudo -ivh pipelinedb-<version>.rpm
+	sudo rpm -ivh pipelinedb-<version>.rpm
 
 This will install PipelineDB at :code:`/opt/pipelinedb`. To install at a prefix of your choosing, use the :code:`--prefix` argument:
 
 .. code-block:: pipeline
 
-	sudo -ivh --prefix=/path/to/pipelinedb pipelinedb-<version>.rpm
+	sudo rpm -ivh --prefix=/path/to/pipelinedb pipelinedb-<version>.rpm
 
 
 Initializing PipelineDB
