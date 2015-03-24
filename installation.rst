@@ -40,6 +40,12 @@ Once PipelineDB is installed, you can initialize a database directory. This is w
 
 where :code:`<data directory>` is a nonexistent directory. Once this directory has been successfully initialized, you can run a PipelineDB server.
 
+Finally, open the :code:`pipelinedb.conf` configuration file located in :code:`<data directory>` and add your license key:
+
+.. code-block:: pipeline
+
+	license_key = '<license key>'
+
 Running PipelineDB
 ---------------------
 
