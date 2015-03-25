@@ -81,6 +81,32 @@ To connect to a running server using the default database "pipeline", the :code:
 
 	psql -p 6543 -h localhost pipeline
 
+Configuration
+---------------------
+
+PipelineDB's configuration is generally synonymous with `PostgreSQL's configuration`_, so that is a good place to look for details about what everything in :code:`pipelinedb.conf` does.
+
+.. _`PostgreSQL's configuration`: http://www.postgresql.org/docs/9.4/static/runtime-config.html
+
+By default, PipelineDB is not configured to allow incoming connections from remote hosts. To enable incoming connections, first set the following line in :code:`pipelinedb.conf`:
+
+.. code-block:: pipeline
+
+    listen_addresses = '*'
+
+And in :code:`pg_hba.conf`, add a line such as the following to allow incoming connections:
+
+.. code-block:: pipeline
+
+    host    all             all             <ip address>/<subnet>            md5
+
+
+For example, to allow incoming connections from any host:
+
+.. code-block:: pipeline
+
+    host    all             all             0.0.0.0/0            md5
+
 -------------
 
 Now you're ready to put PipelineDB to work! Check out the :ref:`continuous-views` section to get started.
