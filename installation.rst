@@ -25,7 +25,7 @@ To install the PipelineDB Debian package, run:
 
 .. code-block:: pipeline
 
-	sudo dpkg -i pipelinedb_<version>.deb
+	sudo dpkg -i pipelinedb-<version>.deb
 
 This will install PipelineDB at :code:`/opt/pipelinedb`.
 
