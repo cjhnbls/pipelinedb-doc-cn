@@ -12,13 +12,13 @@ CREATE CONTINUOUS VIEW
 
 Here's the syntax for creating a continuous view:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	CREATE CONTINUOUS VIEW name AS query
 
 where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   SELECT [ DISTINCT [ ON ( expression [, ...] ) ] ]
       expression [ [ AS ] output_name ] [, ...]
@@ -52,7 +52,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
   A name that can be referenced from :code:`OVER` clauses or subsequent window definitions.
 
 **window_definition**
-  .. code-block:: pipeline
+  .. code-block:: sql
 
     [ existing_window_name ]
     [ PARTITION BY expression [, ...] ]
@@ -64,7 +64,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 **frame_clause**
   Defines the window frame for window functions that depend on the frame (not all do). The window frame is a set of related rows for each row of the query (called the current row). The **frame_clause** can be one of
 
-  .. code-block:: pipeline
+  .. code-block:: sql
 
     [ RANGE | ROWS ] frame_start
     [ RANGE | ROWS ] BETWEEN frame_start AND frame_end
@@ -72,7 +72,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 **frame_start**, **frame_end**
   Each can be one of the following:
 
-  .. code-block:: pipeline
+  .. code-block:: sql
 
     UNBOUNDED PRECEDING
     value PRECEDING
@@ -92,7 +92,7 @@ DROP CONTINUOUS VIEW
 
 To :code:`DROP` a continuous view from the system, use the :code:`DROP CONTINUOUS VIEW` command. Its syntax is simple:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	DROP CONTINUOUS VIEW name
 
@@ -106,7 +106,7 @@ Viewing Continuous Views
 
 To view the continuous views currently in the system, you can run a :code:`SELECT` on the :code:`pipeline_query` catalog table:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	SELECT * FROM pipeline_query;
 
@@ -119,7 +119,7 @@ Since streams and their columns appear in a continuous view 's :code:`FROM` clau
 
 Consider the following simple continuous view:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   CREATE CONTINUOUS VIEW inferred AS
   SELECT user_id::integer, COUNT(*), SUM(value::float8), AVG(value) FROM stream
@@ -134,7 +134,7 @@ Data Retrieval
 
 Since continuous views are a lot like regular views, retrieving data from them is simply a matter of performing a :code:`SELECT` on them:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   SELECT * FROM some_continuous_view
 
@@ -148,7 +148,7 @@ c         30
 
 Any :code:`SELECT` statement is valid on a continuous view, allowing you to perform further analysis on their perpetually updating contents:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   SELECT t.name, sum(v.value) + sum(t.table_value) AS total
   FROM some_continuous_view v JOIN some_table t ON v.id = t.id GROUP BY t.name
@@ -170,14 +170,14 @@ Putting this all together, let's go through a few examples of continuous views a
 
 Emphasizing the above notice, this continuous view would only ever store a single row in PipelineDB (just a few bytes), even if it read a trillion events over time:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   CREATE CONTINUOUS VIEW avg_of_forever AS SELECT AVG(x::integer) FROM one_trillion_events_stream
 
 
 **Calculate the number of unique users seen per url referrer each day using only a constant amount of space per day:**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   CREATE CONTINUOUS VIEW uniques AS
   SELECT date_trunc('day', arrival_timestamp) AS day,
@@ -186,7 +186,7 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
 **Compute the linear regression of a stream of datapoints bucketed by minute:**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   CREATE CONTINUOUS VIEW lreg AS
   SELECT date_trunc('minute', arrival_timestamp) AS minute,
@@ -196,7 +196,7 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
 **How many ad impressions have we served in the last five minutes?**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   CREATE CONTINUOUS VIEW imps AS
   SELECT COUNT(*) FROM imps_stream
@@ -204,7 +204,7 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
 **What are the 90th, 95th, and 99th percentiles of my server's request latency?**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   CREATE CONTINUOUS VIEW latency AS
   SELECT percentile_cont(array[90, 95, 99]) WITHIN GROUP (ORDER BY latency::integer)
@@ -212,7 +212,7 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
 **How many of my sensors have ever been within 1000 meters of San Francisco?**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   -- PipelineDB ships natively with geospatial support
   CREATE CONTINUOUS VIEW sf_proximity_count AS

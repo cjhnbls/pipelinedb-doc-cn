@@ -14,7 +14,7 @@ ACTIVATE
 
 Here's the syntax for the :code:`ACTIVATE` command:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	ACTIVATE { name [, ...] | WHERE condition } [ WITH ( parameter = value [, ...] ) ]
 
@@ -23,7 +23,7 @@ The syntax for :code:`DEACTIVATE` is similar, it just excludes the :code:`WITH` 
 DEACTIVATE
 -----------
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	DEACTIVATE { name [, ...] | WHERE condition }
 
@@ -56,44 +56,44 @@ Let's take a look at a few examples of what it would look like to :code:`ACTIVAT
 
 This will :code:`ACTIVATE` all 4 of them:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	pipeline=# ACTIVATE;
-	4
+	ACTIVATE 4
 	pipeline=#
 
 Calling :code:`ACTIVATE` on an active continuous view is a noop:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	pipeline=# ACTIVATE;
-	4
+	ACTIVATE 4
 	pipeline=# ACTIVATE;
-	0
+	ACTIVATE 0
 	pipeline=#
 
 :code:`ACTIVATE` :code:`view0` and :code:`view1`:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	pipeline=# ACTIVATE view0, view1;
-	2
+	ACTIVATE 2
 	pipeline=#
 
 :code:`ACTIVATE` :code:`continuous_view0` and :code:`continuous_view1`:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	pipeline=# ACTIVATE WHERE name LIKE '%continuous%';
-	2
+	ACTIVATE 2
 	pipeline=#
 
 :code:`DEACTIVATE` :code:`continuous_view0` and :code:`view0`:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	pipeline=# ACTIVATE WHERE name LIKE '%view0%';
-	2
+	ACTIVATE 2
 	pipeline=#
 
 
@@ -126,7 +126,7 @@ It is possible to supply performance tuning parameters to continuous views. The 
 
 Here is an example of an :code:`ACTIVATE` command using these parameters:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	ACTIVATE name WITH ( batchsize = 100000, parallelism = 2 );
 

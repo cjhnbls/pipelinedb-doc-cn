@@ -8,7 +8,7 @@ Continuous JOINs
 Stream-table JOINs
 ----------------------
 
-Stream-table joins work by joining an incoming event with matching rows that exist in the joining table **when the event arrives**. That is, if rows are inserted into the table that would have matched with previously read events, the result of the continuous view containing the stream-table join will not be updated to reflect that. New joined rows are only produced at **event-read time**. Even if all rows in the joining table were deleted, the result of the continuous view would not change. 
+Stream-table joins work by joining an incoming event with matching rows that exist in the joining table **when the event arrives**. That is, if rows are inserted into the table that would have matched with previously read events, the result of the continuous view containing the stream-table join will not be updated to reflect that. New joined rows are only produced at **event-read time**. Even if all rows in the joining table were deleted, the result of the continuous view would not change.
 
 Let's look at some examples.
 
@@ -18,14 +18,14 @@ Examples
 
 **Count the number of events whoise id was in the "whitelist" table at some point in time:**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	CREATE CONTINUOUS VIEW count_whitelisted AS SELECT COUNT(*) FROM
 	stream JOIN whitelist ON stream.id = whitelist.id;
 
 **Augment incoming user data with richer user information stored in the "users" table:**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	CREATE CONTINUOUS VIEW augmented AS SELECT user_data.full_name, COUNT(*)
 	FROM stream JOIN user_data on stream.id::integer = user_data.id
@@ -33,7 +33,7 @@ Examples
 
 **Spatially join incoming coordinates to their nearest city, and summarize by city name:**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	CREATE CONTINUOUS VIEW spatial AS SELECT cities.name, COUNT(*) FROM
 	geo_stream, cities WHERE st_within(geo_stream.coords::geometry, cities.borders)

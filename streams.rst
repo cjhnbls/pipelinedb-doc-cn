@@ -14,7 +14,7 @@ Writing To Streams
 
 Stream writes use a simplified version of a PostgreSQL :code:`INSERT` statement. Here's the syntax:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	INSERT INTO stream_name ( column_name [, ...] ) VALUES ( expression [, ...] ) [, ...]
 
@@ -24,7 +24,7 @@ Let's look at a few examples...
 
 Stream writes can be a single event at a time:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	INSERT INTO stream (x, y, z) VALUES (0, 1, 2);
 
@@ -34,14 +34,14 @@ Stream writes can be a single event at a time:
 
 Or they can be batched for better performance:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	INSERT INTO stream (x, y, z) VALUES (0, 1, 2), (3, 4, 5), (6, 7, 8)
 	(9, 10, 11), (12, 13, 14), (15, 16, 17), (18, 19, 20), (21, 22, 23), (24, 25, 26) (27, 28, 29);
 
 Stream inserts can also contain arbitrary expressions:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	INSERT INTO geo_stream (id, coords) VALUES (42, ST_MakePoint(-72.09, 41.40));
 
@@ -55,7 +55,7 @@ Stream inserts can also contain arbitrary expressions:
 
 Finally, stream inserts even work with prepared inserts in order to reduce network overhead:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	PREPARE write_to_stream AS INSERT INTO stream (x, y, z) VALUES ($1, $2, $3);
 
@@ -66,6 +66,44 @@ Finally, stream inserts even work with prepared inserts in order to reduce netwo
 -----------------
 
 Since PipelineDB is compatible with PostgreSQL, writing to streams is possible from any client that works with PostgreSQL (and probably most clients that work with any SQL database for that matter), so it's not necessary to manually construct stream inserts. To get an idea of what that looks like, you should check out the :ref:`clients` section.
+
+Sometimes you might want to update only a select set of continuous views when writing to a stream, for instance, when replaying historical data into a newly created continuous view. You can use the :code:`stream_targets` configuration parameter to specify the continuous views that should be updated when writing to streams. Set :code:`stream_targets` to a comma separated list of continuous views you want to be affecting when inserting to streams.
+
+.. code-block:: sql
+
+  pipeline=# CREATE CONTINUOUS VIEW v0 AS SELECT COUNT(*) FROM stream;
+  CREATE CONTINUOUS VIEW
+  pipeline=# CREATE CONTINUOUS VIEW v1 AS SELECT COUNT(*) FROM stream;
+  CREATE CONTINUOUS VIEW
+  pipeline=# ACTIVATE;
+  ACTIVATE 2
+  pipeline=# INSERT INTO stream (x) VALUES (1);
+  INSERT 0 1
+  pipeline=# SET stream_targets TO v0;
+  SET
+  pipeline=# INSERT INTO stream (x) VALUES (1);
+  INSERT 0 1
+  pipeline=# SET stream_targets TO DEFAULT;
+  SET
+  pipeline=# INSERT INTO stream (x) VALUES (1);
+  INSERT 0 1
+  pipeline=# DEACTIVATE;
+  DEACTIVATE 2
+  pipeline=# SELECT count FROM v0;
+   count
+  -------
+       3
+  (1 row)
+
+  pipeline=# SELECT count FROM v1;
+   count
+  -------
+       2
+  (1 row)
+
+  pipeline=#
+
+------------------
 
 .. _arrival-ordering:
 

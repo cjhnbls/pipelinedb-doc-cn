@@ -82,7 +82,7 @@ For this type of operation, PipelineDB exposes the special **combine** aggregate
 
 Let's look at an example:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   pipeline=# CREATE CONTINUOUS VIEW v AS SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
   CREATE CONTINUOUS VIEW
@@ -276,7 +276,7 @@ Ordered-set Aggregates
 
 **ordered-set** aggregates apply ordering to their input in order to obtain their results, so they use the :code:`WITHIN GROUP` clause. Its syntax is as follows:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
@@ -284,13 +284,13 @@ Let's look at a couple examples.
 
 Compute the 99th percentile of **value**:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value) FROM some_table;
 
 Or with a continuous view:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	CREATE CONTINUOUS VIEW percentile AS
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value::float8)
@@ -318,13 +318,13 @@ Hypothetical-set Aggregates
 
 The hypothetical-set aggregates use the :code:`WITHIN GROUP` clause to define the input rows. Its syntax is as follows:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
 Here is an example of of a hypothetical-set aggregate being used by a continuous view:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	CREATE CONTINUOUS VIEW continuous_rank AS
 	SELECT rank(42) WITHIN GROUP (ORDER BY value::float8)
