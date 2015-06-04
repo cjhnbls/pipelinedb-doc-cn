@@ -16,7 +16,7 @@ Let's look at some examples.
 Examples
 -----------
 
-**Count the number of events whoise id was in the "whitelist" table at some point in time:**
+**Count the number of events whose id was in the "whitelist" table at some point in time:**
 
 .. code-block:: sql
 
