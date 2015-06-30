@@ -40,7 +40,7 @@ Examples
 	GROUP BY cities.name;
 
 
-.. note:: As you may have guessed, stream-table joins involving large tables can incur a significant performance cost. For the best performance, tables used by stream-table joins should be relatively small, ideally small enough to fit in memory.
+.. note:: As you may have guessed, stream-table joins involving large tables can incur a significant performance cost. For the best performance, tables used by stream-table joins should be relatively small, ideally small enough to fit in memory. It is also advisable to create an index on the table's columns being joined on. 
 
 
 Stream-stream JOINs

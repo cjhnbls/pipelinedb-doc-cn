@@ -37,21 +37,26 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 .. note:: This section references streams, which are similar to tables and are what continuous views read from in their :code:`FROM` clause. They're explained in more depth in the :ref:`streams` section, but you can think of them as append-only tables for now.
 
 **expression**
+
   A PostgreSQL expression_
 
 .. _expression: http://www.postgresql.org/docs/9.4/static/sql-expressions.html
 
 **output_name**
+
   An optional identifier to name an expression with
 
 **condition**
+
   Any expression that evaluates to a result of type :code:`boolean`. Any row that does not satisfy this condition will be eliminated from the output. A row satisfies the condition if it returns :code:`true` when the actual row values are substituted for any variable references.
 
 
 **window_name**
+
   A name that can be referenced from :code:`OVER` clauses or subsequent window definitions.
 
 **window_definition**
+
   .. code-block:: sql
 
     [ existing_window_name ]
@@ -62,6 +67,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 .. note:: PipelineDB's **window_definitions** do not support an :code:`ORDER BY` clause if the input rows come from a stream. In such cases, the stream row's :code:`arrival_timestamp` field is implictly used as the :code:`ORDER BY` clause.
 
 **frame_clause**
+
   Defines the window frame for window functions that depend on the frame (not all do). The window frame is a set of related rows for each row of the query (called the current row). The **frame_clause** can be one of
 
   .. code-block:: sql
@@ -70,6 +76,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
     [ RANGE | ROWS ] BETWEEN frame_start AND frame_end
 
 **frame_start**, **frame_end**
+
   Each can be one of the following:
 
   .. code-block:: sql
@@ -81,6 +88,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
     UNBOUNDED FOLLOWING
 
 **value**
+
   An integral value
 
 .. note:: This has mainly covered only the syntax for :code:`CREATE CONTINUOUS VIEW`. To learn more about the semantics of each of these query elements, you should consult the `PostgreSQL SELECT documentation`_.
@@ -115,7 +123,7 @@ Don't worry about all of the columns in :code:`pipeline_query` --most of them ar
 Inferred Schemas
 --------------------
 
-Since streams and their columns appear in a continuous view 's :code:`FROM` clause, it seems natural that they would have to have a schema already declared, just like selecting from a table. But with PipelineDB, it is strictly unnecessary to ever explicitly define any sort of schema for a stream. All of the type information necessary for a continuous view to read from a stream is acquired by what is known as an **inferred schema**. Perhaps this is best illustrated by a simple example.
+Since streams and their columns appear in a continuous view 's :code:`FROM` clause, it seems natural that they would have to have a schema already declared, just like selecting from a table. But with PipelineDB, it is strictly unnecessary to ever explicitly define any sort of schema for a stream. All of the type information necessary for a continuous view to read from a stream may be acquired by what is known as an **inferred schema**. Perhaps this is best illustrated by a simple example.
 
 Consider the following simple continuous view:
 
@@ -128,6 +136,8 @@ Consider the following simple continuous view:
 PipelineDB uses :code:`::` casting syntax to tell the continuous view what types to convert raw values to. Note that a stream column must only be typed a single time. All other references to it will use the same type.
 
 .. note:: All stream columns must appear in the continuous view 's definition. It is not possible to :code:`SELECT * FROM a_stream`.
+
+It is also possible to create statically typed streams, in which case casting and inference are not necessary. See for :ref:`static-streams` for more information about static streams.
 
 Data Retrieval
 -------------------
@@ -160,6 +170,22 @@ usman     10
 jeff      20
 derek     30
 ========  ===========
+
+Activation and Deactivation
+----------------------------
+
+Because continuous-views are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to temporarily stop continuous processing until the issue is resolved.
+
+This level of control is provided by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When continuous views are *active*, they are actively reading from their input streams and incrementally updating their results accordingly. Conversely, *inactive* continuous views are not reading from their input streams and are not updating their results. PipelineDB remains functional when continuous views are inactive, and continuous views themselves are still readable--they're just not updating.
+
+The syntax for the :code:`ACTIVATE` and :code:`DEACTIVATE` commands is simple and takes no parameters:
+
+.. code-block:: sql
+
+	ACTIVATE | DEACTIVATE
+
+
+.. important:: When continuous views are inactive, any events written to their input streams while they're inactive will never be read by that continuous view, even after they're activated again.
 
 Examples
 ---------------------
