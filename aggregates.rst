@@ -82,9 +82,10 @@ For this type of operation, PipelineDB exposes the special **combine** aggregate
 
 Let's look at an example:
 
-.. code-block:: sql
+.. code-block:: pipeline
 
-  pipeline=# CREATE CONTINUOUS VIEW v AS SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
+  pipeline=# CREATE CONTINUOUS VIEW v AS
+	SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
   CREATE CONTINUOUS VIEW
   pipeline=# ACTIVATE v;
   ACTIVATE 1
@@ -120,6 +121,47 @@ Let's look at an example:
   pipeline=# -- needed two rows to do it.
 
 
+------------------------------
+
+CREATE AGGREGATE
+-------------------
+
+In addition to PipelineDB's built-in aggregates, user-defined aggregates also work with continuous views. User-defined combinable aggregates can be created with PostgreSQL's `CREATE AGGREGATE`_ command. To make an aggregate combinable, a **combinefunc** must be given. **combineinfunc** and **transoutfunc** are optional:
+
+.. code-block:: pipeline
+
+	CREATE AGGREGATE name ( [ argmode ] [ argname ] arg_data_type [ , ... ] ) (
+		...
+		COMBINEFUNC = combinefunc,
+		[ , COMBINEINFUNC = combineinfunc ]
+		[ , TRANSOUTFUNC = transoutfunc ]
+	)
+
+.. _CREATE AGGREGATE: http://www.postgresql.org/docs/9.4/static/sql-createaggregate.html
+
+
+**combinefunc ( stype, stype )**
+
+	A function that takes two transition states and returns a single transition state. For example, here's an example of a combine function for an integer :code:`avg` implementation:
+
+.. code-block:: pipeline
+
+	CREATE FUNCTION avg_combine(state integer[], incoming integer[]) RETURNS integer[] AS $$
+	BEGIN
+		RETURN ARRAY[state[1] + incoming[1], state[2] + incoming[2]];
+	END;
+	$$
+	LANGUAGE plpgsql
+
+The transition state is represented as a 2-element array containing the number of elements and their sum, which can be used to compute a final.
+
+**combineinfunc ( any )**
+
+	A function that deserializes the aggregate's transition state from an external to internal representation. **Deserialization is only necessary when the transition state type is not a native type.**
+
+**transoutfunc ( stype )**
+
+	A function that serializes the aggregate's transition state from an internal to external representation that can be stored in a table cell. **Serialization is only necessary when the transition state type is not a native type.**
 
 ------------------------------
 
@@ -276,7 +318,7 @@ Ordered-set Aggregates
 
 **ordered-set** aggregates apply ordering to their input in order to obtain their results, so they use the :code:`WITHIN GROUP` clause. Its syntax is as follows:
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
@@ -284,13 +326,13 @@ Let's look at a couple examples.
 
 Compute the 99th percentile of **value**:
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value) FROM some_table;
 
 Or with a continuous view:
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW percentile AS
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value::float8)
@@ -318,13 +360,13 @@ Hypothetical-set Aggregates
 
 The hypothetical-set aggregates use the :code:`WITHIN GROUP` clause to define the input rows. Its syntax is as follows:
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
 Here is an example of of a hypothetical-set aggregate being used by a continuous view:
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW continuous_rank AS
 	SELECT rank(42) WITHIN GROUP (ORDER BY value::float8)

@@ -25,7 +25,7 @@ Even though sliding windows are a new concept for a SQL database, PipelineDB doe
 
 **What users have I seen in the last minute?**
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW recent_users AS SELECT user_id::integer FROM stream
 	WHERE (arrival_timestamp > clock_timestamp() - interval '1 minute');
@@ -48,7 +48,7 @@ Let's look at a few examples:
 
 **How many users have I seen in the last minute?**
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW count_recent_users AS SELECT COUNT(*) FROM stream
 	WHERE (arrival_timestamp > clock_timestamp() - interval '1 minute');
@@ -58,7 +58,7 @@ Each time a :code:`SELECT` is run on this continuous view, the count it returns 
 
 **What is the 5-minute moving average tempurature of my sensors?**
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW sensor_temps AS SELECT sensor::integer, AVG(temp::numeric)
 	FROM sensor_stream
@@ -67,7 +67,7 @@ Each time a :code:`SELECT` is run on this continuous view, the count it returns 
 
 **How many unique users have we seen over the last 30 days?**
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW uniques AS SELECT COUNT(DISTINCT user::integer)
 	FROM user_stream
@@ -75,7 +75,7 @@ Each time a :code:`SELECT` is run on this continuous view, the count it returns 
 
 **What is my server's 99th precentile response latency over the last 5 minutes?**
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW latency AS SELECT server_id::integer, percentile_cont(0.99)
 	WITHIN GROUP (ORDER BY latency::numeric) FROM server_stream

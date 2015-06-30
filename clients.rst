@@ -7,7 +7,7 @@ Since PipelineDB is compatible with PostgreSQL 9.4, it doesn't have its own clie
 
 Here you'll find examples of a simple PipelineDB application written in a few different languages and clients. The application simply creates the :code:`CONTINUOUS VIEW`:
 
-.. code-block:: sql
+.. code-block:: pipeline
 
   CREATE CONTINUOUS VIEW continuous view AS SELECT x::integer, COUNT(*) FROM stream GROUP BY x;
 

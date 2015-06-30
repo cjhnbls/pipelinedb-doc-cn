@@ -18,14 +18,14 @@ Examples
 
 **Count the number of events whose id was in the "whitelist" table at some point in time:**
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW count_whitelisted AS SELECT COUNT(*) FROM
 	stream JOIN whitelist ON stream.id = whitelist.id;
 
 **Augment incoming user data with richer user information stored in the "users" table:**
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW augmented AS SELECT user_data.full_name, COUNT(*)
 	FROM stream JOIN user_data on stream.id::integer = user_data.id
@@ -33,7 +33,7 @@ Examples
 
 **Spatially join incoming coordinates to their nearest city, and summarize by city name:**
 
-.. code-block:: sql
+.. code-block:: pipeline
 
 	CREATE CONTINUOUS VIEW spatial AS SELECT cities.name, COUNT(*) FROM
 	geo_stream, cities WHERE st_within(geo_stream.coords::geometry, cities.borders)
