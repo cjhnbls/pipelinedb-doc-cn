@@ -338,7 +338,6 @@ Or with a continuous view:
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value::float8)
 	FROM some_stream;
 
-
 .. _percentile_cont:
 
 **percentile_cont ( fraction )**

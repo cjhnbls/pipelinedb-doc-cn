@@ -9,7 +9,8 @@ Here you'll find examples of a simple PipelineDB application written in a few di
 
 .. code-block:: pipeline
 
-  CREATE CONTINUOUS VIEW continuous view AS SELECT x::integer, COUNT(*) FROM stream GROUP BY x;
+  CREATE CONTINUOUS VIEW continuous view AS
+	SELECT x::integer, COUNT(*) FROM stream GROUP BY x;
 
 The application then emits :code:`100,000` events resulting in :code:`10` unique groupings for the :code:`CONTINUOUS VIEW`, and prints out the results.
 
@@ -33,9 +34,6 @@ For this example in Python, you'll need to have psycopg2_ installed.
   pipeline.execute(create_cv)
   conn.commit()
 
-  # The CONTINUOUS VIEW is now reading from its input stream
-  pipeline.execute('ACTIVATE continuous_view')
-
   rows = []
 
   for n in range(100000):
@@ -45,9 +43,6 @@ For this example in Python, you'll need to have psycopg2_ installed.
 
   # Now write the rows to the stream
   pipeline.executemany('INSERT INTO stream (x) VALUES (%(x)s)', rows)
-
-  # Stop the CONTINUOUS VIEW
-  pipeline.execute('DEACTIVATE continuous_view')
 
   # Now read the results
   pipeline.execute('SELECT * FROM continuous_view')
@@ -60,6 +55,65 @@ For this example in Python, you'll need to have psycopg2_ installed.
 
   pipeline.execute('DROP CONTINUOUS VIEW continuous_view')
   pipeline.close()
+
+----------------------
+
+Ruby
+----------------
+
+This example in Ruby uses the pg_ gem.
+
+.. _pg: https://rubygems.org/gems/pg/versions/0.18.2
+
+.. code-block:: ruby
+
+	require 'pg'
+	pipeline = PGconn.connect("dbname='test' user='user' host='localhost' port=6543")
+
+	# This continuous view will perform 3 aggregations on page view traffic, grouped by url:
+	#
+	# total_count - count the number of total page views for each url
+	# uniques     - count the number of unique users for each url
+	# p99_latency - determine the 99th-percentile latency for each url
+
+	q = "
+	CREATE CONTINUOUS VIEW v AS
+	SELECT
+	  url::text,
+	  count(*) AS total_count,
+	  count(DISTINCT cookie::text) AS uniques,
+	  percentile_cont(0.99) WITHIN GROUP (ORDER BY latency::integer) AS p99_latency
+	FROM page_views GROUP BY url"
+
+	pipeline.exec(q)
+
+	for n in 1..10000 do
+	  # 10 unique urls
+	  url = '/some/url/%d' % (n % 10)
+
+	  # 1000 unique cookies
+	  cookie = '%032d' % (n % 1000)
+
+	  # latency uniformly distributed between 1 and 100
+	  latency = rand(101)
+
+	  # NOTE: it would be much faster to batch these into a single INSERT
+	  # statement, but for simplicity's sake let's do one at a time
+	  pipeline.exec(
+	  "INSERT INTO page_views (url, cookie, latency) VALUES ('%s', '%s', %d)"
+		% [url, cookie, latency])
+	end
+
+	# The output of a continuous view can be queried like any other table or view
+	rows = pipeline.exec('SELECT * FROM v ORDER BY url')
+
+	rows.each do |row|
+	  puts row
+	end
+
+	# Clean up
+	pipeline.exec('DROP CONTINUOUS VIEW v')
+
 
 ----------------------
 
@@ -95,9 +149,6 @@ For this example you'll need to have JDBC_ installed and on your :code:`CLASSPAT
       stmt.executeUpdate(
         "CREATE CONTINUOUS VIEW v AS SELECT x::integer, COUNT(*) FROM stream GROUP BY x");
 
-      // ACTIVATE our CONTINUOUS VIEW so that it starts reading events from stream
-      stmt.executeUpdate("ACTIVATE");
-
       for (int i=0; i<100000; i++)
       {
         // 10 unique groupings
@@ -108,9 +159,6 @@ For this example you'll need to have JDBC_ installed and on your :code:`CLASSPAT
       }
 
       stmt.executeBatch();
-
-      // DEACTIVATE our CONTINUOUS VIEW
-      stmt.executeUpdate("DEACTIVATE");
 
       rs = stmt.executeQuery("SELECT * FROM v");
       while (rs.next())

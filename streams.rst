@@ -136,7 +136,7 @@ Finally, it is also possible to use COPY_ to write data from a file into a strea
 
 .. _COPY: http://www.postgresql.org/docs/9.4/static/sql-copy.html
 
-:code:`COPY` can be very useful for retroactively populating a continuous view from archival data. Here is how one might stream compressed archival data from S3 into a PipelineDB stream:
+:code:`COPY` can be very useful for retroactively populating a continuous view from archival data. Here is how one might stream compressed archival data from S3 into PipelineDB:
 
 .. code-block:: pipeline
 

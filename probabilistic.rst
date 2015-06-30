@@ -27,7 +27,7 @@ Users are also free to construct their own Bloom filters and manipulate them wit
 HyperLogLog
 ----------------------------
 
-`HyperLogLog`_ is a data structure and algorithm combination that, similarly to Bloom filters, is designed to estimate the cardinality of sets with a very high degree of accuracy. In terms of functionality, HyperLogLog only supports adding elements and estimating the cardinality of the set of all elements that have been added to them. They do not support membership checks of specific elements like Bloom filters do. However, they are drastically more space efficient than Bloom filters.
+`HyperLogLog`_ is a data structure and algorithm combination that, similarly to Bloom filters, is designed to estimate the cardinality of sets with a very high degree of accuracy. In terms of functionality, HyperLogLog only supports adding elements and estimating the cardinality of the set of all elements that have been added. They do not support membership checks of specific elements like Bloom filters do. However, they are drastically more space efficient than Bloom filters.
 
 HyperLogLog works by subdividing its input stream of added elements and storing the maximum number of leading zeros that have been observed within each subdivision. Since elements are uniformly hashed before checking for the number of leading zeros, the general idea is that the greater the number of leading zeros observed, the higher the probability that many unique elements have been added. Empirically, this estimation turns out to be very accurate--PipelineDB's HyperLogLog implementation has a margin of error of only about 0.2% (that's about 2 out of 1,000).
 
@@ -44,7 +44,21 @@ Users are also free to construct their own HyperLogLog data structures and manip
 T-Digest
 ----------------------
 
+`T--Digest`_ is a data structure that supports very accurate estimations of rank-based statistics such as percentiles and medians while only using a constant amount of space. Space efficiency at the expense of a small margin of error makes T-Digest well-suited for rank-based computatations on streams, which normally require their input to be finite and ordered for perfect accuracy. T-Digest is essentially an adaptive histogram that intelligently adjusts its buckets and frequencies as more elements are added to it.
+
+.. _`T--Digest`: https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf
+
+**How T--Digest is used in PipelineDB**
+
+The **percentile_cont** aggregate internally uses T-Digest when operating on a stream. Users are also free to construct their own T-Digest data structures and manipulate them with the :ref:`pipeline-funcs` that expose them.
+
 .. _count-min-sketch:
 
 Count-Min Sketch
 ------------------
+
+A `Count-min sketch`_ is a data structure that is similar to a Bloom filter, with the main difference being that a Count-min sketch estimates the frequency of each element that has been added to it, whereas a Bloom filter only records whether or not a given item has likely been added or not.
+
+Currently no PipelineDB functionality internally uses Count-min sketch, although users are also free to construct their own Count-min sketch data structures and manipulate them with the :ref:`pipeline-funcs` that expose them.
+
+.. _`Count-Min Sketch`: https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch
