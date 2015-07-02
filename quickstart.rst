@@ -28,15 +28,16 @@ First, let's create our continuous view using :code:`psql`:
 	psql -h localhost -p 6543 -d pipeline -c "
 	CREATE CONTINUOUS VIEW wiki_stats AS
 	SELECT day::timestamp, project::text,
-		sum(count::integer) AS total_views, 
+		count(*) AS total_pages,
+		sum(count::bigint) AS total_views,
 		min(count) AS min_views,
 		max(count) AS max_views,
 		avg(count) AS avg_views,
-		sum(size::integer) AS total_bytes_served
+		sum(size::bigint) AS total_bytes_served
 	FROM wiki_stream
 	GROUP BY day, project;"
 
-Now we'll decompress the dataset as a stream and write it to :code:`stdin`, which can be used as an input to :code:`COPY`. 
+Now we'll decompress the dataset as a stream and write it to :code:`stdin`, which can be used as an input to :code:`COPY`:
 
 .. code-block:: bash
 
