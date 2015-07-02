@@ -59,6 +59,6 @@ Count-Min Sketch
 
 A `Count-min sketch`_ is a data structure that is similar to a Bloom filter, with the main difference being that a Count-min sketch estimates the frequency of each element that has been added to it, whereas a Bloom filter only records whether or not a given item has likely been added or not.
 
-Currently no PipelineDB functionality internally uses Count-min sketch, although users are also free to construct their own Count-min sketch data structures and manipulate them with the :ref:`pipeline-funcs` that expose them.
+Currently no PipelineDB functionality internally uses Count-min sketch, although users are free to construct their own Count-min sketch data structures and manipulate them with the :ref:`pipeline-funcs` that expose them.
 
 .. _`Count-Min Sketch`: https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch

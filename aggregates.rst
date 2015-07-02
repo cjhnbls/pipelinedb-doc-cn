@@ -443,6 +443,10 @@ Unsupported Aggregates
 
 	Given an input percentile (such as 0.99), **percentile_disc** returns the very first value in the input set that is within that percentile. This requires actually sorting the input set, which is obviously impractical on an infinite stream, and doesn't even allow for a highly accurate estimation algorithm such as the one we use for **percentile_cont**.
 
-**xml_agg**
+**xmlagg ( xml )**
 
 	:(
+
+**aggregate_name (DISTINCT expression)**
+
+	Only the :code:`count` aggregate function is supported with a :code:`DISTINCT` expression as noted above in the General Aggregates section. In future releases, we might leverage :ref:`bloom-filter` to allow :code:`DISTINCT` expressions for all aggregate functions.
