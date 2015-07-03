@@ -49,7 +49,6 @@ Now we'll decompress the dataset as a stream and write it to :code:`stdin`, whic
 Note that this dataset is large, so the above command will run for quite a while (cancel it whenever you'd like). As it's running, select from the continuous view as it ingests data from the input stream:
 
 .. code-block:: bash
-	
+
 	psql -h localhost -p 6543 -d pipeline -c "
 	SELECT * FROM wiki_stats ORDER BY total_views DESC";
-

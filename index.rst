@@ -18,3 +18,4 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 	probabilistic
 	sliding-windows
 	joins
+	replication
