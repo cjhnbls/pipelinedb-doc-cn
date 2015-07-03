@@ -93,6 +93,10 @@ Just to make sure, connect to the standby and confirm it's in recovery mode.
 High Availability
 -----------------
 
+PostgreSQL doesn't come with high availability options out of the box. Most deployments will rely on manually promoting the hot standby in case of a primary failure. `Failover <http://www.postgresql.org/docs/9.4/static/warm-standby-failover.html>`_ can be triggered by :code:`pipeline-ctl promote` or touching a trigger file is there is a :code:`trigger_file` setting in the :code:`recovery.conf` file. `Compose.io <https://www.compose.io>`_ has a good `blog post <https://www.compose.io/articles/high-availability-for-postgresql-batteries-not-included/>`_ about how they designed their HA solution. You could potentially reuse their `Governor <https://github.com/compose/governor>`_ system; make sure to change the PostgreSQL binaries referenced in the code to their PipelineDB equivalent ones though.
+
+Please get in touch if all of this seems inadequte and we'll help you figure something out!
+
 Logical Decoding
 ----------------
 
