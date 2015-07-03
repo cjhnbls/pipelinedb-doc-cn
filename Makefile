@@ -26,7 +26,7 @@ all: html
 s3: all
 	aws s3 cp _build/html/ s3://docs.pipelinedb.com/ --recursive --region us-west-2
 
-serve:
+serve: all
 	sphinx-autobuild . _build/html
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
