@@ -3,6 +3,8 @@
 Installation
 ==============
 
+Download the PipelineDB binary for your OS from our `downloads <http://pipelinedb.com/download>`_ page.
+
 RPM
 -----------
 
