@@ -30,7 +30,7 @@ Next we need to add an entry for the standby to the `pg_hba.conf <http://www.pos
 
   host replication replicator 0.0.0.0/0 trust
 
-Next, we need to set a few configuration parameters on the primary by either updating the :code:`pipelinedb.conf` file or passing them as :code:`-c` flags when starting up :code:`pipeline-server`. Set `wal_level <http://www.postgresql.org/docs/9.4/static/runtime-config-wal.html#GUC-WAL-LEVEL>`_ to :code:`hot_standby`, `hot_standby <http://www.postgresql.org/docs/9.0/static/runtime-config-wal.html#GUC-HOT-STANDBY>`_ to :code:`on`, ``max_replication_slots <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-MAX-REPLICATION-SLOTS>`_ to 1, and `max_wal_senders <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-MAX-WAL-SENDERS>`_ to 2. Even though one standby node only needs one sender connection, 2 are needed while bootstrapping (not necessarily, but at least in the method documented below). You will need to restart the primary after updating these parameters.
+Next, we need to set a few configuration parameters on the primary by either updating the :code:`pipelinedb.conf` file or passing them as :code:`-c` flags when starting up :code:`pipeline-server`. Set `wal_level <http://www.postgresql.org/docs/9.4/static/runtime-config-wal.html#GUC-WAL-LEVEL>`_ to :code:`hot_standby`, `hot_standby <http://www.postgresql.org/docs/9.0/static/runtime-config-wal.html#GUC-HOT-STANDBY>`_ to :code:`on`, `max_replication_slots <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-MAX-REPLICATION-SLOTS>`_ to 1, and `max_wal_senders <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-MAX-WAL-SENDERS>`_ to 2. Even though one standby node only needs one sender connection, 2 are needed while bootstrapping (not necessarily, but at least in the method documented below). You will need to restart the primary after updating these parameters.
 
 Last we will create a `replication slot <http://www.postgresql.org/docs/9.4/static/warm-standby.html#STREAMING-REPLICATION-SLOTS>`_ for the standby. Replication slots are a means for the standby to *register* with the primary, so that it is always aware of what WAL segments need to be kept around. Once a standby has consumed a WAL segment, it updates the :code:`restart_lsn` column in the `pg_replication_slots <http://www.postgresql.org/docs/9.4/static/catalog-pg-replication-slots.html>`_ catalog so that the primary knows it can now garbage collect that WAL segment.
 
@@ -49,7 +49,7 @@ This is all the setup work we need to do on the primary. Let's move on to the st
 
 .. code-block:: bash
 
-                $ pipeline-basebackup -X stream -D /path/to/standby_datadir -h localhost -p 6543 -U replicator
+  $ pipeline-basebackup -X stream -D /path/to/standby_datadir -h localhost -p 6543 -U replicator
 
 This :code:`-X stream` argument is what requires the second slot when taking a base backup. Essentially what this does is stream the WAL for changes that take place while the base backup is happening, so we don't need to manually configure the `wal_keep_segments <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-WAL-KEEP-SEGMENTS>`_ parameter.
 
