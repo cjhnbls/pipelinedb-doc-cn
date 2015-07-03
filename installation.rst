@@ -75,6 +75,8 @@ To connect to a running server using the default database "pipeline", the :code:
 
 	psql -p 6543 -h localhost pipeline
 
+You can check out the :ref:`quickstart` section to start streaming data into PipelineDB right now.
+
 Configuration
 ---------------------
 
@@ -103,4 +105,4 @@ For example, to allow incoming connections from any host:
 
 -------------
 
-Now you're ready to put PipelineDB to work! Check out the :ref:`continuous-views` section to get started.
+Now you're ready to put PipelineDB to work! Check out the :ref:`continuous-views` or :ref:`quickstart` sections to get started.
