@@ -16,7 +16,7 @@ Check out the :ref:`clients` and :ref:`quickstart` sections for examples of Pipe
 What PipelineDB is
 -------------------
 
-**PipelineDB is designed to excel at SQL queries that reduce the cardinality of streaming datasets**. For example: summarizations and aggregations; performing computations across sliding time windows; text search filtering; geospatial filtering, etc. By reducing the cardinality of its input streams, PipelineDB can dramatically reduce the amount of information that needs to be persisted to disk because only the output of continuous queries is stored. Raw data is discared once it has been read by the continuous queries that need to read it.
+**PipelineDB is designed to excel at SQL queries that reduce the cardinality of streaming datasets**. For example: summarizations and aggregations; performing computations across sliding time windows; text search filtering; geospatial filtering, etc. By reducing the cardinality of its input streams, PipelineDB can dramatically reduce the amount of information that needs to be persisted to disk because only the output of continuous queries is stored. Raw data is discarded once it has been read by the continuous queries that need to read it.
 
 Much of the data that is passed through PipelineDB can thus be thought of as **virtual data**. This idea of data virtualization is at the core of what PipelineDB is all about, and is what allows it to process large volumes of data very efficiently using a relatively small hardware footprint.
 
