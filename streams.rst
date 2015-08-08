@@ -105,7 +105,7 @@ Stream inserts can also contain arbitrary expressions:
 	INSERT INTO rad_stream (circle, sphere) VALUES
 	  (pi() * pow(11.2, 2), 4 / 3 * pi() * pow(11.2, 3));
 
-	-- Subselects int streams are also supported
+	-- Subselects into streams are also supported
 	INSERT INTO ss_stream (x) SELECT generate_series(1, 10) AS x;
 
 	INSERT INTO tab_stream (x) SELECT x FROM some_table;
