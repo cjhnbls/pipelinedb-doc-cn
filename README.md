@@ -17,7 +17,7 @@ This will also automatically rebuild the docs and restart the HTTP server whenev
 
 ### Publishing
 
-To publish the docs, you'll need to have the [AWS client](http://aws.amazon.com/cli/) installed and configured. Then, just run
+These docs are automatically deployed whenever any changes are pushed to `master`. To publish the docs manually, you'll need to have the [AWS client](http://aws.amazon.com/cli/) installed and configured. Then, just run
 
     make s3
 
