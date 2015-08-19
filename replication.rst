@@ -13,11 +13,11 @@ Streaming Replication
 PipelineDB supports PostgreSQL's `streaming replication <http://www.postgresql.org/docs/9.3/static/warm-standby.html#STREAMING-REPLICATION>`_ (both asynchronous and synchronous variants) out of the box. Using streaming replication, we can create a hot-standby
 node which keeps up to date with the primary by *tailing* the write-ahead log and can serve read-only requests. In case the primary fails, the hot-standby can be promoted to be the new primary.
 
-Let's say we already have a PipelineDB instance running on :code:`localhost:6543`. The first thing we need to do is create a role on the primary with :code:`REPLICATION` previledges. This role will be used by the standby to connect to the primary and stream the WAL.
+Let's say we already have a PipelineDB instance running on :code:`localhost:5432`. The first thing we need to do is create a role on the primary with :code:`REPLICATION` previledges. This role will be used by the standby to connect to the primary and stream the WAL.
 
 .. code-block:: bash
 
-  $ psql -h localhost -p 6543 -d pipeline -c \
+  $ psql -h localhost -p 5432 -d pipeline -c \
   "CREATE ROLE replicator WITH LOGIN REPLICATION;"
 
   CREATE ROLE
@@ -36,7 +36,7 @@ Last we will create a `replication slot <http://www.postgresql.org/docs/9.4/stat
 
 .. code-block:: bash
 
-  $ psql -h localhost -p 6543 -d pipeline -c \
+  $ psql -h localhost -p 5432 -d pipeline -c \
   "SELECT * FROM pg_create_physical_replication_slot('replicator_slot');"
 
       slot_name    | xlog_position
@@ -49,7 +49,7 @@ This is all the setup work we need to do on the primary. Let's move on to the st
 
 .. code-block:: bash
 
-  $ pipeline-basebackup -X stream -D /path/to/standby_datadir -h localhost -p 6543 -U replicator
+  $ pipeline-basebackup -X stream -D /path/to/standby_datadir -h localhost -p 5432 -U replicator
 
 This :code:`-X stream` argument is what requires the second slot when taking a base backup. Essentially what this does is stream the WAL for changes that take place while the base backup is happening, so we don't need to manually configure the `wal_keep_segments <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-WAL-KEEP-SEGMENTS>`_ parameter.
 
@@ -59,7 +59,7 @@ The final thing we need to do is write a `recovery.conf <http://www.postgresql.o
 
   standby_mode = 'on'
   primary_slot_name = 'replicator_slot'
-  primary_conninfo = 'user=replicator host=localhost port=6543'
+  primary_conninfo = 'user=replicator host=localhost port=5432'
   recovery_target_timeline = 'latest'
 
 We're all set now. Let's fire off the hot standby on post :code:`6544`.

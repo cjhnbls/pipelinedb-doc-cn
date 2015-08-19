@@ -25,7 +25,7 @@ First, let's create our continuous view using :code:`psql`:
 
 .. code-block:: bash
 
-	psql -h localhost -p 6543 -d pipeline -c "
+	psql -h localhost -p 5432 -d pipeline -c "
 	CREATE CONTINUOUS VIEW wiki_stats AS
 	SELECT hour::timestamp, project::text,
 		count(*) AS total_pages,
@@ -43,12 +43,12 @@ Now we'll decompress the dataset as a stream and write it to :code:`stdin`, whic
 .. code-block:: bash
 
 		curl -sL http://pipelinedb.com/data/wiki-pagecounts | gunzip | \
-			psql -h localhost -p 6543 -d pipeline -c "
+			psql -h localhost -p 5432 -d pipeline -c "
 			COPY wiki_stream (hour, project, title, view_count, size) FROM STDIN"
 
 Note that this dataset is large, so the above command will run for quite a while (cancel it whenever you'd like). As it's running, select from the continuous view as it ingests data from the input stream:
 
 .. code-block:: bash
 
-	psql -h localhost -p 6543 -d pipeline -c "
+	psql -h localhost -p 5432 -d pipeline -c "
 	SELECT * FROM wiki_stats ORDER BY total_views DESC";

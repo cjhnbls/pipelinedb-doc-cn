@@ -25,7 +25,7 @@ For this example in Python, you'll need to have psycopg2_ installed.
 
   import psycopg2
 
-  conn = psycopg2.connect('dbname=test user=user host=localhost port=6543')
+  conn = psycopg2.connect('dbname=test user=user host=localhost port=5432')
   pipeline = conn.cursor()
 
   create_cv = """
@@ -68,7 +68,7 @@ This example in Ruby uses the pg_ gem.
 .. code-block:: ruby
 
 	require 'pg'
-	pipeline = PGconn.connect("dbname='test' user='user' host='localhost' port=6543")
+	pipeline = PGconn.connect("dbname='test' user='user' host='localhost' port=5432")
 
 	# This continuous view will perform 3 aggregations on page view traffic, grouped by url:
 	#
@@ -137,8 +137,8 @@ For this example you'll need to have JDBC_ installed and on your :code:`CLASSPAT
 
     public static void main(String[] args) throws SQLException {
 
-      // Connect to "test" database on port 6543
-      String url = "jdbc:postgresql://" + HOST + ":6543/" + DATABASE;
+      // Connect to "test" database on port 5432
+      String url = "jdbc:postgresql://" + HOST + ":5432/" + DATABASE;
       ResultSet  rs;
       Properties props = new Properties();
 

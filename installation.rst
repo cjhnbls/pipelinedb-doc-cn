@@ -69,13 +69,13 @@ To connect to a running server using the default database "pipeline", the :code:
 
 	pipeline pipeline
 
-`PostgreSQL's`_ standard client, :code:`psql`, can also be used to connect to PipelineDB. Note that PipelineDB's default port is :code:`6543`:
+`PostgreSQL's`_ standard client, :code:`psql`, can also be used to connect to PipelineDB. Note that PipelineDB's default port is :code:`5432`:
 
 .. _`PostgreSQL's`:  http://www.postgresql.org/download/
 
 .. code-block:: sh
 
-	psql -p 6543 -h localhost pipeline
+	psql -p 5432 -h localhost pipeline
 
 You can check out the :ref:`quickstart` section to start streaming data into PipelineDB right now.
 
