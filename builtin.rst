@@ -73,7 +73,8 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 .. note:: See also: :ref:`pipeline-aggs`, which are typically how these types are actually created.
 
-**Miscellaneous Functions**
+Miscellaneous Functions
+---------------------------------
 
 **pipeline_version ( )**
 
