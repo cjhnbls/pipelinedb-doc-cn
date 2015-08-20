@@ -72,3 +72,9 @@ PipelineDB ships with a number of functions that are useful for interacting with
 	Given a T-Digest, returns the value at the given quantile, **float**. **float** must be in :code:`[0, 1]`.
 
 .. note:: See also: :ref:`pipeline-aggs`, which are typically how these types are actually created.
+
+**Miscellaneous Functions**
+
+**pipeline_version ( )**
+
+        Returns a string containing all of the version information for your PipelineDB installation.
