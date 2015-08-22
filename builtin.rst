@@ -55,7 +55,7 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns true if the Bloom filter **probably** contains the given value, with a small false positive rate.
 
-**cmsketch_count ( count-min sketch, expression )**
+**cmsketch_frequency ( count-min sketch, expression )**
 
 	Returns the number of times the value of **expression** was added to the given :ref:`count-min-sketch`, with a small margin of error.
 
