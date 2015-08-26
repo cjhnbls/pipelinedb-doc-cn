@@ -31,6 +31,15 @@ To install the PipelineDB Debian package, run:
 
 This will install PipelineDB at :code:`/opt/pipelinedb`.
 
+OS X
+----
+                
+Just double-click the :code:`pipelinedb-<version>.pkg` file to launch the OS X Installer. For older versions of OS X, you might need to install a few packages that PipelineDB depends on:
+
+.. code-block:: sh
+
+ brew install json-c freexl gdal libgeotiff
+ 
 Initializing PipelineDB
 ------------------------
 
