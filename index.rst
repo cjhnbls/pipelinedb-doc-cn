@@ -19,3 +19,4 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 	sliding-windows
 	joins
 	replication
+	integrations	
