@@ -29,7 +29,7 @@ HyperLogLog
 
 `HyperLogLog`_ is a data structure and algorithm combination that, similarly to Bloom filters, is designed to estimate the cardinality of sets with a very high degree of accuracy. In terms of functionality, HyperLogLog only supports adding elements and estimating the cardinality of the set of all elements that have been added. They do not support membership checks of specific elements like Bloom filters do. However, they are drastically more space efficient than Bloom filters.
 
-HyperLogLog works by subdividing its input stream of added elements and storing the maximum number of leading zeros that have been observed within each subdivision. Since elements are uniformly hashed before checking for the number of leading zeros, the general idea is that the greater the number of leading zeros observed, the higher the probability that many unique elements have been added. Empirically, this estimation turns out to be very accurate--PipelineDB's HyperLogLog implementation has a margin of error of only about 0.2% (that's about 2 out of 1,000).
+HyperLogLog works by subdividing its input stream of added elements and storing the maximum number of leading zeros that have been observed within each subdivision. Since elements are uniformly hashed before checking for the number of leading zeros, the general idea is that the greater the number of leading zeros observed, the higher the probability that many unique elements have been added. Empirically, this estimation turns out to be very accurate--PipelineDB's HyperLogLog implementation has a margin of error of only about 0.81% (that's about 8 out of 1,000).
 
 **How HyperLogLog is used in PipelineDB**
 
