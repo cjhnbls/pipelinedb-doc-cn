@@ -56,7 +56,7 @@ Let's look at a few examples:
 
 Each time a :code:`SELECT` is run on this continuous view, the count it returns will be the count of only the events seen within the last minute. For example, if events stopped coming in, the count would decrease each time a :code:`SELECT` was run on the continuous view. This behavior works for all of the :ref:`aggregates` that PipelineDB supports:
 
-**What is the 5-minute moving average tempurature of my sensors?**
+**What is the 5-minute moving average temperature of my sensors?**
 
 .. code-block:: pipeline
 
