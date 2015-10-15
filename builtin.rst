@@ -62,6 +62,14 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns up to k tuples representing the given FSS's top-k values and their associated frequencies.
 
+**fss_topk_freqs ( fss )**
+
+	Returns up to k frequencies associated with the given FSS's top-k most frequent values.
+
+**fss_topk_values ( fss )**
+
+	Returns up to k values representing the given FSS's top-k most frequent values.
+
 **cmsketch_frequency ( count-min sketch, expression )**
 
 	Returns the number of times the value of **expression** was added to the given :ref:`count-min-sketch`, with a small margin of error.
