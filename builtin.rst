@@ -34,6 +34,9 @@ PipelineDB supports a number of native types for efficiently leveraging :ref:`pr
 **cmsketch**
 	:ref:`count-min-sketch`
 
+**fss**
+	:ref:`fss`
+
 **hll**
 	:ref:`hll`
 
@@ -54,6 +57,10 @@ PipelineDB ships with a number of functions that are useful for interacting with
 **bloom_contains ( bloom filter, expression )**
 
 	Returns true if the Bloom filter **probably** contains the given value, with a small false positive rate.
+
+**fss_topk ( fss )**
+
+	Returns up to k tuples representing the given FSS's top-k values and their associated frequencies.
 
 **cmsketch_frequency ( count-min sketch, expression )**
 

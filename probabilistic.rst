@@ -22,6 +22,30 @@ Users are also free to construct their own Bloom filters and manipulate them wit
 
 .. _`Bloom filters`: http://en.wikipedia.org/wiki/Bloom_filter
 
+.. _count-min-sketch:
+
+Count-Min Sketch
+------------------
+
+A `Count-min sketch`_ is a data structure that is similar to a Bloom filter, with the main difference being that a Count-min sketch estimates the frequency of each element that has been added to it, whereas a Bloom filter only records whether or not a given item has likely been added or not.
+
+Currently no PipelineDB functionality internally uses Count-min sketch, although users are free to construct their own Count-min sketch data structures and manipulate them with the :ref:`pipeline-funcs` that expose them.
+
+.. _`Count-Min Sketch`: https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch
+
+.. _fss:
+
+Filtered-Space Saving Top-K
+----------------------------
+
+`Filtered-Space Saving`_ (FSS) is a data strcuture and algorithm combination useful for accurately estimating the top k most frequent values appearing in a stream while using a constant, minimal memory footprint. The obvious approach to computing top-k is to simply keep a table of values and their associated frequencies, which is not practical for streams.
+
+Instead, FSS works by hashing incoming values into buckets, where each bucket has a collection of values already added. If the incoming element already exists at a given bucket, its frequency is incremented. If the element doesn't exist, it will be added as long as a few certain configurable conditions are met.
+
+Currently no PipelineDB functionality implicitly uses FSS. The FSS type and its associated functions can be accessed via the various :ref:`pipeline-funcs` and :ref:`pipeline-aggs` that expose them.
+
+.. _`Filtered-Space Saving`: http://www.l2f.inesc-id.pt/~fmmb/wiki/uploads/Work/dict.refd.pdf
+
 .. _hll:
 
 HyperLogLog
@@ -52,13 +76,3 @@ T-Digest
 
 The **percentile_cont** aggregate internally uses T-Digest when operating on a stream. Users are also free to construct their own T-Digest data structures and manipulate them with the :ref:`pipeline-funcs` that expose them.
 
-.. _count-min-sketch:
-
-Count-Min Sketch
-------------------
-
-A `Count-min sketch`_ is a data structure that is similar to a Bloom filter, with the main difference being that a Count-min sketch estimates the frequency of each element that has been added to it, whereas a Bloom filter only records whether or not a given item has likely been added or not.
-
-Currently no PipelineDB functionality internally uses Count-min sketch, although users are free to construct their own Count-min sketch data structures and manipulate them with the :ref:`pipeline-funcs` that expose them.
-
-.. _`Count-Min Sketch`: https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch
