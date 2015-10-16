@@ -47,13 +47,13 @@ PipelineDB-specific Aggregates
 
 	Merges all input Count-min sketches into a single one containing all of the information of the input Count-min sketches.
 
-**fss_agg ( expression )**
+**fss_agg ( expression , k )**
 
-	Adds all input values to a :ref:`fss` data structure, incrementing each value's count by 1 each time it is added.
+	Adds all input values to a :ref:`fss` data structure sized for the given k, incrementing each value's count by 1 each time it is added.
 
-**fss_agg_weighted (expression, weight )**
+**fss_agg_weighted (expression, k, weight )**
 
-	Adds all input values to an FSS, incrementing each value's count by the given weight each time it is added.
+	Adds all input values to an FSS sized for the given k, incrementing each value's count by the given weight each time it is added.
 
 **fss_merge_agg ( fss )**
 
