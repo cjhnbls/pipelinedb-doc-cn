@@ -15,13 +15,13 @@ PipelineDB supports ingesting data from Kafka topics into streams. All of this f
 	# CREATE EXTENSION pipeline_kafka;
 	CREATE EXTENSION
 
-.. note:: All binary distributions of PipelineDB include the **pipeline_kafka** extension, but if you're building from source you must compile and install it. It is located at **contrib/pipeline_kafka**.
+.. note:: All binary distributions of PipelineDB include the **pipeline_kafka** extension, but if you're building from source you must compile and install it from **contrib/pipeline_kafka**.
 
 **pipeline_kafka** exposes all of its functionality through the following functions:
 
 **kafka_consume_begin ( stream text, topic text, parallelism = 1, format = 'text', delimiter = '\\t' )**
 
-	Launches **$parallelism** background worker processes that each read's messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process launched. The optional **format** and **delimiter** arguments are analagous to the :code:`FORMAT` and :code:`DELIMITER` options for `PostgreSQL's COPY`_ command.
+	Launches **$parallelism** background worker processes that each reads messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process. The optional **format** and **delimiter** arguments are analagous to the :code:`FORMAT` and :code:`DELIMITER` options for `PostgreSQL's COPY`_ command.
 
 .. _`PostgreSQL's COPY`: http://www.postgresql.org/docs/9.4/static/sql-copy.html
 
@@ -53,5 +53,8 @@ PipelineDB supports ingesting data from Kafka topics into streams. All of this f
 
 	Stores Kafka topic offsets so that consumers can begin reading messages from where they left off before termination or system restarts.
 
-
 -----------------------
+
+.. note:: See `SQL on Kafka`_ for an in-depth tutorial on using Kafka with PipelineDB.
+
+.. _`SQL on Kafka`: https://www.pipelinedb.com/blog/sql-on-kafka
