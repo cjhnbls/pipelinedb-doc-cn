@@ -64,7 +64,7 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 **fss_increment_weighted ( fss, expression, weight )**
 
-	Increments the frequency of the given expression and weight within the given FSS and returns the resulting FSS.
+	Increments the frequency of the given expression by the specified weight within the given FSS and returns the resulting FSS.
 
 **fss_topk ( fss )**
 
