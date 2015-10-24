@@ -58,6 +58,14 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns true if the Bloom filter **probably** contains the given value, with a small false positive rate.
 
+**fss_increment ( fss, expression )**
+
+	Increments the frequency of the given expression within the given FSS and returns the resulting FSS.
+
+**fss_increment_weighted ( fss, expression, weight )**
+
+	Increments the frequency of the given expression and weight within the given FSS and returns the resulting FSS.
+
 **fss_topk ( fss )**
 
 	Returns up to k tuples representing the given FSS's top-k values and their associated frequencies.
