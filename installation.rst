@@ -14,7 +14,7 @@ To install the PipelineDB RPM package, run:
 
 	sudo rpm -ivh pipelinedb-<version>.rpm
 
-This will install PipelineDB at :code:`/opt/pipelinedb`. To install at a prefix of your choosing, use the :code:`--prefix` argument:
+This will install PipelineDB at :code:`/usr/lib/pipelinedb`. To install at a prefix of your choosing, use the :code:`--prefix` argument:
 
 .. code-block:: sh
 
@@ -29,7 +29,7 @@ To install the PipelineDB Debian package, run:
 
 	sudo dpkg -i pipelinedb-<version>.deb
 
-This will install PipelineDB at :code:`/opt/pipelinedb`.
+This will install PipelineDB at :code:`/usr/lib/pipelinedb`.
 
 OS X
 ----
