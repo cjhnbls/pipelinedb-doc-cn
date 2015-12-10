@@ -12,6 +12,7 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 	installation
 	continuous-views
 	streams
+	backups
 	builtin
 	aggregates
 	clients
