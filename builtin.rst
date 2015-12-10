@@ -86,6 +86,10 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns the cardinality of the given :ref:`hll`, with roughly a ~0.2% margin of error.
 
+**set_cardinality ( set )**
+
+  Returns the cardinality of the given set. Sets can be built using **set_agg**.
+
 **tdigest_cdf ( tdigest, expression )**
 
 	Given a :ref:`t-digest`, returns the value of its cumulative-distribution function evaluated at the value of **expression**, with a small margin of error.

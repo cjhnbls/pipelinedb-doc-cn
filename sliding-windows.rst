@@ -15,6 +15,9 @@ There are two important components of a sliding :code:`WHERE` clause:
 
 	A special attribute of all incoming events containing the time at which PipelineDB received them, as described in :ref:`arrival-ordering`.
 
+However, it is not necessary to explicitly add a :code:`WHERE` clause referencing these values. PipelineDB does this internally and it is only necessary to specify
+the :code:`max_age` storage parameter in a continuous view's definition.
+
 These concepts are probably best illustrated by an example.
 
 
@@ -27,8 +30,18 @@ Even though sliding windows are a new concept for a SQL database, PipelineDB doe
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW recent_users AS SELECT user_id::integer FROM stream
-	WHERE (arrival_timestamp > clock_timestamp() - interval '1 minute');
+	CREATE CONTINUOUS VIEW recent_users WITH (max_age = '1 minute') AS
+	   SELECT user_id::integer FROM stream;
+
+Internally, PipelineDB will rewrite this query to the following:
+
+.. code-block:: pipeline
+
+  CREATE CONTINUOUS VIEW recent_users AS
+     SELECT user_id::integer FROM stream
+  WHERE (arrival_timestamp > clock_timestamp() - interval '1 minute');
+
+.. note:: PipelineDB allows users to manually construct a sliding window :code:`WHERE` clause when defining sliding-window continuous views, although it is recommended that :code:`max_age` be used in order to avoid tedium. 
 
 The result of a :code:`SELECT` on this continuous view would only contain the specific users seen within the last minute. That is, repeated :code:`SELECT` s would contain different rows, even if the continuous view wasn't explicitly updated.
 
@@ -50,9 +63,8 @@ Let's look at a few examples:
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW count_recent_users AS SELECT COUNT(*) FROM stream
-	WHERE (arrival_timestamp > clock_timestamp() - interval '1 minute');
-
+	CREATE CONTINUOUS VIEW count_recent_users WITH (max_age = '1 minute') AS
+	   SELECT COUNT(*) FROM stream;
 
 Each time a :code:`SELECT` is run on this continuous view, the count it returns will be the count of only the events seen within the last minute. For example, if events stopped coming in, the count would decrease each time a :code:`SELECT` was run on the continuous view. This behavior works for all of the :ref:`aggregates` that PipelineDB supports:
 
@@ -60,26 +72,24 @@ Each time a :code:`SELECT` is run on this continuous view, the count it returns 
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW sensor_temps AS SELECT sensor::integer, AVG(temp::numeric)
-	FROM sensor_stream
-	WHERE (arrival_timestamp > clock_timestamp() - interval '5 minutes')
+	CREATE CONTINUOUS VIEW sensor_temps WITH (max_age = '5 minutes') AS
+	   SELECT sensor::integer, AVG(temp::numeric) FROM sensor_stream
 	GROUP BY sensor;
 
 **How many unique users have we seen over the last 30 days?**
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW uniques AS SELECT COUNT(DISTINCT user::integer)
-	FROM user_stream
-	WHERE (arrival_timestamp > clock_timestamp() - interval '30 days');
+	CREATE CONTINUOUS VIEW uniques WITH (max_age = '30 days') AS
+	   SELECT COUNT(DISTINCT user::integer) FROM user_stream;
 
 **What is my server's 99th precentile response latency over the last 5 minutes?**
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW latency AS SELECT server_id::integer, percentile_cont(0.99)
-	WITHIN GROUP (ORDER BY latency::numeric) FROM server_stream
-	WHERE (arrival_timestamp > clock_timestamp() - interval '5 minutes')
+	CREATE CONTINUOUS VIEW latency WITH (max_age = '5 minutes') AS
+	   SELECT server_id::integer, percentile_cont(0.99)
+	   WITHIN GROUP (ORDER BY latency::numeric) FROM server_stream
 	GROUP BY server_id;
 
 Temporal Invalidation
@@ -99,5 +109,26 @@ Obviously, sliding-window rows in continuous views become invalid after a certai
 	When a continuous view is read with a :code:`SELECT`, any data that are too old to be included in the result are discarded on the fly while generating the result. This ensures that even if invalid rows still exist, they aren't actually included in any query results.
 
 -----------------------
+
+
+Multiple Windows
+-------------------------------
+
+It is relatively common to have a need for multiple sliding-windows for the same query. For example, keeping track of user event counts for the last
+5 minutes, 10 minutes, one day, etc. For this reason, PipelineDB supports the creation of regular views over a single sliding window continuous view,
+which ultimately saves resources because only a single continuous view is actually being updated internally.
+
+For example, to maintain counts over three different window sizes:
+
+.. code-block:: pipeline
+
+  CREATE CONTINUOUS VIEW sw0 WITH (max_age = '1 day') AS SELECT COUNT(*) FROM event_stream;
+  CREATE VIEW sw1 WITH (max_age = '5 minutes') AS SELECT * FROM sw0;
+  CREATE VIEW sw2 WITH (max_age = '10 minutes') AS SELECT * FROM sw0;
+
+Note that :code:`sw1` and :code:`sw2` are not defined using the :code:`CONTINUOUS` keyword. However, querying them will only return rows that are
+within their own respective windows.
+
+-------------------------
 
 Now that you know how sliding-window queries work, it's probably a good time to learn about :ref:`joins`.

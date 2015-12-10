@@ -81,6 +81,12 @@ PipelineDB-specific Aggregates
 
 	Takes the union of all input HyperLogLogs, resulting in a single HyperLogLog that contains all of the information of the input HyperLogLogs.
 
+.. _set-agg:
+
+**set_agg ( expression )**
+
+  Adds all input values to a set.
+
 **tdigest_agg ( expression )**
 
 	Adds all input values to a :ref:`t-digest`.
