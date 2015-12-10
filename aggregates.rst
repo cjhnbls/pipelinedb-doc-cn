@@ -47,6 +47,12 @@ PipelineDB-specific Aggregates
 
 	Merges all input Count-min sketches into a single one containing all of the information of the input Count-min sketches.
 
+**exact_count_distinct ( expression )**
+
+  Counts the exact number of distinct values for the given expression. Since **count distinct** used in continuous views implicitly uses HyperLogLog for efficiency, **exact_count_distinct** can be used when the small margin of error inherent to using HyperLogLog is not acceptable.
+
+.. important:: **exact_count_distinct** must store all values observed in order to determine uniqueness, so it is not recommended for use when many unique values are expected.
+
 **fss_agg ( expression , k )**
 
 	Adds all input values to a :ref:`fss` data structure sized for the given k, incrementing each value's count by 1 each time it is added.
