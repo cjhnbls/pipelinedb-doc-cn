@@ -65,6 +65,14 @@ PipelineDB-specific Aggregates
 
 	Merges all FSS inputs into a single FSS.
 
+**keyed_max ( key, value )**
+
+  Value associated with the maximum key.
+
+**keyed_min ( key, value )**
+
+  Value associated with the minimum key.
+
 **hll_agg ( expression )**
 
 	Adds all input values to a :ref:`hll`.
