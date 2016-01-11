@@ -48,6 +48,15 @@ The syntax for creating a static stream is similar to that of creating a table:
 
 	The :code:`LIKE` clause specifies a stream from which the new stream automatically copies all column names and data types.
 
+Columns can be added to static streams using :code:`ALTER STREAM`:
+
+.. code-block:: pipeline
+
+  pipeline=# ALTER STREAM static_stream ADD COLUMN x integer;
+  ALTER STREAM
+
+.. note:: Columns cannot be dropped from static streams.
+
 Static streams can be dropped with the :code:`DROP STREAM` command. Below is an example of creating a continuous view that reads from a static stream. Note that when a continuous view reads from a statically typed stream, it is not necessary to supply type information with :code:`::` syntax:
 
 .. code-block:: pipeline
