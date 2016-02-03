@@ -10,6 +10,13 @@ Initialize a data directory and start the PipelineDB server:
 	pipeline-init -D <data directory>
 	pipeline-server -D <data directory>
 
+Now enable continuous query execution. This only needs to be done once and is remembered across restarts.
+
+.. code-block:: bash
+
+	psql -h localhost -p 5432 -d pipeline -c "ACTIVATE"
+
+
 Wikipedia Traffic
 -----------------
 
