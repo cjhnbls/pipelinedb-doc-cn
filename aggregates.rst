@@ -51,7 +51,7 @@ PipelineDB-specific Aggregates
 
   Counts the exact number of distinct values for the given expression. Since **count distinct** used in continuous views implicitly uses HyperLogLog for efficiency, **exact_count_distinct** can be used when the small margin of error inherent to using HyperLogLog is not acceptable.
 
-.. important:: **exact_count_distinct** must store all values observed in order to determine uniqueness, so it is not recommended for use when many unique values are expected.
+.. important:: **exact_count_distinct** must store all unique values observed in order to determine uniqueness, so it is not recommended for use when many unique values are expected.
 
 **fss_agg ( expression , k )**
 
