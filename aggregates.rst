@@ -67,11 +67,11 @@ PipelineDB-specific Aggregates
 
 **keyed_max ( key, value )**
 
-  Value associated with the maximum key.
+	Most recent value associated with the maximum key.
 
 **keyed_min ( key, value )**
 
-  Value associated with the minimum key.
+	Most recent value associated with the minimum key.
 
 **hll_agg ( expression )**
 
