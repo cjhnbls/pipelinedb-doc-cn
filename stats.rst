@@ -5,10 +5,12 @@ Statistics
 
 PipelineDB includes a number of statistics-gathering views that provide insight into how the system is behaving. Statistics can be broken down by process, continuous view, stream, or viewed globally across the entire installation.
 
-Each statistics view's schema is as follows:
+Each statistics view is described below.
 
 pipeline_proc_stats
 ----------------------
+
+Statistics broken down by worker and combiner processes. These statistics only last for the duration of the underlying processes.
 
 .. code-block:: pipeline
 
@@ -31,6 +33,8 @@ pipeline_proc_stats
 pipeline_query_stats
 ----------------------
 
+Continuous view-level statistics.
+
 .. code-block:: pipeline
 
 					View "pg_catalog.pipeline_query_stats"
@@ -50,6 +54,8 @@ pipeline_query_stats
 pipeline_stream_stats
 ----------------------
 
+Stream-level statistics.
+
 .. code-block:: pipeline
 	
 					View "pg_catalog.pipeline_stream_stats"
@@ -63,6 +69,8 @@ pipeline_stream_stats
 
 pipeline_stats
 ---------------
+
+Installation-wide statistics.
 
 .. code-block:: pipeline
 
