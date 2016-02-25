@@ -106,6 +106,18 @@ To :code:`DROP` a continuous view from the system, use the :code:`DROP CONTINUOU
 
 This will remove the continuous view from the system along with all of its associated resources.
 
+TRUNCATE CONTINUOUS VIEW
+---------------------------
+
+To remove all of a continuous view's data without removing the continuous view itself, :code:`TRUNCATE CONTINUOUS VIEW` can be used:
+
+.. code-block:: pipeline
+
+	TRUNCATE CONTINUOUS VIEW name
+
+This command will efficiently remove all of the continuous view's rows, and is therefore analagous to `PostgreSQL's TRUNCATE`_ command.
+
+.. _`PostgreSQL's TRUNCATE`: http://www.postgresql.org/docs/current/static/sql-truncate.html
 
 .. _pipeline-query:
 
