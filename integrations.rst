@@ -21,9 +21,9 @@ PipelineDB supports ingesting data from Kafka topics into streams. All of this f
 
 **kafka_consume_begin ( stream text, topic text, parallelism = 1, format = 'text', delimiter = '\\t' , quote = '"' )**
 
-	Launches **$parallelism** background worker processes that each reads messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process. The optional **format**, **delimiter**, and **quote** arguments are analagous to the :code:`FORMAT` and :code:`DELIMITER` options for `PostgreSQL's COPY`_ command.
+	Launches **$parallelism** background worker processes that each reads messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process. The optional **format**, **delimiter**, and **quote** arguments are analagous to the :code:`FORMAT` and :code:`DELIMITER` options for the `PostgreSQL COPY`_ command.
 
-.. _`PostgreSQL's COPY`: http://www.postgresql.org/docs/current/static/sql-copy.html
+.. _`PostgreSQL COPY`: http://www.postgresql.org/docs/current/static/sql-copy.html
 
 **kafka_consume_begin ( parallelism = 1, format = 'text', delimiter = '\\t', quote = '"' )**
 
