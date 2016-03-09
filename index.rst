@@ -11,6 +11,7 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 	quickstart
 	installation
 	continuous-views
+	continuous-transforms
 	streams
 	backups
 	builtin

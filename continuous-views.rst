@@ -124,13 +124,13 @@ This command will efficiently remove all of the continuous view's rows, and is t
 Viewing Continuous Views
 ---------------------------
 
-To view the continuous views currently in the system, you can run a :code:`SELECT` on the :code:`pipeline_query` catalog table:
+To view the continuous views currently in the system, you can run the following query:
 
 .. code-block:: pipeline
 
-	SELECT * FROM pipeline_query;
+	SELECT * FROM pipeline_views();
 
-Don't worry about all of the columns in :code:`pipeline_query` --most of them are only for internal use. The important columns are :code:`name`, which contains the name you gave the continuous view when you created it; and :code:`query`, which contains the continuous view's query definition.
+Don't worry about all of the columns returned--most of them are only for internal use. The important columns are :code:`name`, which contains the name you gave the continuous view when you created it; and :code:`query`, which contains the continuous view's query definition.
 
 Inferred Schemas
 --------------------
@@ -186,7 +186,7 @@ derek     30
 Activation and Deactivation
 ----------------------------
 
-Because continuous-views are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to temporarily stop continuous processing until the issue is resolved.
+Because continuous views are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to temporarily stop continuous processing until the issue is resolved.
 
 This level of control is provided by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When continuous views are *active*, they are actively reading from their input streams and incrementally updating their results accordingly. Conversely, *inactive* continuous views are not reading from their input streams and are not updating their results. PipelineDB remains functional when continuous views are inactive, and continuous views themselves are still readable--they're just not updating.
 

@@ -14,7 +14,7 @@ Finally, unlike tables, it is not necessary to create a schema for streams. As l
 Static Streams
 ----------------
 
-While PipelineDB does not require that streams be explicitly predeclared, it is possible to do so with statically typed streams. Static streams can yield performance increases due to less internal casting being required, as well as provide more control over how raw inputs are interpreted. Statically typed streams are created with :code:`CREATE STREAM`. 
+While PipelineDB does not require that streams be explicitly predeclared, it is possible to do so with statically typed streams. Static streams can yield performance increases due to less internal casting being required, as well as provide more control over how raw inputs are interpreted. Statically typed streams are created with :code:`CREATE STREAM`.
 
 The syntax for creating a static stream is similar to that of creating a table:
 
@@ -170,8 +170,6 @@ Sometimes you might want to update only a select set of continuous views when wr
   CREATE CONTINUOUS VIEW
   pipeline=# CREATE CONTINUOUS VIEW v1 AS SELECT COUNT(*) FROM stream;
   CREATE CONTINUOUS VIEW
-  pipeline=# ACTIVATE;
-  ACTIVATE 2
   pipeline=# INSERT INTO stream (x) VALUES (1);
   INSERT 0 1
   pipeline=# SET stream_targets TO v0;
@@ -182,8 +180,6 @@ Sometimes you might want to update only a select set of continuous views when wr
   SET
   pipeline=# INSERT INTO stream (x) VALUES (1);
   INSERT 0 1
-  pipeline=# DEACTIVATE;
-  DEACTIVATE 2
   pipeline=# SELECT count FROM v0;
    count
   -------

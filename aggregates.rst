@@ -93,7 +93,11 @@ PipelineDB-specific Aggregates
 
 **tidgest_merge_agg ( tdigest )**
 
-	Merges all input T-Digest's into a single one representing all of the information contained in the input T-Digests.
+  Merges all input T-Digest's into a single one representing all of the information contained in the input T-Digests.
+
+**first_values ( n ) WITHIN GROUP (ORDER BY sort_expression)**
+
+  An ordered-set aggregate that stores the first **n** values ordered by the provided sort expression.
 
 .. note:: See also: :ref:`pipeline-funcs`, which explains some of the PipelineDB's non-aggregate functionality for manipulating Bloom filters, Count-min sketches, HyperLogLogs and T-Digests. Also, check out :ref:`probabilistic` for more information about what they are and how you can leverage them.
 
@@ -119,8 +123,6 @@ Let's look at an example:
   pipeline=# CREATE CONTINUOUS VIEW v AS
 	SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
   CREATE CONTINUOUS VIEW
-  pipeline=# ACTIVATE v;
-  ACTIVATE 1
   pipeline=# INSERT INTO stream (g, x) VALUES (0, 10), (0, 10), (0, 10), (0, 10), (0, 10);
   INSERT 0 5
   pipeline=# INSERT INTO stream (g, x) VALUES (1, 20);
