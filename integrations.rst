@@ -19,7 +19,7 @@ PipelineDB supports ingesting data from Kafka topics into streams. All of this f
 
 **pipeline_kafka** exposes all of its functionality through the following functions:
 
-**kafka_consume_begin ( parallelism := 1, format := 'text', delimiter := E'\t', quote := NULL, escape := NULL, batchsize := 1000, parallelism := 1, start_offset := NULL )**
+**kafka_consume_begin ( topic text, stream text, parallelism := 1, format := 'text', delimiter := E'\t', quote := NULL, escape := NULL, batchsize := 1000, parallelism := 1, start_offset := NULL )**
 
 Launches **parallelism** background worker processes that each reads messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process. The optional **format**, **delimiter**, **escape** and **quote** arguments are analagous to the :code:`FORMAT`, :code:`DELIMITER` :code:`ESCAPE` and :code:`QUOTE` options for the `PostgreSQL COPY`_ command. **batchsize** controls the :code:`batch_size` parameter passed to the Kafka client. **start_offset** specifies the offset from which to start reading the Kafka topic. If its null, then we start from the first unread message. :code:`pipeline_kafka` continuously saves the offset its read til durably in the database.
 
@@ -29,7 +29,7 @@ Launches **parallelism** background worker processes that each reads messages fr
 
 	Same as above, but launches all previously created consumers instead of for a specific stream-topic pair.
 
-**kafka_consume_end ( text, text )**
+**kafka_consume_end ( topic text, stream text )**
 
 	Terminates background consumer processes for the given stream-topic pair.
 
