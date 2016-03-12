@@ -12,7 +12,7 @@ Here's the syntax for creating a continuous transform:
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS TRANSFORM name AS query THEN EXECUTE PROCEDUTE function_name ( arguments )
+	CREATE CONTINUOUS TRANSFORM name AS query THEN EXECUTE PROCEDURE function_name ( arguments )
 
 **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
