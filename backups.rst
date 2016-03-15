@@ -6,8 +6,8 @@ Backups
 PipelineDB backups can be taken using the :code:`pipeline-dump` or :code:`pipeline-dumpall` tools. They each work identically to
 PostgreSQL's analogous pg_dump_ and pg_dumpall_ tools, with an added capability to export continuous views.
 
-.. _pg_dump: http://www.postgresql.org/docs/9.4/static/app-pgdump.html
-.. _pg_dumpall: http://www.postgresql.org/docs/9.4/static/app-pg-dumpall.html
+.. _pg_dump: http://www.postgresql.org/docs/current/static/app-pgdump.html
+.. _pg_dumpall: http://www.postgresql.org/docs/current/static/app-pg-dumpall.html
 
 Its usage is as follows:
 
