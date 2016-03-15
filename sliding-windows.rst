@@ -24,7 +24,7 @@ These concepts are probably best illustrated by an example.
 Examples
 ------------
 
-Even though sliding windows are a new concept for a SQL database, PipelineDB does not use any sort of new or proprietary windowing syntax. Instead, PipelineDB uses standard PostgreSQL 9.4 syntax. Here's a simple example:
+Even though sliding windows are a new concept for a SQL database, PipelineDB does not use any sort of new or proprietary windowing syntax. Instead, PipelineDB uses standard PostgreSQL 9.5 syntax. Here's a simple example:
 
 **What users have I seen in the last minute?**
 
@@ -102,7 +102,7 @@ Obviously, sliding-window rows in continuous views become invalid after a certai
 
 	A background process similar to PostgreSQL's autovacuumer_ periodically runs and physically removes any expired rows from sliding-window continuous views.
 
-.. _autovacuumer: http://www.postgresql.org/docs/9.4/static/runtime-config-autovacuum.html
+.. _autovacuumer: http://www.postgresql.org/docs/current/static/runtime-config-autovacuum.html
 
 **Read-time invalidation**
 
