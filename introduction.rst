@@ -22,7 +22,7 @@ Much of the data that is passed through PipelineDB can thus be thought of as **v
 
 **PipelineDB aims to eliminate the necessity of an ETL stage for many common data pipelines**. Raw data can be streamed directly into PipelineDB, where it is continuously refined and distilled in real time by the continuous queries you've declared. This makes it unnecessary to periodically process granular data before loading its refined output into the database--as long as that processing can be defined by SQL queries, of course.
 
-**PipelineDB is designed with pragmatism as a first-class consideration**, which is why we've built it to be fully compatible with PostgreSQL 9.4. We have not invented our own proprietary syntax, and we don't even have a PipelineDB client because it works with any libraries that already work with PostgreSQL.
+**PipelineDB is designed with pragmatism as a first-class consideration**, which is why we've built it to be fully compatible with PostgreSQL 9.5. We have not invented our own proprietary syntax, and we don't even have a PipelineDB client because it works with any libraries that already work with PostgreSQL.
 
 What PipelineDB is not
 -------------------------
