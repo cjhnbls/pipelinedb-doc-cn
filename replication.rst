@@ -24,7 +24,7 @@ Let's say we already have a PipelineDB instance running on :code:`localhost:5432
 
 You can also create the role with a :code:`PASSWORD` option, in case your primary is on the open network (free tip: it never should be).
 
-Next we need to add an entry for the standby to the `pg_hba.conf <http://www.postgresql.org/docs/9.4/static/auth-pg-hba-conf.html>`_ file. You can find it in the data directory of the primary. The :code:`pg_hba.conf` file handles all client authentication details for PipelineDB. For our example, we'll append the following entry to it, but for any real-world setup it will almost always be different.
+Next we need to add an entry for the standby to the `pg_hba.conf <http://www.postgresql.org/docs/current/static/auth-pg-hba-conf.html>`_ file. You can find it in the data directory of the primary. The :code:`pg_hba.conf` file handles all client authentication details for PipelineDB. For our example, we'll append the following entry to it, but for any real-world setup it will almost always be different.
 
 .. code-block:: bash
 
