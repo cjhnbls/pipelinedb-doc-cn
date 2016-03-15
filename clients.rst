@@ -3,7 +3,7 @@
 Clients
 ============
 
-Since PipelineDB is compatible with PostgreSQL 9.4, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.
+Since PipelineDB is compatible with PostgreSQL 9.5, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.
 
 Here you'll find examples of a simple PipelineDB application written in a few different languages and clients. The application simply creates the :code:`CONTINUOUS VIEW`:
 
