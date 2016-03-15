@@ -13,7 +13,7 @@ Below you'll find a description of all the aggregates that PipelineDB supports. 
 
 .. note:: For the aggregates that have PostgreSQL and PostGIS equivalents, it may be helpful for you to consult the excellent `PostgreSQL aggregates`_ or `PostGIS aggregates`_ documentation.
 
-.. _`PostgreSQL aggregates`: http://www.postgresql.org/docs/9.4/static/functions-aggregate.html
+.. _`PostgreSQL aggregates`: http://www.postgresql.org/docs/current/static/functions-aggregate.html
 .. _`PostGIS aggregates`: http://postgis.net/docs/manual-1.4/ch08.html#PostGIS_Aggregate_Functions
 
 ----------------------------
@@ -171,7 +171,7 @@ In addition to PipelineDB's built-in aggregates, user-defined aggregates also wo
 		[ , TRANSOUTFUNC = transoutfunc ]
 	)
 
-.. _CREATE AGGREGATE: http://www.postgresql.org/docs/9.4/static/sql-createaggregate.html
+.. _CREATE AGGREGATE: http://www.postgresql.org/docs/current/static/sql-createaggregate.html
 
 
 **combinefunc ( stype, stype )**
