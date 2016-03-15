@@ -114,7 +114,7 @@ Configuration
 
 PipelineDB's configuration is generally synonymous with `PostgreSQL's configuration`_, so that is a good place to look for details about what everything in :code:`pipelinedb.conf` does.
 
-.. _`PostgreSQL's configuration`: http://www.postgresql.org/docs/9.4/static/runtime-config.html
+.. _`PostgreSQL's configuration`: http://www.postgresql.org/docs/current/static/runtime-config.html
 
 By default, PipelineDB is not configured to allow incoming connections from remote hosts. To enable incoming connections, first set the following line in :code:`pipelinedb.conf`:
 
