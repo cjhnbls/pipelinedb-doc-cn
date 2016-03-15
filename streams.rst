@@ -38,7 +38,7 @@ The syntax for creating a static stream is similar to that of creating a table:
 
   The data type of the column. This can include array specifiers. For more information on the data types supported by PipelineDB, see :ref:`builtin` and the `PostgreSQL supported types`_ .
 
-.. _PostgreSQL supported types: http://www.postgresql.org/docs/9.4/static/datatype.html
+.. _PostgreSQL supported types: http://www.postgresql.org/docs/current/static/datatype.html
 
 **COLLATE collation**
 
@@ -143,7 +143,7 @@ Finally, it is also possible to use COPY_ to write data from a file into a strea
 
 	COPY stream (data) FROM '/some/file.csv'
 
-.. _COPY: http://www.postgresql.org/docs/9.4/static/sql-copy.html
+.. _COPY: http://www.postgresql.org/docs/current/static/sql-copy.html
 
 :code:`COPY` can be very useful for retroactively populating a continuous view from archival data. Here is how one might stream compressed archival data from S3 into PipelineDB:
 
