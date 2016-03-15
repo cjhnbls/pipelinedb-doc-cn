@@ -5,7 +5,7 @@ Replication
 
 Setting up replication for PipelineDB is identical to how you would set up replication on regular PostgreSQL. If you've already done so in the past, all of this might sound extremely familiar. If not, then it might be worth a read because setting up replication on PostgreSQL has a lot of quirks, mostly as a result of how replication has evolved overtime. `The history of replication in PostgreSQL <http://peter.eisentraut.org/blog/2015/03/03/the-history-of-replication-in-postgresql/>`_ by Peter Eisentraut is a fun read if you want to learn more about this evolution.
 
-We're not going to look at old replication methods such as `Log-Shipping Standby Servers <http://www.postgresql.org/docs/9.3/static/warm-standby.html#WARM-STANDBY>`_ since they're overly complex and not very robust. The only reason to use them would be if you had an old PostgreSQL version running, but since we're built into the PostgreSQL 9.4 core, we can leverage all the latest and greatest features PostgreSQL has to offer.
+We're not going to look at old replication methods such as `Log-Shipping Standby Servers <http://www.postgresql.org/docs/9.3/static/warm-standby.html#WARM-STANDBY>`_ since they're overly complex and not very robust. The only reason to use them would be if you had an old PostgreSQL version running, but since we're built into the PostgreSQL 9.5 core, we can leverage all the latest and greatest features PostgreSQL has to offer.
 
 Streaming Replication
 ---------------------
