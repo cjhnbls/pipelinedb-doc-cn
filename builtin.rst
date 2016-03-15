@@ -6,13 +6,13 @@ Built-in Functionality
 General
 ----------
 
-We strive to ensure that PipelineDB maintains full compatibility with PostgreSQL 9.4. As a result, all of `PostgreSQL's built-in functionality`_ is available to PipelineDB users.
+We strive to ensure that PipelineDB maintains full compatibility with PostgreSQL 9.5. As a result, all of `PostgreSQL's built-in functionality`_ is available to PipelineDB users.
 
-.. _`PostgreSQL's built-in functionality`: http://www.postgresql.org/docs/9.4/static/functions.html
+.. _`PostgreSQL's built-in functionality`: http://www.postgresql.org/docs/current/static/functions.html
 
-.. _pg-built-in: http://www.postgresql.org/docs/9.4/static/functions.html
+.. _pg-built-in: http://www.postgresql.org/docs/current/static/functions.html
 
-In addition to PostgreSQL 9.4 compatibility, PipelineDB is also natively compatible with PostGIS 2.1, so all of `PostGIS' builtin functionality`_ is also availble to PipelineDB users.
+In addition to PostgreSQL 9.5 compatibility, PipelineDB is also natively compatible with PostGIS 2.1, so all of `PostGIS' builtin functionality`_ is also availble to PipelineDB users.
 
 .. _`PostGIS' builtin functionality`: http://postgis.net/docs/manual-2.1/
 
