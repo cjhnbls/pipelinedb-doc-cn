@@ -40,7 +40,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
   A PostgreSQL expression_
 
-.. _expression: http://www.postgresql.org/docs/9.4/static/sql-expressions.html
+.. _expression: http://www.postgresql.org/docs/current/static/sql-expressions.html
 
 **output_name**
 
@@ -93,7 +93,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
 .. note:: This has mainly covered only the syntax for :code:`CREATE CONTINUOUS VIEW`. To learn more about the semantics of each of these query elements, you should consult the `PostgreSQL SELECT documentation`_.
 
-.. _PostgreSQL SELECT documentation: http://www.postgresql.org/docs/9.4/static/sql-select.html
+.. _PostgreSQL SELECT documentation: http://www.postgresql.org/docs/current/static/sql-select.html
 
 DROP CONTINUOUS VIEW
 ---------------------------
