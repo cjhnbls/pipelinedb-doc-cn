@@ -88,6 +88,27 @@ To connect to a running server using the default database "pipeline", the :code:
 
 You can check out the :ref:`quickstart` section to start streaming data into PipelineDB right now.
 
+Debug Mode
+--------------------------
+
+The PipelineDB server can also be run in debug mode, which enables assertions as well as additional diagnostic output when something such as a crash occurs. Debug mode is designed to enable us to better support users when something goes wrong. It can be run in two ways:
+
+First, with the :code:`-d`/:code:`--debug` flag in conjunction with :code:`pipeline-ctl` binary:
+
+.. code-block:: sh
+
+	pipeline-ctl -d -D ... start
+	pipeline-ctl --debug -D ... start
+
+Or by executing the :code:`pipeline-server-debug` binary directly:
+
+.. code-block:: sh
+
+	pipeline-server-debug -D <data directory>
+
+.. note:: The debug-mode binary uses unoptimized code and includes assertions and debug symbols, and as a result is not optimized for performance. Debug mode should only be used when reproducing errors.
+
+
 Configuration
 ---------------------
 
