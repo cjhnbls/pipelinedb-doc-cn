@@ -23,3 +23,4 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 	replication
 	integrations
 	stats
+	conf

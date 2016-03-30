@@ -429,43 +429,6 @@ This continuous view will continuously update the rank of :code:`42` given all o
 
 ----------------------------
 
-Geospatial Aggregates
--------------------------
-
-**st_accum ( geometry )**
-
-	Constructs an array of geometries
-
-**st_collect ( geometry )**
-
-	Return a specified ST_Geometry value from a collection of other geometries
-
-**st_extent ( geometry )**
-
-	Returns the bounding box that bounds rows of geometries
-
-**st_extend3d ( geometry )**
-
-	Returns the Box3D bounding box that bounds rows of geometries
-
-**st_makeline ( geometry )**
-
-	Creates a Linestring from point geometries
-
-**st_memunion ( geometry )**
-
-	The same as st_union, but uses less memory and more processor time
-
-**st_polygonize ( geometry )**
-
-	Creates a GeometryCollection containing possible polygons formed from the constituent linework of a set of geometries
-
-**st_union ( geometry )**
-
-	Returns a geometry that represents the point set union of the geometries
-
-----------------------------
-
 Unsupported Aggregates
 ---------------------------------
 

@@ -3,6 +3,8 @@
 Continuous Transforms
 ====================
 
+.. versionadded:: 0.9.0
+
 Continuous transforms can be used to continuously transform incoming data without storing it. Since no data is stored, continuous transforms don't support aggregations. The result of the transformation can be piped into another stream or written to an external data store.
 
 .. warning:: Continuous transforms are a relatively new addition to PipelineDB and are still unstable. There are a few known issues can make the worker processes crash if the insert load is too high.

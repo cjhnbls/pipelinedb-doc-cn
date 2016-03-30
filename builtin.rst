@@ -50,45 +50,69 @@ PipelineDB-specific Functions
 
 PipelineDB ships with a number of functions that are useful for interacting with these types. They are described below.
 
-**bloom_cardinality ( bloom filter )**
+**bloom_add ( bloom, expression )**
+
+	Adds the given expression to the :ref:`bloom-filter`.
+
+**bloom_cardinality ( bloom )**
 
 	Returns the cardinality of the given :ref:`bloom-filter`. This is the number of **unique** elements that were added to the Bloom filter, with a small margin or error.
 
-**bloom_contains ( bloom filter, expression )**
+**bloom_contains ( bloom, expression )**
 
 	Returns true if the Bloom filter **probably** contains the given value, with a small false positive rate.
 
 **fss_increment ( fss, expression )**
 
-	Increments the frequency of the given expression within the given FSS and returns the resulting FSS.
+	Increments the frequency of the given expression within the given FSS and returns the resulting :ref:`fss`.
 
 **fss_increment_weighted ( fss, expression, weight )**
 
-	Increments the frequency of the given expression by the specified weight within the given FSS and returns the resulting FSS.
+	Increments the frequency of the given expression by the specified weight within the given :ref:`fss` and returns the resulting :ref:`fss`.
 
 **fss_topk ( fss )**
 
-	Returns up to k tuples representing the given FSS's top-k values and their associated frequencies.
+	Returns up to k tuples representing the given :ref:`fss` top-k values and their associated frequencies.
 
 **fss_topk_freqs ( fss )**
 
-	Returns up to k frequencies associated with the given FSS's top-k most frequent values.
+	Returns up to k frequencies associated with the given :ref:`fss` top-k most frequent values.
 
 **fss_topk_values ( fss )**
 
-	Returns up to k values representing the given FSS's top-k most frequent values.
+	Returns up to k values representing the given :ref:`fss` top-k most frequent values.
 
-**cmsketch_frequency ( count-min sketch, expression )**
+**cmsketch_add ( cmsketch, expression, weight )**
+
+	Increments the frequency of the given expression by the specified weight within the given :ref:`count-min-sketch`.
+
+**cmsketch_frequency ( cmsketch, expression )**
 
 	Returns the number of times the value of **expression** was added to the given :ref:`count-min-sketch`, with a small margin of error.
 
-**hll_cardinality ( hyperloglog )**
+**cmsketch_norm_frequency ( cmsketch, expression )**
+
+	Returns the normalized frequency of **expression** in the given :ref:`count-min-sketch`, with a small margin of error.
+
+**cmsketch_total ( cmsketch )**
+
+	Returns the total number of items added to the given :ref:`count-min-sketch`.
+
+**hll_add ( hll, expression )**
+
+	Adds the given expression to the :ref:`hll`.
+
+**hll_cardinality ( hll )**
 
 	Returns the cardinality of the given :ref:`hll`, with roughly a ~0.2% margin of error.
 
-**set_cardinality ( set )**
+**set_cardinality ( array )**
 
-  Returns the cardinality of the given set. Sets can be built using **set_agg**.
+  Returns the cardinality of the given set array. Sets can be built using **set_agg**.
+
+**tdigest_add ( tdigest, expression, weight )**
+
+	Increments the frequency of the given expression by the given weight in the :ref:`t-digest`.
 
 **tdigest_cdf ( tdigest, expression )**
 
@@ -106,3 +130,11 @@ Miscellaneous Functions
 **pipeline_version ( )**
 
         Returns a string containing all of the version information for your PipelineDB installation.
+
+**pipeline_views ( )**
+
+        Returns the set of all continuous views.
+
+**pipeline_transforms ( )**
+
+        Returns the set of all continuous transforms.
