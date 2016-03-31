@@ -15,8 +15,6 @@ PipelineDB supports ingesting data from Kafka topics into streams. All of this f
 	# CREATE EXTENSION pipeline_kafka;
 	CREATE EXTENSION
 
-.. note:: All binary distributions of PipelineDB include the **pipeline_kafka** extension, but if you're building from source you must compile and install it from **contrib/pipeline_kafka**.
-
 **pipeline_kafka** exposes all of its functionality through the following functions:
 
 **kafka_consume_begin ( topic text, stream text, format := 'text', delimiter := E'\\t', quote := NULL, escape := NULL, batchsize := 1000, parallelism := 1, start_offset := NULL )**
