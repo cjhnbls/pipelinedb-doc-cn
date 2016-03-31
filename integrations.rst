@@ -56,3 +56,8 @@ Launches **parallelism** background worker processes that each reads messages fr
 .. note:: See `SQL on Kafka`_ for an in-depth tutorial on using Kafka with PipelineDB.
 
 .. _`SQL on Kafka`: https://www.pipelinedb.com/blog/sql-on-kafka
+
+Amazon Kinesis
+--------------
+
+Coming soon!
