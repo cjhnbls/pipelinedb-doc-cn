@@ -13,13 +13,14 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 	continuous-views
 	continuous-transforms
 	streams
-	backups
 	builtin
 	aggregates
 	clients
 	probabilistic
 	sliding-windows
 	joins
+	triggers
+	backups
 	replication
 	integrations
 	stats
