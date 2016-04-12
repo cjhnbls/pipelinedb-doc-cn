@@ -1,4 +1,4 @@
-.. _triggers:
+.. _continuous-triggers:
 
 Continuous Triggers
 ===================
