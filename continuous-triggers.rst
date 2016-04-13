@@ -11,6 +11,26 @@ Here you'll find information about how to define these triggers, and how to subs
 
 .. warning:: Continuous triggers are a relatively new addition to PipelineDB and might still be unstable.
 
+Configuration
+-------------
+
+Before we get started, we need to make sure that pipelinedb is configured correctly to support continuous triggers.
+
+Continuous triggers are built upon the `logical decoding <http://www.postgresql.org/docs/9.5/static/logicaldecoding-explanation.html>`_ feature of Postgres, which in turn is based on replication of the Write Ahead Log (WAL).
+
+Logical Decoding allows us to decode the contents of the WAL, which contains all of the metadata about changes to the database. The continuous trigger process consumes these changes via a replication slot, and then decodes them to evaluate triggers.
+
+To enable continuous triggers, set the following configuration options in :code:`pipelinedb.conf`:
+
+.. code-block:: pipeline
+
+    continuous_triggers_enabled = on
+    wal_level = logical
+    max_wal_senders = 1
+    max_replication_slots = 1
+
+If you have more than one database with continuous triggers, :code:`max_wal_senders` and :code:`max_replication_slots` need to be increased to match the number of databases that you have.
+
 Creating Triggers
 -----------------
 
@@ -113,7 +133,7 @@ To connect to the push server, use the :code:`pipeline-recv-alerts` tool. You ca
       -d, --dbname=DBNAME     database name to connect to (default: "pipeline")
       -h, --host=HOSTNAME     database server host (default: "local socket")
       -p, --port=PORT         database server port (default: "5432")
-      -U, --username=USERNAME database user name (default: "jason")
+      -U, --username=USERNAME database user name (default: "username")
       -w, --no-password       never prompt for password
       -W, --password          force password prompt
 
