@@ -95,9 +95,9 @@ Example output:
 Receiving Alerts
 ----------------
 
-PipelineDB comes with a push server that can send connected clients alerts when a continuous trigger fires. To receive alerts for a trigger, use the built-in trigger function called :code:`pipeline_send_alert_new_row` when creating the trigger. This trigger function will sends the :code:`NEW` row to any clients connected to the push server whenever the trigger’s :code:`WHEN` condition evaluates to :code:`true`.
+PipelineDB comes with a push server that can send real-time alerts to clients. To receive alerts for a trigger, use the built-in trigger function called :code:`pipeline_send_alert_new_row` when creating the trigger. This trigger function will sends the :code:`NEW` row to any clients connected to the push server whenever the trigger’s :code:`WHEN` condition evaluates to :code:`true`.
 
-To connect to the push server, use the :code:`pipeline-recv-alerts` tool.
+To connect to the push server, use the :code:`pipeline-recv-alerts` tool. You can't use :code:`psql` or :code:`pipeline` with the push server.
 
 .. code-block:: pipeline
 
