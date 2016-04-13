@@ -6,7 +6,11 @@ Integrations
 Kafka
 ----------
 
-PipelineDB supports ingesting data from Kafka topics into streams. All of this functionality is contained in the **pipeline_kafka** extension. Internally, **pipeline_kafka** uses `PostgreSQL's COPY`_ infrastructure to transform Kafka messages into rows that PipelineDB understands. To enable the extension, it must be explicitly loaded:
+PipelineDB supports ingesting data from Kafka topics into streams. All of this functionality is contained in the **pipeline_kafka** extension. Internally, **pipeline_kafka** uses `PostgreSQL's COPY`_ infrastructure to transform Kafka messages into rows that PipelineDB understands.
+
+The repository for the extension is located `here <https://github.com/pipelinedb/pipeline_kafka>`_. Instructions for building and installing the extension can be found in the :code:`README.md` file.
+
+To enable the extension, it must be explicitly loaded:
 
 .. _`PostgreSQL's COPY`: http://www.postgresql.org/docs/current/static/sql-copy.html
 
