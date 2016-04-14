@@ -91,6 +91,8 @@ You can check out the :ref:`quickstart` section to start streaming data into Pip
 Debug Mode
 --------------------------
 
+.. versionadded:: 0.9.1
+
 The PipelineDB server can also be run in debug mode, which enables assertions as well as additional diagnostic output when something such as a crash occurs. Debug mode is designed to enable us to better support users when something goes wrong. It can be run in two ways:
 
 First, with the :code:`-d`/:code:`--debug` flag in conjunction with :code:`pipeline-ctl` binary:
