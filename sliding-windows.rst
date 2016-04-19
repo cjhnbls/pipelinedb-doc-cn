@@ -122,7 +122,7 @@ For example, to maintain counts over three different window sizes:
 
 .. code-block:: pipeline
 
-  CREATE CONTINUOUS VIEW sw0 WITH (max_age = '1 day') AS SELECT COUNT(*) FROM event_stream;
+  CREATE CONTINUOUS VIEW sw0 WITH (max_age = '1 hour') AS SELECT COUNT(*) FROM event_stream;
   CREATE VIEW sw1 WITH (max_age = '5 minutes') AS SELECT * FROM sw0;
   CREATE VIEW sw2 WITH (max_age = '10 minutes') AS SELECT * FROM sw0;
 
