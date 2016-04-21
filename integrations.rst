@@ -19,11 +19,18 @@ To enable the extension, it must be explicitly loaded:
 	# CREATE EXTENSION pipeline_kafka;
 	CREATE EXTENSION
 
-**pipeline_kafka** exposes all of its functionality through the following functions:
+Before you can start using **pipeline_kafka**, you must add a broker for your Kafka deployment.
+
+**kafka_add_broker ( hostname text )**
+
+**hostname** is a string of the form :code:`<host>[:<port>]`. Multiple brokers can be added by calling **kafka_add_broker** for each host.
+
+Consuming Messages
+~~~~~~~~~~~~~~~~~~
 
 **kafka_consume_begin ( topic text, stream text, format := 'text', delimiter := E'\\t', quote := NULL, escape := NULL, batchsize := 1000, parallelism := 1, start_offset := NULL )**
 
-Launches **parallelism** background worker processes that each reads messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process. The optional **format**, **delimiter**, **escape** and **quote** arguments are analagous to the :code:`FORMAT`, :code:`DELIMITER` :code:`ESCAPE` and :code:`QUOTE` options for the `PostgreSQL COPY`_ command. **batchsize** controls the :code:`batch_size` parameter passed to the Kafka client. **start_offset** specifies the offset from which to start reading the Kafka topic partitions. **pipeline_kafka** continuously saves the offset its read till durably in the database. If start_offset is :code:`NULL`, we start from the saved offset or the end of the partition if there is no saved offset. A start_offset of -1 will start reading end of each partition and -2 will start consuming from the beginning of each partition. Using any other start_offset would be an odd thing to do, since offsets are unrelated among partitions.
+Launches **parallelism** number of background worker processes that each reads messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process. The optional **format**, **delimiter**, **escape** and **quote** arguments are analagous to the :code:`FORMAT`, :code:`DELIMITER` :code:`ESCAPE` and :code:`QUOTE` options for the `PostgreSQL COPY`_ command. **batchsize** controls the :code:`batch_size` parameter passed to the Kafka client. **start_offset** specifies the offset from which to start reading the Kafka topic partitions. **pipeline_kafka** continuously saves the offset its read till durably in the database. If start_offset is :code:`NULL`, we start from the saved offset or the end of the partition if there is no saved offset. A start_offset of -1 will start reading end of each partition and -2 will start consuming from the beginning of each partition. Using any other start_offset would be an odd thing to do, since offsets are unrelated among partitions.
 
 .. _`PostgreSQL COPY`: http://www.postgresql.org/docs/current/static/sql-copy.html
 
@@ -39,7 +46,19 @@ Launches **parallelism** background worker processes that each reads messages fr
 
 	Same as above, but terminates all consumer processes.
 
----------------------
+Producing Messages
+~~~~~~~~~~~~~~~~~~
+
+**kafka_produce_message ( topic text, message bytea, partition := NULL, key := NULL )**
+
+Produces a single **message** into the target **topic**. Both **partition** and **key** are optional. By default the parition remains unassigned so the broker will decide which parition to produce the message to depending on the topic's paritioner function. If you want to produce the message into a specific partition, specify it as an :code:`integer`. **key** is a :code:`bytea` argument which will be used as the key to the partition function.
+
+**kafka_emit_tuple ( topic, partition, key )**
+
+This is a trigger function that can be used to emit tuples into a Kafka stream in JSON format. It can only be used for a :code:`AFTER INSERT OR UPDATE` and :code:`FOR EACH ROW` trigger. In case of an :code:`UPDATE`, the new updated tuples is emitted. A **topic** must be provided, where as **partition** and **key** are both optional. Since this is a trigger function, all arguments must be passed as string literals and there is no way to specify keyword arguments. If you only want to specify a **topic** and **key**, use :code:`'-1'` as the parition which will keep the partition unassigned. **key** is the name of the column in the tuple being emitted whose value should be used as the parition key.
+
+Metadata
+~~~~~~~~
 
 **pipeline_kafka** uses several tables to durably keep track of its own state across system restarts:
 
