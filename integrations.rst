@@ -49,6 +49,8 @@ Launches **parallelism** number of background worker processes that each reads m
 Producing Messages
 ~~~~~~~~~~~~~~~~~~
 
+.. versionadded:: 0.9.1
+
 **kafka_produce_message ( topic text, message bytea, partition := NULL, key := NULL )**
 
 Produces a single **message** into the target **topic**. Both **partition** and **key** are optional. By default the parition remains unassigned so the broker will decide which parition to produce the message to depending on the topic's paritioner function. If you want to produce the message into a specific partition, specify it as an :code:`integer`. **key** is a :code:`bytea` argument which will be used as the key to the partition function.
