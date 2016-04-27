@@ -3,8 +3,8 @@
 Integrations
 ============================
 
-Kafka
-----------
+Apache Kafka
+------------
 
 PipelineDB supports ingesting data from Kafka topics into streams. All of this functionality is contained in the **pipeline_kafka** extension. Internally, **pipeline_kafka** uses `PostgreSQL's COPY`_ infrastructure to transform Kafka messages into rows that PipelineDB understands.
 
