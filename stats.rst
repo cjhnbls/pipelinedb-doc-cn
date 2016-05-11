@@ -22,7 +22,7 @@ Statistics broken down by worker and combiner processes. These statistics only l
 	 start_time    | timestamp with time zone |
 	 input_rows    | bigint                   |
 	 output_rows   | bigint                   |
-	 updates       | bigint                   |
+	 updated_rows  | bigint                   |
 	 input_bytes   | bigint                   |
 	 output_bytes  | bigint                   |
 	 updated_bytes | bigint                   |
@@ -44,7 +44,7 @@ Continuous view-level statistics.
 	 type          | text   |
 	 input_rows    | bigint |
 	 output_rows   | bigint |
-	 updates       | bigint |
+	 updated_rows  | bigint |
 	 input_bytes   | bigint |
 	 output_bytes  | bigint |
 	 updated_bytes | bigint |
@@ -57,7 +57,7 @@ pipeline_stream_stats
 Stream-level statistics.
 
 .. code-block:: pipeline
-	
+
 					View "pg_catalog.pipeline_stream_stats"
 			Column     |  Type  | Modifiers
 	---------------+--------+-----------
@@ -81,7 +81,7 @@ Installation-wide statistics.
 	 start_time    | timestamp with time zone |
 	 input_rows    | bigint                   |
 	 output_rows   | bigint                   |
-	 updates       | bigint                   |
+	 updated_rows  | bigint                   |
 	 input_bytes   | bigint                   |
 	 output_bytes  | bigint                   |
 	 updated_bytes | bigint                   |
@@ -89,4 +89,3 @@ Installation-wide statistics.
 	 errors        | bigint                   |
 	 cv_create     | bigint                   |
 	 cv_drop       | bigint                   |
-

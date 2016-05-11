@@ -10,8 +10,12 @@ Stream-table JOINs
 
 Stream-table joins work by joining an incoming event with matching rows that exist in the joining table **when the event arrives**. That is, if rows are inserted into the table that would have matched with previously read events, the result of the continuous view containing the stream-table join will not be updated to reflect that. New joined rows are only produced at **event-read time**. Even if all rows in the joining table were deleted, the result of the continuous view would not change.
 
-Let's look at some examples.
+Supported Join Types
+--------------------
 
+.. versionadded:: 0.9.2
+
+Streams only support a subset of :code:`JOIN` types. :code:`CROSS JOIN` and :code:`FULL JOIN` are **not** supported. :code:`LEFT JOIN` and :code:`RIGHT JOIN` are only supported when the stream is on the side of the :code:`JOIN` whose unmatched rows are returned. :code:`ANTI JOIN` and :code:`SEMI JOIN` require an index on the column of the relation that is being join on.
 
 Examples
 -----------
