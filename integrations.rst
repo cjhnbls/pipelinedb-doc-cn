@@ -87,7 +87,7 @@ Amazon Kinesis
 
 PipelineDB also supports ingesting data from Amazon Kinesis streams. This functionality is provided by the **pipeline_kinesis** extension. Internally, the extension manages bgworkers that are consuming data using the `AWS SDK`_, and copying it into pipeline streams.
 
-The repository for the extension is located `here <https://github.com/pipelinedb/pipeline_kinesis`_. Instructions for building and installing the extension can be found in the :code:`README.md` file.
+The repository for the extension is located `here <https://github.com/pipelinedb/pipeline_kinesis>`_. Instructions for building and installing the extension can be found in the :code:`README.md` file.
 
 To enable the extension, it must be explicitly loaded:
 
