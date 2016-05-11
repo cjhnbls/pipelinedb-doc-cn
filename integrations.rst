@@ -10,7 +10,7 @@ PipelineDB supports ingesting data from Kafka topics into streams. All of this f
 
 The repository for the extension is located `here <https://github.com/pipelinedb/pipeline_kafka>`_. Instructions for building and installing the extension can be found in the :code:`README.md` file.
 
-**pipeline_kafka** internally uses shared memory to sync state between background workers. Therefore it must be loaded as a shared library. You can do so by adding the following line to your :code:`pipelinedb.conf` file. If you're already loading some shared libraries, then simply add :code:`pipeline_kafka` as a comma-separated list.
+**pipeline_kafka** internally uses shared memory to sync state between background workers, so it must be loaded as a shared library. You can do so by adding the following line to your :code:`pipelinedb.conf` file. If you're already loading some shared libraries, then simply add :code:`pipeline_kafka` as a comma-separated list.
 
 .. code-block:: pipeline
 
