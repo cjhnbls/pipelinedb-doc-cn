@@ -10,7 +10,13 @@ PipelineDB supports ingesting data from Kafka topics into streams. All of this f
 
 The repository for the extension is located `here <https://github.com/pipelinedb/pipeline_kafka>`_. Instructions for building and installing the extension can be found in the :code:`README.md` file.
 
-To enable the extension, it must be explicitly loaded:
+**pipeline_kafka** internally uses shared memory to sync state between background workers. Therefore it must be loaded as a shared library. You can do so by adding the following line to your :code:`pipelinedb.conf` file. If you're already loading some shared libraries, then simply add :code:`pipeline_kafka` as a comma-separated list.
+
+.. code-block:: pipeline
+
+  shared_preload_libraries = pipeline_kafka
+
+You can now load the extention into a database:
 
 .. _`PostgreSQL's COPY`: http://www.postgresql.org/docs/current/static/sql-copy.html
 
@@ -96,14 +102,14 @@ To enable the extension, it must be explicitly loaded:
 	# CREATE EXTENSION pipeline_kinesis;
 	CREATE EXTENSION
 
-To start ingestion, you must first tell pipeline where and how to get kinesis 
+To start ingestion, you must first tell pipeline where and how to get kinesis
 data by configuring an endpoint:
 
 **pipeline_kinesis.add_endpoint( name text, region text, credfile text := NULL, url text := NULL )**
 
-**name** is a unique identifier for the endpoint. **region** is a string identifying the AWS region, e.g. :code:`us-east-1` or :code:`us-west-2`. 
+**name** is a unique identifier for the endpoint. **region** is a string identifying the AWS region, e.g. :code:`us-east-1` or :code:`us-west-2`.
 
-**credfile** is an optional parameter that allows overriding the default file location for AWS credentials. 
+**credfile** is an optional parameter that allows overriding the default file location for AWS credentials.
 
 **url** is an optional parameter that allows the use a different (non-AWS) kinesis server. This is mostly useful for testing with local kinesis servers such as `kinesalite`_.
 
@@ -139,7 +145,7 @@ Starts a logical consumer group that consumes kinesis messages from kinesis **st
 
 **pipeline_kinesis.consume_end()**
 
-    Terminates all background worker processes for all previously started consumers. 
+    Terminates all background worker processes for all previously started consumers.
 
 Metadata
 ~~~~~~~~
