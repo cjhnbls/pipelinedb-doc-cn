@@ -27,6 +27,11 @@ Statistics broken down by worker and combiner processes. These statistics only l
 	 output_bytes  | bigint                   |
 	 updated_bytes | bigint                   |
 	 executions    | bigint                   |
+	 tuples_ps     | bigint                   |
+	 bytes_ps      | bigint                   |
+	 time_pb       | bigint                   |
+	 tuples_pb     | bigint                   |
+	 memory        | bigint                   |
 	 errors        | bigint                   |
 
 
@@ -48,6 +53,10 @@ Continuous view-level statistics.
 	 input_bytes   | bigint |
 	 output_bytes  | bigint |
 	 updated_bytes | bigint |
+	 tuples_ps     | bigint |
+	 bytes_ps      | bigint |
+	 time_pb       | bigint |
+	 tuples_pb     | bigint |
 	 errors        | bigint |
 
 
