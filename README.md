@@ -1,4 +1,6 @@
-### Getting started
+# PipelineDB Documentation
+
+## Getting started
 
 Install some dependencies:
 
@@ -15,7 +17,7 @@ To serve the docs over HTTP at `http://localhost:8000`, run:
 
 This will also automatically rebuild the docs and restart the HTTP server whenever a file is updated.
 
-### Publishing
+## Publishing
 
 These docs are automatically deployed to [docs.pipelinedb.com](http://docs.pipelinedb.com) whenever any changes are pushed to `master`. To publish the docs manually, you'll need to have the [AWS client](http://aws.amazon.com/cli/) installed and configured. Then, just run
 
