@@ -36,7 +36,15 @@ Consuming Messages
 
 **pipeline_kafka.consume_begin ( topic text, stream text, format := 'text', delimiter := E'\\t', quote := NULL, escape := NULL, batchsize := 1000, parallelism := 1, start_offset := NULL )**
 
-Launches **parallelism** number of background worker processes that each reads messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process. The optional **format**, **delimiter**, **escape** and **quote** arguments are analagous to the :code:`FORMAT`, :code:`DELIMITER` :code:`ESCAPE` and :code:`QUOTE` options for the `PostgreSQL COPY`_ command. **batchsize** controls the :code:`batch_size` parameter passed to the Kafka client. **start_offset** specifies the offset from which to start reading the Kafka topic partitions. **pipeline_kafka** continuously saves the offset its read till durably in the database. If start_offset is :code:`NULL`, we start from the saved offset or the end of the partition if there is no saved offset. A start_offset of -1 will start reading end of each partition and -2 will start consuming from the beginning of each partition. Using any other start_offset would be an odd thing to do, since offsets are unrelated among partitions.
+Launches **parallelism** number of background worker processes that each reads messages from the given Kafka topic into the given stream. The target stream must be created with :code:`CREATE STREAM` beforehand. All partitions of the given topic will be spread evenly across each worker process.
+
+The optional **format**, **delimiter**, **escape** and **quote** arguments are analagous to the :code:`FORMAT`, :code:`DELIMITER` :code:`ESCAPE` and :code:`QUOTE` options for the `PostgreSQL COPY`_ command, except that **pipeline_kafka** supports one additional format: **json**. The **json** format interprets each Kafka message as a JSON object.
+
+**batchsize** controls the :code:`batch_size` parameter passed to the Kafka client.
+
+**start_offset** specifies the offset from which to start reading the Kafka topic partitions.
+
+**pipeline_kafka** continuously saves the offset its read till durably in the database. If start_offset is :code:`NULL`, we start from the saved offset or the end of the partition if there is no saved offset. A start_offset of -1 will start reading end of each partition and -2 will start consuming from the beginning of each partition. Using any other start_offset would be an odd thing to do, since offsets are unrelated among partitions.
 
 .. _`PostgreSQL COPY`: http://www.postgresql.org/docs/current/static/sql-copy.html
 
