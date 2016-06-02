@@ -70,7 +70,7 @@ Run :code:`pipeline-ctl --help` to see other available functionality. Finally, t
 
 .. code-block:: sh
 
-	pipeline-server -D <data directory>
+	pipelinedb -D <data directory>
 
 To connect to a running server using the default database "pipeline", the :code:`pipeline` command can be used:
 
@@ -102,11 +102,11 @@ First, with the :code:`-d`/:code:`--debug` flag in conjunction with :code:`pipel
 	pipeline-ctl -d -D ... start
 	pipeline-ctl --debug -D ... start
 
-Or by executing the :code:`pipeline-server-debug` binary directly:
+Or by executing the :code:`pipelinedb-debug` binary directly:
 
 .. code-block:: sh
 
-	pipeline-server-debug -D <data directory>
+	pipelinedb-debug -D <data directory>
 
 .. note:: The debug-mode binary uses unoptimized code and includes assertions and debug symbols, and as a result is not optimized for performance. Debug mode should only be used when reproducing errors.
 

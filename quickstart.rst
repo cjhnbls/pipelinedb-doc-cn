@@ -8,7 +8,7 @@ Initialize a data directory and start the PipelineDB server:
 .. code-block:: bash
 
 	pipeline-init -D <data directory>
-	pipeline-server -D <data directory>
+	pipelinedb -D <data directory>
 
 Now enable continuous query execution. This only needs to be done once and is remembered across restarts.
 
