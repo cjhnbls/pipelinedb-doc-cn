@@ -38,7 +38,7 @@ Just double-click the :code:`pipelinedb-<version>.pkg` file to launch the OS X I
 
 .. code-block:: sh
 
-  brew install json-c freexl gdal libgeotiff
+  brew install json-c freexl
 
 Initializing PipelineDB
 ------------------------
