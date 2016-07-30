@@ -129,6 +129,27 @@ For example, to maintain counts over three different window sizes:
 Note that :code:`sw1` and :code:`sw2` are not defined using the :code:`CONTINUOUS` keyword. However, querying them will only return rows that are
 within their own respective windows.
 
+step_factor
 -------------------------
+
+Internally, the materialization tables backing sliding-window queries are aggregated as much as possible. However, rows can't be aggregated down to the same level of granularity as the query's final output because data must be removed from aggregate results when it goes out of window.
+
+For example, a sliding-window query that aggregates by hour may actually have minute-level aggregate data on disk so that only the last 60 minutes are included in the final aggregate result returned to readers. These internal, more granular aggregate levels for sliding-window queries are called "steps". An "overlay" view is placed over these step aggregates in order to perform the final aggregation at read time.
+
+You have probably noticed at this point that step aggregates can be a significant factor in determining sliding-window query read performance, because each final sliding-window aggregate group will internally be composed of a number of steps. The number of steps that each sliding-window aggregate group will have is tunable via the **step_factor** parameter:
+
+**step_factor**
+
+  An integer between 1 and 50 that specifices the size of a sliding-window step as a percentage of window size given by **max_age**. A smaller **step_factor** will provide more granularity in terms of when data goes out of window, at the cost of larger on-disk materialization table size. A larger **step_factor** will reduce on-disk materialization table size at the expense of less out-of-window granularity.
+
+Here's an example of using **step_factor** in conjunction with **max_age** to aggregate over an hour with a step size of 30 minutes:
+
+
+.. code-block:: pipeline
+
+  CREATE CONTINUOUS VIEW hourly (WITH max_age = '1 hour', step_factor = 50)
+    AS SELECT COUNT(*) FROM stream;
+
+-----------------------------
 
 Now that you know how sliding-window queries work, it's probably a good time to learn about :ref:`joins`.
