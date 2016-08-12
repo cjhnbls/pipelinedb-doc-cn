@@ -59,7 +59,9 @@ Its usage is as follows:
 		$ export PGBINNEW=newCluster/bin
 		$ pipeline-upgrade
 
-The idea is to point :code:`pipeline-upgrade` to both previous version's data directory and binary directory as well as a fresh data directory created by the version's :code:`pipeline-init`.
+The idea is to point :code:`pipeline-upgrade` to both the previous version's data directory and binary directory as well as a fresh data directory created by the version's :code:`pipeline-init`, and the binary directory of the new version.
+
+.. note:: You'll want to back up (just :code:`cp` it somewhere) the previous version's installation directory (usually :code:`/usr/lib/pipelinedb`) so you can still reference its binaries when upgrading.
 
 For example:
 
