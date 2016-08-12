@@ -149,7 +149,7 @@ Other Clients
 
 Since PipelineDB is compatible with PostgreSQL, writing to streams is possible from any client that works with PostgreSQL (and probably most clients that work with any SQL database for that matter), so it's not necessary to manually construct stream inserts. To get an idea of what that looks like, you should check out the :ref:`clients` section.
 
-Output streams
+Output Streams
 ----------------------
 
 Output streams make it possible to read from the stream of incremental changes made to any continuous view. Output streams are regular PipelineDB streams and as such can be ready by other continuous views or continuous transforms. Output streams are accessed via the the :code:`output_of` function invoked on a continuous view.
@@ -173,7 +173,7 @@ Now imagine a scenario in which we'd like to make a record of each time the sum 
 .. note:: **old** and **new** tuples must be wrapped in parentheses
 
 ==================================
-Output streams on sliding windows
+Output Streams on Sliding Windows
 ==================================
 
 For non-sliding-window continuous views, output streams are simply written to whenever a write to a stream yields a change to the continuous view's result. However, since sliding-window continuous views' results are also dependent on time, their output streams are automatically written to as their results change with time. That is, sliding-window continuous views' output streams will receive writes even if their input streams are not being written to.
