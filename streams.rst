@@ -7,16 +7,7 @@ Streams are the abstraction that allows clients to push data through :ref:`conti
 
 Namely, events only "exist" within a stream until they are consumed by all of the :ref:`continuous-views` that are reading from that stream. Even then, it is still not possible for users to :code:`SELECT` from streams. Streams serve exclusively as inputs to :ref:`continuous-views`.
 
-Finally, unlike tables, it is not necessary to create a schema for streams. As long as there is at least one continuous view reading from a stream, you can write to it. The only restriction is that all stream insertions require a column header.
-
-.. _static-streams:
-
-Static Streams
-----------------
-
-While PipelineDB does not require that streams be explicitly predeclared, it is possible to do so with statically typed streams. Static streams can yield performance increases due to less internal casting being required, as well as provide more control over how raw inputs are interpreted. Statically typed streams are created with :code:`CREATE STREAM`.
-
-The syntax for creating a static stream is similar to that of creating a table:
+The syntax for creating a stream is similar to that of creating a table:
 
 
 .. code-block:: pipeline
@@ -48,22 +39,22 @@ The syntax for creating a static stream is similar to that of creating a table:
 
 	The :code:`LIKE` clause specifies a stream from which the new stream automatically copies all column names and data types.
 
-Columns can be added to static streams using :code:`ALTER STREAM`:
+Columns can be added to streams using :code:`ALTER STREAM`:
 
 .. code-block:: pipeline
 
-  pipeline=# ALTER STREAM static_stream ADD COLUMN x integer;
+  pipeline=# ALTER STREAM stream ADD COLUMN x integer;
   ALTER STREAM
 
-.. note:: Columns cannot be dropped from static streams.
+.. note:: Columns cannot be dropped from streams.
 
-Static streams can be dropped with the :code:`DROP STREAM` command. Below is an example of creating a continuous view that reads from a static stream. Note that when a continuous view reads from a statically typed stream, it is not necessary to supply type information with :code:`::` syntax:
+Streams can be dropped with the :code:`DROP STREAM` command. Below is an example of creating a simple continuous view that reads from a stream.
 
 .. code-block:: pipeline
 
-  pipeline=# CREATE STREAM static_stream (x integer, y integer);
+  pipeline=# CREATE STREAM stream (x integer, y integer);
   CREATE STREAM
-  pipeline=# CREATE CONTINUOUS VIEW v AS SELECT sum(x + y) FROM static_stream;
+  pipeline=# CREATE CONTINUOUS VIEW v AS SELECT sum(x + y) FROM stream;
   CREATE CONTINUOUS VIEW
 
 Writing To Streams
@@ -158,6 +149,34 @@ Other Clients
 
 Since PipelineDB is compatible with PostgreSQL, writing to streams is possible from any client that works with PostgreSQL (and probably most clients that work with any SQL database for that matter), so it's not necessary to manually construct stream inserts. To get an idea of what that looks like, you should check out the :ref:`clients` section.
 
+Output streams
+----------------------
+
+Output streams make it possible to read from the stream of incremental changes made to any continuous view. Output streams are regular PipelineDB streams and as such can be ready by other continuous views or continuous transforms. Output streams are accessed via the the :code:`output_of` function invoked on a continuous view.
+
+Each row in an output stream always contains an old and new tuple representing a change made to the underlying continuous view. If the change corresponds to a continuous view insert, the old tuple will be :code:`NULL`. If the change corresponds to a delete (currently this is only possible when a sliding-window tuple goes out of window), the new tuple is :code:`NULL`.
+
+Let's look at a simple example to illustrate some of these concepts in action. Consider a trivial continuous view that simply sums a single column of a stream:
+
+.. code-block:: pipeline
+
+	CREATE CONTINUOUS VIEW v_sum AS SELECT sum(x) FROM stream;
+
+Now imagine a scenario in which we'd like to make a record of each time the sum changes by more than 10. We can create another continuous view that reads from :code:`v_sum`'s output stream to easily accomplish this:
+
+.. code-block:: pipeline
+
+  CREATE CONTINUOUS VIEW v_deltas AS SELECT abs((new).sum - (old).sum) AS delta
+    FROM output_of('v_sum')
+    WHERE abs((new).sum - (old).sum) > 10;
+
+.. note:: **old** and **new** tuples must be wrapped in parentheses
+
+==================================
+Output streams on sliding windows
+==================================
+
+For non-sliding-window continuous views, output streams are simply written to whenever a write to a stream yields a change to the continuous view's result. However, since sliding-window continuous views' results are also dependent on time, their output streams are automatically written to as their results change with time. That is, sliding-window continuous views' output streams will receive writes even if their input streams are not being written to.
 
 stream_targets
 ----------------------

@@ -21,6 +21,7 @@ Welcome to PipelineDB's documentation! Here you'll find (hopefully) everything y
 	joins
 	continuous-triggers
 	backups
+	upgrades
 	replication
 	integrations
 	stats

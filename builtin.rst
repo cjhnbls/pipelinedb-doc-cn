@@ -62,6 +62,16 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns true if the Bloom filter **probably** contains the given value, with a small false positive rate.
 
+**date_round ( timestamp, resolution )**
+
+  "Floors" a date down to the nearest **resolution** (or bucket) expressed as an interval. This is typically useful for summarization. For example, to summarize events into 10-minute buckets:
+
+.. code-block:: pipeline
+
+    CREATE CONTINUOUS VIEW v AS SELECT
+      date_round(arrival_timestam, '10 minutes') AS bucket_10m, COUNT(*) FROM stream
+      GROUP BY bucket_10m;
+
 **fss_increment ( fss, expression )**
 
 	Increments the frequency of the given expression within the given FSS and returns the resulting :ref:`fss`.

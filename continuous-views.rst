@@ -132,25 +132,6 @@ To view the continuous views currently in the system, you can run the following 
 
 Don't worry about all of the columns returned--most of them are only for internal use. The important columns are :code:`name`, which contains the name you gave the continuous view when you created it; and :code:`query`, which contains the continuous view's query definition.
 
-Inferred Schemas
---------------------
-
-Since streams and their columns appear in a continuous view 's :code:`FROM` clause, it seems natural that they would have to have a schema already declared, just like selecting from a table. But with PipelineDB, it is strictly unnecessary to ever explicitly define any sort of schema for a stream. All of the type information necessary for a continuous view to read from a stream may be acquired by what is known as an **inferred schema**. Perhaps this is best illustrated by a simple example.
-
-Consider the following simple continuous view:
-
-.. code-block:: pipeline
-
-  CREATE CONTINUOUS VIEW inferred AS
-  SELECT user_id::integer, COUNT(*), SUM(value::float8), AVG(value) FROM stream
-  GROUP BY user_id
-
-PipelineDB uses :code:`::` casting syntax to tell the continuous view what types to convert raw values to. Note that a stream column must only be typed a single time. All other references to it will use the same type.
-
-.. note:: All stream columns must appear in the continuous view 's definition. It is not possible to :code:`SELECT * FROM a_stream`.
-
-It is also possible to create statically typed streams, in which case casting and inference are not necessary. See for :ref:`static-streams` for more information about static streams.
-
 Data Retrieval
 -------------------
 
@@ -210,7 +191,7 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
 .. code-block:: pipeline
 
-  CREATE CONTINUOUS VIEW avg_of_forever AS SELECT AVG(x::integer) FROM one_trillion_events_stream
+  CREATE CONTINUOUS VIEW avg_of_forever AS SELECT AVG(x) FROM one_trillion_events_stream
 
 
 **Calculate the number of unique users seen per url referrer each day using only a constant amount of space per day:**
@@ -219,7 +200,7 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
   CREATE CONTINUOUS VIEW uniques AS
   SELECT date_trunc('day', arrival_timestamp) AS day,
-    referrer::text, COUNT(DISTINCT user_id::integer)
+    referrer, COUNT(DISTINCT user_id)
   FROM users_stream GROUP BY day, referrer;
 
 **Compute the linear regression of a stream of datapoints bucketed by minute:**
@@ -228,7 +209,7 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
   CREATE CONTINUOUS VIEW lreg AS
   SELECT date_trunc('minute', arrival_timestamp) AS minute,
-    regr_slope(y::integer, x::integer) AS mx,
+    regr_slope(y, x) AS mx,
     regr_intercept(y, x) AS b
   FROM datapoints_stream GROUP BY minute;
 
@@ -245,7 +226,7 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 .. code-block:: pipeline
 
   CREATE CONTINUOUS VIEW latency AS
-  SELECT percentile_cont(array[90, 95, 99]) WITHIN GROUP (ORDER BY latency::integer)
+  SELECT percentile_cont(array[90, 95, 99]) WITHIN GROUP (ORDER BY latency)
   FROM latency_stream;
 
 **How many of my sensors have ever been within 1000 meters of San Francisco?**
@@ -254,13 +235,11 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
   -- PipelineDB ships natively with geospatial support
   CREATE CONTINUOUS VIEW sf_proximity_count AS
-  SELECT COUNT(DISTINCT sensor_id::integer)
+  SELECT COUNT(DISTINCT sensor_id)
   FROM geo_stream WHERE ST_DWithin(
 
     -- Approximate SF coordinates
-    ST_GeographyFromText('SRID=4326;POINT(37 -122)')::geometry,
-
-    sensor_coords::geometry, 1000);
+    ST_GeographyFromText('SRID=4326;POINT(37 -122)'), sensor_coords, 1000);
 
 ----------
 
