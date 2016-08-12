@@ -4,7 +4,9 @@
 Upgrades
 ==============
 
-Most PipelineDB version upgrades will not require anything other than installing the newest version of PipelineDB and simply running the server on top of your data directory from the previous version. 
+.. versionadded:: 0.9.5
+
+Most PipelineDB version upgrades will not require anything other than installing the newest version of PipelineDB and simply running the server on top of your data directory from the previous version.
 
 However, some versions change the layout of the internal system catalogs, which requires migrating from the old catalog schema to the new one. One way to accomplish this is to simply dump_ your existing database from the old version, and restore_ it into a data directory created by the latest version.
 
@@ -19,7 +21,7 @@ Its usage is as follows:
 
 	Usage:
 		pipeline-upgrade [OPTION]...
-	
+
 	Options:
 		-b, --old-bindir=BINDIR       old cluster executable directory
 		-B, --new-bindir=BINDIR       new cluster executable directory
@@ -37,18 +39,18 @@ Its usage is as follows:
 		-v, --verbose                 enable verbose internal logging
 		-V, --version                 display version information, then exit
 		-?, --help                    show this help, then exit
-	
+
 	Before running pipeline-upgrade you must:
 		create a new database cluster (using the new version of pipeline-init)
 		shutdown the postmaster servicing the old cluster
 		shutdown the postmaster servicing the new cluster
-	
+
 	When you run pipeline-upgrade, you must provide the following information:
 		the data directory for the old cluster  (-d DATADIR)
 		the data directory for the new cluster  (-D DATADIR)
 		the "bin" directory for the old version (-b BINDIR)
 		the "bin" directory for the new version (-B BINDIR)
-	
+
 	For example:
 		pipeline-upgrade -d oldCluster/data -D newCluster/data \
 		  -b oldCluster/bin -B newCluster/bin
@@ -76,5 +78,3 @@ For example:
     # files to the new data directory
     $ pipeline-upgrade -b old_version/bin -d old_data_dir \
       -B new_version/bin -D new_data_dir
-
-    

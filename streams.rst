@@ -152,6 +152,8 @@ Since PipelineDB is compatible with PostgreSQL, writing to streams is possible f
 Output Streams
 ----------------------
 
+.. versionadded:: 0.9.5
+
 Output streams make it possible to read from the stream of incremental changes made to any continuous view. Output streams are regular PipelineDB streams and as such can be ready by other continuous views or continuous transforms. Output streams are accessed via the the :code:`output_of` function invoked on a continuous view.
 
 Each row in an output stream always contains an old and new tuple representing a change made to the underlying continuous view. If the change corresponds to a continuous view insert, the old tuple will be :code:`NULL`. If the change corresponds to a delete (currently this is only possible when a sliding-window tuple goes out of window), the new tuple is :code:`NULL`.
