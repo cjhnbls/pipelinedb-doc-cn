@@ -256,6 +256,14 @@ General Aggregates
 
 	Aggregates **key**-**value** pairs as a JSON object
 
+**jsonb_agg ( expression )**
+
+	Aggregates values as a JSONB array
+
+**jsonb_object_agg ( key, value )**
+
+	Aggregates **key**-**value** pairs as a JSONB object
+
 **max ( expression )**
 
 	Maximum value of expression across all input values
