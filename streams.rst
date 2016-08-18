@@ -222,8 +222,6 @@ Arrival Ordering
 
 By design, PipelineDB uses **arrival ordering** for event ordering. What this means is that events are timestamped when they arrive at the PipelineDB server, and are given an additional attribute called :code:`arrival_timestamp` containing that timestamp. The :code:`arrival_timestamp` can then be used in :ref:`continuous-views` with a temporal component, such as :ref:`sliding-windows` .
 
-.. note:: :code:`arrival_timestamp` is also implicitly used as the :code:`ORDER BY` clause in :ref:`continuous-views` involving :code:`PARTITION BY` and :code:`OVER`, as it is the only field that can be reasonably used for applying order to an infinite stream.
-
 Event Expiration
 ------------------
 
