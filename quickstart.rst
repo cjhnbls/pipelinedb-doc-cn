@@ -33,15 +33,16 @@ First, let's create our continuous view using :code:`psql`:
 .. code-block:: bash
 
 	psql -h localhost -p 5432 -d pipeline -c "
+	CREATE STREAM wiki_stream (hour timestamp, project text, title text, view_count bigint, size, bigint);
 	CREATE CONTINUOUS VIEW wiki_stats AS
-	SELECT hour::timestamp, project::text,
+	SELECT hour, project,
 		count(*) AS total_pages,
-		sum(view_count::bigint) AS total_views,
+		sum(view_count) AS total_views,
 		min(view_count) AS min_views,
 		max(view_count) AS max_views,
 		avg(view_count) AS avg_views,
 		percentile_cont(0.99) WITHIN GROUP (ORDER BY view_count) AS p99_views,
-		sum(size::bigint) AS total_bytes_served
+		sum(size) AS total_bytes_served
 	FROM wiki_stream
 	GROUP BY hour, project;"
 
