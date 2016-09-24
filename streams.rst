@@ -70,8 +70,6 @@ Stream writes use a simplified version of a PostgreSQL :code:`INSERT` statement.
 
 	INSERT INTO stream_name ( column_name [, ...] ) VALUES ( expression [, ...] ) [, ...]
 
-.. important:: It is an error to write to a stream that no *active* continuous views are reading from--the write will be rejected. This is to prevent against unknowingly writing data that is being silently ignored. See :ref:`activation-deactivation` for more information about active continuous views.
-
 Let's look at a few examples...
 
 Stream writes can be a single event at a time:
