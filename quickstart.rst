@@ -33,7 +33,7 @@ First, let's create our continuous view using :code:`psql`:
 .. code-block:: bash
 
 	psql -h localhost -p 5432 -d pipeline -c "
-	CREATE STREAM wiki_stream (hour timestamp, project text, title text, view_count bigint, size, bigint);
+	CREATE STREAM wiki_stream (hour timestamp, project text, title text, view_count bigint, size bigint);
 	CREATE CONTINUOUS VIEW wiki_stats AS
 	SELECT hour, project,
 		count(*) AS total_pages,
