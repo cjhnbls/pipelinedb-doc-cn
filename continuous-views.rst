@@ -164,6 +164,23 @@ jeff      20
 derek     30
 ========  ===========
 
+Time-to-Live (TTL) Expiration
+---------------------------------
+
+A very common PipelineDB pattern is to include a time-based column in aggregate groupings. Another related common pattern is removing old rows that are no longer needed, as determined by this time-based column. PipelineDB includes built-in per-row time-to-live (TTL) support to address these related patterns.
+
+TTL expiration behavior can be assigned to continuous views via the :code:`ttl` and :code:`ttl_column` storage parameters. The autovacuumer will :code:`DELETE` any rows having a :code:`ttl_column` value that is older than the interval specified by :code:`ttl` (relative to wall time). 
+Here's a version of the previous example that will tell the autovacuumer to delete any rows whose **minute** column is older than a month:
+
+.. code-block:: pipeline
+
+  CREATE CONTINUOUS VIEW v_ttl WITH (ttl = '1 month', ttl_column = 'minute') AS
+    SELECT minute(arrival_timestamp), COUNT(*) FROM some_stream GROUP BY minute;
+
+Note that TTL behavior is a hint to the autovacuumer, and thus will not guarantee that rows will be physically deleted exactly when they are expired. 
+
+If you'd like to guarantee that no TTL-expired rows will be read, you should create a view over the continuous view with a :code:`WHERE` clause that excludes expired rows at read time. 
+
 Activation and Deactivation
 ----------------------------
 

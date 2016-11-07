@@ -16,7 +16,7 @@ There are two important components of a sliding :code:`WHERE` clause:
 	A special attribute of all incoming events containing the time at which PipelineDB received them, as described in :ref:`arrival-ordering`.
 
 However, it is not necessary to explicitly add a :code:`WHERE` clause referencing these values. PipelineDB does this internally and it is only necessary to specify
-the :code:`max_age` storage parameter in a continuous view's definition.
+the :code:`sw` storage parameter in a continuous view's definition.
 
 These concepts are probably best illustrated by an example.
 
@@ -30,7 +30,7 @@ Even though sliding windows are a new concept for a SQL database, PipelineDB doe
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW recent_users WITH (max_age = '1 minute') AS
+	CREATE CONTINUOUS VIEW recent_users WITH (sw = '1 minute') AS
 	   SELECT user_id::integer FROM stream;
 
 Internally, PipelineDB will rewrite this query to the following:
@@ -41,7 +41,7 @@ Internally, PipelineDB will rewrite this query to the following:
      SELECT user_id::integer FROM stream
   WHERE (arrival_timestamp > clock_timestamp() - interval '1 minute');
 
-.. note:: PipelineDB allows users to manually construct a sliding window :code:`WHERE` clause when defining sliding-window continuous views, although it is recommended that :code:`max_age` be used in order to avoid tedium. 
+.. note:: PipelineDB allows users to manually construct a sliding window :code:`WHERE` clause when defining sliding-window continuous views, although it is recommended that :code:`sw` be used in order to avoid tedium. 
 
 The result of a :code:`SELECT` on this continuous view would only contain the specific users seen within the last minute. That is, repeated :code:`SELECT` s would contain different rows, even if the continuous view wasn't explicitly updated.
 
@@ -63,7 +63,7 @@ Let's look at a few examples:
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW count_recent_users WITH (max_age = '1 minute') AS
+	CREATE CONTINUOUS VIEW count_recent_users WITH (sw = '1 minute') AS
 	   SELECT COUNT(*) FROM stream;
 
 Each time a :code:`SELECT` is run on this continuous view, the count it returns will be the count of only the events seen within the last minute. For example, if events stopped coming in, the count would decrease each time a :code:`SELECT` was run on the continuous view. This behavior works for all of the :ref:`aggregates` that PipelineDB supports:
@@ -72,7 +72,7 @@ Each time a :code:`SELECT` is run on this continuous view, the count it returns 
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW sensor_temps WITH (max_age = '5 minutes') AS
+	CREATE CONTINUOUS VIEW sensor_temps WITH (sw = '5 minutes') AS
 	   SELECT sensor::integer, AVG(temp::numeric) FROM sensor_stream
 	GROUP BY sensor;
 
@@ -80,14 +80,14 @@ Each time a :code:`SELECT` is run on this continuous view, the count it returns 
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW uniques WITH (max_age = '30 days') AS
+	CREATE CONTINUOUS VIEW uniques WITH (sw = '30 days') AS
 	   SELECT COUNT(DISTINCT user::integer) FROM user_stream;
 
 **What is my server's 99th precentile response latency over the last 5 minutes?**
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS VIEW latency WITH (max_age = '5 minutes') AS
+	CREATE CONTINUOUS VIEW latency WITH (sw = '5 minutes') AS
 	   SELECT server_id::integer, percentile_cont(0.99)
 	   WITHIN GROUP (ORDER BY latency::numeric) FROM server_stream
 	GROUP BY server_id;
@@ -122,9 +122,9 @@ For example, to maintain counts over three different window sizes:
 
 .. code-block:: pipeline
 
-  CREATE CONTINUOUS VIEW sw0 WITH (max_age = '1 hour') AS SELECT COUNT(*) FROM event_stream;
-  CREATE VIEW sw1 WITH (max_age = '5 minutes') AS SELECT * FROM sw0;
-  CREATE VIEW sw2 WITH (max_age = '10 minutes') AS SELECT * FROM sw0;
+  CREATE CONTINUOUS VIEW sw0 WITH (sw = '1 hour') AS SELECT COUNT(*) FROM event_stream;
+  CREATE VIEW sw1 WITH (sw = '5 minutes') AS SELECT * FROM sw0;
+  CREATE VIEW sw2 WITH (sw = '10 minutes') AS SELECT * FROM sw0;
 
 Note that :code:`sw1` and :code:`sw2` are not defined using the :code:`CONTINUOUS` keyword. However, querying them will only return rows that are
 within their own respective windows.
@@ -140,14 +140,14 @@ You have probably noticed at this point that step aggregates can be a significan
 
 **step_factor**
 
-  An integer between 1 and 50 that specifices the size of a sliding-window step as a percentage of window size given by **max_age**. A smaller **step_factor** will provide more granularity in terms of when data goes out of window, at the cost of larger on-disk materialization table size. A larger **step_factor** will reduce on-disk materialization table size at the expense of less out-of-window granularity.
+  An integer between 1 and 50 that specifices the size of a sliding-window step as a percentage of window size given by **sw**. A smaller **step_factor** will provide more granularity in terms of when data goes out of window, at the cost of larger on-disk materialization table size. A larger **step_factor** will reduce on-disk materialization table size at the expense of less out-of-window granularity.
 
-Here's an example of using **step_factor** in conjunction with **max_age** to aggregate over an hour with a step size of 30 minutes:
+Here's an example of using **step_factor** in conjunction with **sw** to aggregate over an hour with a step size of 30 minutes:
 
 
 .. code-block:: pipeline
 
-  CREATE CONTINUOUS VIEW hourly (WITH max_age = '1 hour', step_factor = 50)
+  CREATE CONTINUOUS VIEW hourly (WITH sw = '1 hour', step_factor = 50)
     AS SELECT COUNT(*) FROM stream;
 
 -----------------------------
