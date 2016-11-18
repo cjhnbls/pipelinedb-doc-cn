@@ -43,6 +43,10 @@ PipelineDB-specific Aggregates
 
 	Adds all input values to a :ref:`count-min-sketch`.
 
+**cmsketch_agg ( expression, epsilon, p )**
+
+	Same as above, but accepts **epsilon** and **p** as parameters for the underlying **cmsketch**. **epsilon** determines the acceptable error rate of the **cmsketch**, and defaults to **0.002** (0.2%). **p** determines the confidence, and defaults to **0.995** (99.5%). Lower **epsilon** and **p** will result in smaller **cmsketch** structures, and vice versa.
+
 **cmsketch_merge_agg ( count-min sketch )**
 
 	Merges all input Count-min sketches into a single one containing all of the information of the input Count-min sketches.
