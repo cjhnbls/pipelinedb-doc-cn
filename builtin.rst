@@ -62,6 +62,14 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns true if the Bloom filter **probably** contains the given value, with a small false positive rate.
 
+**bloom_intersection ( bloom, bloom, ... )**
+
+	Returns a Bloom filter representing the intersection of the given Bloom filters.
+
+**bloom_union ( bloom, bloom, ... )**
+
+	Returns a Bloom filter representing the union of the given Bloom filters.
+
 **date_round ( timestamp, resolution )**
 
   "Floors" a date down to the nearest **resolution** (or bucket) expressed as an interval. This is typically useful for summarization. For example, to summarize events into 10-minute buckets:
@@ -115,6 +123,10 @@ PipelineDB ships with a number of functions that are useful for interacting with
 **hll_cardinality ( hll )**
 
 	Returns the cardinality of the given :ref:`hll`, with roughly a ~0.2% margin of error.
+
+**hll_union ( hll, hll, ... )**
+
+	Returns a HyperLogLog representing the union of the given HyperLogLogs.
 
 **set_cardinality ( array )**
 
