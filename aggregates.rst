@@ -81,6 +81,10 @@ PipelineDB-specific Aggregates
 
 	Adds all input values to a :ref:`hll`.
 
+**hll_agg ( expression, p )**
+
+	Adds all input values to a :ref:`hll` with the given **p**. A larger **p** reduces the HyperLogLog's error rate, at the expense of a larger size.
+
 **hll_union_agg ( hyperloglog )**
 
 	Takes the union of all input HyperLogLogs, resulting in a single HyperLogLog that contains all of the information of the input HyperLogLogs.
