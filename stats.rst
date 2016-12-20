@@ -33,6 +33,7 @@ Statistics broken down by worker and combiner processes. These statistics only l
 	 tuples_pb     | bigint                   |
 	 memory        | bigint                   |
 	 errors        | bigint                   |
+	 exec_ms       | bigint                   |
 
 
 pipeline_query_stats
@@ -58,6 +59,7 @@ Continuous view-level statistics.
 	 time_pb       | bigint |
 	 tuples_pb     | bigint |
 	 errors        | bigint |
+	 exec_ms       | bigint |
 
 
 pipeline_stream_stats
