@@ -181,6 +181,18 @@ Note that TTL behavior is a hint to the autovacuumer, and thus will not guarante
 
 If you'd like to guarantee that no TTL-expired rows will be read, you should create a view over the continuous view with a :code:`WHERE` clause that excludes expired rows at read time. 
 
+Modifying TTLs
+----------------------------
+
+TTLs can be added, modified, and removed from continuous views via the **set_ttl** function:
+
+**set_ttl ( cv_name, ttl, ttl_column )**
+
+	Update the given continuous view's TTL with the given paramters. **ttl** is an interval expressed as a string (e.g. :code:`'1 day'`), and **ttl_column** is the name of a timestamp-based column. 
+
+	Passing :code:`NULL` for both the **ttl** and **ttl_column** parameters will effectively remove a TTL from the given continuous view. Note that a TTL cannot be modified on or removed from a sliding-window continuous view.
+
+
 Activation and Deactivation
 ----------------------------
 
