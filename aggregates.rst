@@ -19,9 +19,10 @@ Below you'll find a description of all the aggregates that PipelineDB supports. 
 ----------------------------
 
 .. _pipeline-aggs:
+.. _bloom-aggs:
 
-PipelineDB-specific Aggregates
-----------------------------------
+Bloom Filter Aggregates
+-----------------------------
 
 **bloom_agg ( expression )**
 
@@ -39,6 +40,13 @@ PipelineDB-specific Aggregates
 
 	Takes the intersection of all input Bloom filters, resulting in a single Bloom filter containing only the information shared by all of the input Bloom filters.
 
+See :ref:`bloom-funcs` for functionality that can be used to manipulate Bloom filters.
+
+.. _cmsketch-aggs:
+
+Count-Min Sketch Aggregates
+-----------------------------
+
 **cmsketch_agg ( expression )**
 
 	Adds all input values to a :ref:`count-min-sketch`.
@@ -51,11 +59,12 @@ PipelineDB-specific Aggregates
 
 	Merges all input Count-min sketches into a single one containing all of the information of the input Count-min sketches.
 
-**exact_count_distinct ( expression )**
+See :ref:`cmsketch-funcs` for functionality that can be used to manipulate Count-Min sketches.
 
-  Counts the exact number of distinct values for the given expression. Since **count distinct** used in continuous views implicitly uses HyperLogLog for efficiency, **exact_count_distinct** can be used when the small margin of error inherent to using HyperLogLog is not acceptable.
+.. _fss-aggs:
 
-.. important:: **exact_count_distinct** must store all unique values observed in order to determine uniqueness, so it is not recommended for use when many unique values are expected.
+Filtered-Space Saving Aggregates
+--------------------------------------
 
 **fss_agg ( expression , k )**
 
@@ -69,13 +78,12 @@ PipelineDB-specific Aggregates
 
 	Merges all FSS inputs into a single FSS.
 
-**keyed_max ( key, value )**
+See :ref:`fss-funcs` for functionality that can be used to manipulate Filtered-Space Saving objects.
 
-	Most recent value associated with the maximum key.
+.. _hll-aggs:
 
-**keyed_min ( key, value )**
-
-	Most recent value associated with the minimum key.
+HyperLogLog Aggregates
+-----------------------------
 
 **hll_agg ( expression )**
 
@@ -89,11 +97,12 @@ PipelineDB-specific Aggregates
 
 	Takes the union of all input HyperLogLogs, resulting in a single HyperLogLog that contains all of the information of the input HyperLogLogs.
 
-.. _set-agg:
+See :ref:`hll-funcs` for functionality that can be used to manipulate HyperLogLog objects.
 
-**set_agg ( expression )**
+.. _tdigest-aggs:
 
-  Adds all input values to a set.
+T-Digest Aggregates
+-------------------------------
 
 **tdigest_agg ( expression )**
 
@@ -103,11 +112,46 @@ PipelineDB-specific Aggregates
 
   Merges all input T-Digest's into a single one representing all of the information contained in the input T-Digests.
 
+See :ref:`tdigest-funcs` for functionality that can be used to manipulate T-Digest objects.
+
+.. _misc-aggs:
+
+Miscellaneous Aggregates
+----------------------------
+
+**bucket_agg ( expression , bucket_id )**
+
+  Adds 4-byte hashes of each input expression to the bucket with the given **bucket_id**. Each hash may only be present precisely once in one bucket at any given time. Buckets can therefore be thought of as exclusive sets of hashes of the input expressions.
+
+See :ref:`misc-funcs` for functionality that can be used to manipulate **bucket_agg** objects.
+
+**exact_count_distinct ( expression )**
+
+  Counts the exact number of distinct values for the given expression. Since **count distinct** used in continuous views implicitly uses HyperLogLog for efficiency, **exact_count_distinct** can be used when the small margin of error inherent to using HyperLogLog is not acceptable.
+
+.. important:: **exact_count_distinct** must store all unique values observed in order to determine uniqueness, so it is not recommended for use when many unique values are expected.
+
 **first_values ( n ) WITHIN GROUP (ORDER BY sort_expression)**
 
   An ordered-set aggregate that stores the first **n** values ordered by the provided sort expression.
 
 .. note:: See also: :ref:`pipeline-funcs`, which explains some of the PipelineDB's non-aggregate functionality for manipulating Bloom filters, Count-min sketches, HyperLogLogs and T-Digests. Also, check out :ref:`probabilistic` for more information about what they are and how you can leverage them.
+
+**keyed_max ( key, value )**
+
+	Returns the **value** associated with the "highest" **key**.
+
+**keyed_min ( key, value )**
+
+	Returns the **value** associated with the "lowest" **key**.
+
+.. _set-agg:
+
+**set_agg ( expression )**
+
+  Adds all input values to a set.
+
+See :ref:`misc-funcs` for functionality that can be used to manipulate sets.
 
 ------------------------------------
 

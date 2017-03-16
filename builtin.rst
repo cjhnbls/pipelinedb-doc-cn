@@ -50,6 +50,11 @@ PipelineDB-specific Functions
 
 PipelineDB ships with a number of functions that are useful for interacting with these types. They are described below.
 
+.. _bloom-funcs:
+
+Bloom Filter Functions
+------------------------------
+
 **bloom_add ( bloom, expression )**
 
 	Adds the given expression to the :ref:`bloom-filter`.
@@ -70,15 +75,12 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns a Bloom filter representing the union of the given Bloom filters.
 
-**date_round ( timestamp, resolution )**
+See :ref:`bloom-aggs` for aggregates that can be used to generate Bloom filters.
 
-  "Floors" a date down to the nearest **resolution** (or bucket) expressed as an interval. This is typically useful for summarization. For example, to summarize events into 10-minute buckets:
+.. _fss-funcs:
 
-.. code-block:: pipeline
-
-    CREATE CONTINUOUS VIEW v AS SELECT
-      date_round(arrival_timestam, '10 minutes') AS bucket_10m, COUNT(*) FROM stream
-      GROUP BY bucket_10m;
+Filtered-Space Saving Functions
+---------------------------------
 
 **fss_increment ( fss, expression )**
 
@@ -100,6 +102,13 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns up to k values representing the given :ref:`fss` top-k most frequent values.
 
+See :ref:`fss-aggs` for aggregates that can be used to generate Filtered-Space Saving objects.
+
+.. _cmsketch-funcs:
+
+Count-Min Sketch Functions
+------------------------------
+
 **cmsketch_add ( cmsketch, expression, weight )**
 
 	Increments the frequency of the given expression by the specified weight within the given :ref:`count-min-sketch`.
@@ -116,6 +125,13 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns the total number of items added to the given :ref:`count-min-sketch`.
 
+See :ref:`cmsketch-aggs` for aggregates that can be used to generate Count-Min Sketches.
+
+.. _hll-funcs:
+
+HyperLogLog Functions
+-------------------------
+
 **hll_add ( hll, expression )**
 
 	Adds the given expression to the :ref:`hll`.
@@ -128,9 +144,12 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 	Returns a HyperLogLog representing the union of the given HyperLogLogs.
 
-**set_cardinality ( array )**
+See :ref:`hll-aggs` for aggregates that can be used to generate HyperLogLog objects.
 
-  Returns the cardinality of the given set array. Sets can be built using **set_agg**.
+.. _tdigest-funcs:
+
+T-Digest Functions
+-----------------------
 
 **tdigest_add ( tdigest, expression, weight )**
 
@@ -146,8 +165,64 @@ PipelineDB ships with a number of functions that are useful for interacting with
 
 .. note:: See also: :ref:`pipeline-aggs`, which are typically how these types are actually created.
 
+See :ref:`tdigest-aggs` for aggregates that can be used to generate T-Digest objects.
+
+.. _misc-funcs:
+
 Miscellaneous Functions
----------------------------------
+-----------------------------
+
+**bucket_cardinality ( bucket_agg, bucket_id )**
+
+  Returns the cardinality of the given **bucket_id** within the given **bucket_agg**.
+
+**bucket_ids ( bucket_agg )**
+
+  Returns an array of all bucket ids contained within the given **bucket_agg**.
+
+**bucket_cardinalities ( bucket_agg )**
+
+  Returns an array of cardinalities contained within the given **bucket_agg**, one for each bucket id.
+
+See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** objects.
+
+**date_round ( timestamp, resolution )**
+
+  "Floors" a date down to the nearest **resolution** (or bucket) expressed as an interval. This is typically useful for summarization. For example, to summarize events into 10-minute buckets:
+
+.. code-block:: pipeline
+
+    CREATE CONTINUOUS VIEW v AS SELECT
+      date_round(arrival_timestam, '10 minutes') AS bucket_10m, COUNT(*) FROM stream
+      GROUP BY bucket_10m;
+
+**year ( timestamp )**
+
+  Truncate the given timestamp down to its **year**.
+
+**month ( timestamp )**
+
+  Truncate the given timestamp down to its **month**.
+
+**day ( timestamp )**
+
+  Truncate the given timestamp down to its **day**.
+
+**hour ( timestamp )**
+
+  Truncate the given timestamp down to its **hour**.
+
+**minute ( timestamp )**
+
+  Truncate the given timestamp down to its **minute**.
+
+**second ( timestamp )**
+
+  Truncate the given timestamp down to its **second**.
+
+**set_cardinality ( array )**
+
+  Returns the cardinality of the given set array. Sets can be built using **set_agg**.
 
 **pipeline_version ( )**
 
