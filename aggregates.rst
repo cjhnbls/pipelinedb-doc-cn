@@ -494,14 +494,6 @@ This continuous view will continuously update the rank of :code:`42` given all o
 Unsupported Aggregates
 ---------------------------------
 
-**jsonb_agg ( any )**
-
-	Coming soon! For now use :code:`json_agg`.
-
-**jsonb_object_agg ( any, any )**
-
-	Coming soon! For now use :code:`json_object_agg`.
-
 **mode ( )**
 
 	Future releases of PipelineDB will include an implementation of an online mode estimation algorithm, but for now it's not supported
