@@ -14,7 +14,7 @@ Here's the syntax for creating a continuous transform:
 
 .. code-block:: pipeline
 
-	CREATE CONTINUOUS TRANSFORM name AS query THEN EXECUTE PROCEDURE function_name ( arguments )
+	CREATE CONTINUOUS TRANSFORM name AS query [ THEN EXECUTE PROCEDURE function_name ( arguments ) ]
 
 **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
@@ -32,9 +32,9 @@ Here's the syntax for creating a continuous transform:
       table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
       from_item [ NATURAL ] join_type from_item [ ON join_condition ]
 
-**function_name** is a user-supplied function that is declared as taking no arguments and returning type :code:`trigger`, which is executed for every single row that is output by the continuous transform.
+**function_name** is an optional user-supplied function that is declared as taking no arguments and returning type :code:`trigger`, which is executed for every single row that is output by the continuous transform.
 
-**arguments** is optional comma-separated list of arguments to be provided to the function when the trigger is executed. Arguments can only be literal string constants.
+**arguments** is an optional comma-separated list of arguments to be provided to the function when the trigger is executed. Arguments can only be literal string constants.
 
 .. note:: You can think of continuous transforms as being `triggers <http://www.postgresql.org/docs/9.1/static/sql-createtrigger.html>`_ on top of incoming streaming data where the trigger function is executed for each new row output by the continuous transform. Internally the function is executed as an :code:`AFTER INSERT FOR EACH ROW` trigger so there is no :code:`OLD` row and the :code:`NEW` row contains the row output by the continuous tranform.
 
@@ -63,28 +63,28 @@ Continuous Transform Output Streams
 
 .. versionadded:: 0.9.6
 
-All continuous transforms have :ref:`output-streams` associated with them, making it easy for other transforms or continuous views to read their output. A continuous transform's output stream simply contains whatever rows the transform selects.
+All continuous transforms have :ref:`output-streams` associated with them, making it easy for other transforms or continuous views to read from them. A continuous transform's output stream simply contains whatever rows the transform selects.
 
 For example, here's a simple transform that joins incoming rows with a table:
 
 .. code-block:: pipeline
 
   CREATE CONTINUOUS TRANSFORM t AS
-    SELECT t.y FROM stream s JOIN some_table t ON s.x = t.x;
+    SELECT t.y FROM some_stream s JOIN some_table t ON s.x = t.x;
 
 This transform now writes values from the joined table out to its output stream, which can be read using :code:`output_of`:
 
 .. code-block:: pipeline
 
   CREATE CONTINUOUS VIEW v AS
-    SELECT sum(t.y) FROM output_of('t');
+    SELECT sum(y) FROM output_of('t');
 
 Built-in Transform Triggers
 ---------------------------
 
 In order to provide more flexibility over a continuous transform's output than their built-in output streams provide, PipelineDB exposes an interface to receive a transform's rows using a trigger function. Trigger functions attached to tranforms can then do whatever you'd like with the rows they receive, including write out to other streams.
 
-Currently, PipelineDB provides only one built-in trigger function, :code:`pipeline_stream_insert`, that can be used with continous transforms. It inserts the output of the continuous transform into all the streams that are provided as the string literal arguments. For example:
+Currently, PipelineDB provides only one built-in trigger function, :code:`pipeline_stream_insert`, that can be used with continuous transforms. It inserts the output of the continuous transform into all the streams that are provided as the string literal arguments. For example:
 
 .. code-block:: pipeline
 
