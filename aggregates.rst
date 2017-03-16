@@ -111,6 +111,8 @@ PipelineDB-specific Aggregates
 
 ------------------------------------
 
+.. _combine:
+
 Combine
 ------------
 

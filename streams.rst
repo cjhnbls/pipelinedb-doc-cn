@@ -180,6 +180,60 @@ Output Streams on Sliding Windows
 
 For non-sliding-window continuous views, output streams are simply written to whenever a write to a stream yields a change to the continuous view's result. However, since sliding-window continuous views' results are also dependent on time, their output streams are automatically written to as their results change with time. That is, sliding-window continuous views' output streams will receive writes even if their input streams are not being written to.
 
+Delta Streams
+---------------------------
+
+.. versionadded:: 0.9.7
+
+In addition to **old** and **new** tuples written to a continuous view's output stream, a **delta** tuple is also emitted for each incremental change made to the continuous view. The **delta** tuple contains the value representing the "difference" between the **old** and **new** tuples. For trivial aggregates such as :code:`sum`, the delta between an **old** and **new** value is simply the scalar value :code:`(new).sum - (old).sum`, much like we did manually in the above example.
+
+Let's see what this actually looks like:
+
+.. code-block:: pipeline
+
+  pipeline=# CREATE CONTINUOUS VIEW v AS SELECT COUNT(*) FROM stream;
+  CREATE CONTINUOUS VIEW
+  pipeline=# CREATE CONTINUOUS VIEW v_real_deltas AS SELECT (delta).sum FROM output_of('v');
+  CREATE CONTINUOUS VIEW
+  pipeline=# INSERT INTO stream (x) VALUES (1);
+  INSERT 0 1
+  pipeline=# SELECT * FROM v_real_deltas;
+  sum
+  -----
+     1
+  (1 row)
+  pipeline=# INSERT INTO stream (x) VALUES (2);
+  INSERT 0 1
+  pipeline=# INSERT INTO stream (x) VALUES (3);
+  INSERT 0 1
+  pipeline=# SELECT * FROM v_real_deltas;
+  sum
+  -----
+     1
+     2
+     3
+  (3 rows)
+
+As you can see, **v_real_deltas** records the incremental changes resulting from each insertion. But :code:`sum` is relatively boring. The real magic of **delta** streams is that they work for all aggregates, and can even be combined to aggregate continuous views' output at different granularities.
+
+Let's look at a more interesting example. Suppose we have a continuous view counting the number of distinct users per minute:
+
+.. code-block:: pipeline
+
+  CREATE CONTINUOUS VIEW uniques_1m AS
+    SELECT minute(arrival_timestamp) AS ts, COUNT(DISTINCT user_id) AS uniques
+  FROM s GROUP BY ts;
+
+For archival and performance purposes we may want to down aggregate this continuous view to an hourly granularity after a certain period of time. With an aggregate such as :code:`COUNT(DISTINCT)`, we obviously can't simply sum the counts, because there would be duplicated uniques across the original **minute** boundaries. Instead, we can :ref:`combine` the distinct **delta** values produced by the output of the minute-level continuous view:
+
+.. code-block:: pipeline
+
+  CREATE CONTINUOUS VIEW uniques_hourly AS
+    SELECT hour((new).ts) AS ts, combine((delta).uniques) AS uniques
+  FROM output_of('uniques_1m') GROUP BY ts;
+
+The **uniques_hourly** continuous view will now contain hourly uniques rows that contain the *exact same information as if all of the original raw values were aggregated at the hourly level*. But instead of duplicating the work performed by reading the raw events, we only had to further aggregate the output of the minute-level aggregation.
+
 stream_targets
 ----------------------
 
