@@ -196,16 +196,17 @@ TTLs can be added, modified, and removed from continuous views via the **set_ttl
 Activation and Deactivation
 ----------------------------
 
-Because continuous views are continuously processing input streams, it is useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to temporarily stop continuous processing until the issue is resolved.
+Because continuous views are continuously processing input streams, it is sometimes useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to temporarily stop continuous processing until the issue is resolved.
 
 This level of control is provided by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When continuous views are *active*, they are actively reading from their input streams and incrementally updating their results accordingly. Conversely, *inactive* continuous views are not reading from their input streams and are not updating their results. PipelineDB remains functional when continuous views are inactive, and continuous views themselves are still readable--they're just not updating.
 
-The syntax for the :code:`ACTIVATE` and :code:`DEACTIVATE` commands is simple and takes no parameters:
+The syntax for the :code:`ACTIVATE` and :code:`DEACTIVATE` commands is simple:
 
 .. code-block:: pipeline
 
-	ACTIVATE | DEACTIVATE
+	ACTIVATE | DEACTIVATE [ continuous view or transform name ]
 
+When a continuous view or transform name is specified, only that object will be affected by the command. If no arguments are given, all continuous views and transforms are affected.
 
 .. important:: When continuous views are inactive, any events written to their input streams while they're inactive will never be read by that continuous view, even after they're activated again.
 
