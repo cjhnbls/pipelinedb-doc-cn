@@ -147,6 +147,8 @@ Other Clients
 
 Since PipelineDB is compatible with PostgreSQL, writing to streams is possible from any client that works with PostgreSQL (and probably most clients that work with any SQL database for that matter), so it's not necessary to manually construct stream inserts. To get an idea of what that looks like, you should check out the :ref:`clients` section.
 
+.. _output-streams:
+
 Output Streams
 ----------------------
 
