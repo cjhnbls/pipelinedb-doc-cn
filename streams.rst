@@ -216,7 +216,7 @@ Let's see what this actually looks like:
      3
   (3 rows)
 
-As you can see, **v_real_deltas** records the incremental changes resulting from each insertion. But :code:`sum` is relatively boring. The real magic of **delta** streams is that they work for all aggregates, and can even be combined to aggregate continuous views' output at different granularities.
+As you can see, **v_real_deltas** records the incremental changes resulting from each insertion. But :code:`sum` is relatively boring. The real magic of **delta** streams is that they work for all aggregates, and can even be used in conjunction with :ref:`combine` to efficiently aggregate continuous views' output at different granularities/groupings.
 
 Let's look at a more interesting example. Suppose we have a continuous view counting the number of distinct users per minute:
 
@@ -226,7 +226,7 @@ Let's look at a more interesting example. Suppose we have a continuous view coun
     SELECT minute(arrival_timestamp) AS ts, COUNT(DISTINCT user_id) AS uniques
   FROM s GROUP BY ts;
 
-For archival and performance purposes we may want to down aggregate this continuous view to an hourly granularity after a certain period of time. With an aggregate such as :code:`COUNT(DISTINCT)`, we obviously can't simply sum the counts, because there would be duplicated uniques across the original **minute** boundaries. Instead, we can :ref:`combine` the distinct **delta** values produced by the output of the minute-level continuous view:
+For archival and performance purposes we may want to down aggregate this continuous view to an hourly granularity after a certain period of time. With an aggregate such as :code:`COUNT(DISTINCT)`, we obviously can't simply sum the counts over all the minutes in an hour, because there would be duplicated uniques across the original **minute** boundaries. Instead, we can :ref:`combine` the distinct **delta** values produced by the output of the minute-level continuous view:
 
 .. code-block:: pipeline
 
