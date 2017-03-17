@@ -37,7 +37,7 @@ Configuration
 
 **continuous_query_ttl_expiration_threshold**
 
-  Sets the percentage of a TTL that must have elapsed since a reaper last deleted rows from a continuous view before deleting again. A lower percentage will yield more aggressive expiration at the expensive of more delete transactions on the continuous view. *Default: 5%.*
+  Sets the percentage of a TTL that must have elapsed since a reaper last deleted rows from a continuous view before attempting to delete from it again. A lower percentage will yield more aggressive expiration at the expensive of more delete transactions on the continuous view. *Default: 5%.*
 
 **continuous_query_batch_size**
 
