@@ -5,7 +5,7 @@ Configuration
 
 **stream_insert_level**
 
-  Determines when an client :code:`INSERT` operation will return. Options are:
+  Determines when a client :code:`INSERT` operation will return. The options are:
 
     * **async**: return as soon as the inserts have been loaded into the server's memory
     * **sync_receive** (default): return as soon as the inserts have been received by a worker process
