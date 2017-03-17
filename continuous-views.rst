@@ -169,9 +169,9 @@ derek     30
 Time-to-Live (TTL) Expiration
 ---------------------------------
 
-A very common PipelineDB pattern is to include a time-based column in aggregate groupings. Another related common pattern is removing old rows that are no longer needed, as determined by this time-based column. PipelineDB includes built-in per-continuous-view time-to-live (TTL) support to address these related patterns.
-
-TTL expiration behavior can be assigned to continuous views via the :code:`ttl` and :code:`ttl_column` storage parameters. Expiration is handled by one or more **"reaper"** processes that will :code:`DELETE` any rows having a :code:`ttl_column` value that is older than the interval specified by :code:`ttl` (relative to wall time). Here's a version of the previous example that will tell the reaper to delete any rows whose **minute** column is older than a month:
+A common PipelineDB pattern is to include a time-based column in aggregate groupings and removing old rows that are no longer needed, as determined by that column. While there are a number of ways to achieve this behavior, PipelineDB provides native support for row expiration via time-to-live (TTL) critera specified at the continuous view level.
+ 
+TTL expiration behavior can be assigned to continuous views via the :code:`ttl` and :code:`ttl_column` storage parameters. Expiration is handled by one or more **"reaper"** processes that will :code:`DELETE` any rows having a :code:`ttl_column` value that is older than the interval specified by :code:`ttl` (relative to wall time). Here's an example of a continuous view definition that will tell the reaper to delete any rows whose **minute** column is older than one month:
 
 .. code-block:: pipeline
 
@@ -197,7 +197,7 @@ TTLs can be added, modified, and removed from continuous views via the **set_ttl
 Activation and Deactivation
 ----------------------------
 
-Because continuous views are continuously processing input streams, it is sometimes useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to temporarily stop continuous processing until the issue is resolved.
+Because continuous views are continuously processing input streams, it can be useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to temporarily stop continuous processing for that view (or all of them) until the issue is resolved.
 
 This level of control is provided by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When continuous views are *active*, they are actively reading from their input streams and incrementally updating their results accordingly. Conversely, *inactive* continuous views are not reading from their input streams and are not updating their results. PipelineDB remains functional when continuous views are inactive, and continuous views themselves are still readable--they're just not updating.
 
@@ -274,4 +274,4 @@ Emphasizing the above notice, this continuous view would only ever store a singl
 
 ----------
 
-We hope you enjoyed learning all about continuous views. Next, you should probably check out how :ref:`streams` work.
+We hope you enjoyed learning all about continuous views! Next, you should probably check out how :ref:`streams` work.
