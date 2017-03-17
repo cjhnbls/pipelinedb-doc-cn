@@ -58,6 +58,8 @@ To view the continuous transforms currently in the system, you can run the follo
 
 	SELECT * FROM pipeline_transforms();
 
+.. _ct-output-streams:
+
 Continuous Transform Output Streams
 ---------------------------------------
 
