@@ -154,9 +154,9 @@ Output Streams
 
 .. versionadded:: 0.9.5
 
-Output streams make it possible to read from the stream of incremental changes made to any continuous view. Output streams are regular PipelineDB streams and as such can be ready by other continuous views or continuous transforms. Output streams are accessed via the the :code:`output_of` function invoked on a continuous view.
+Output streams make it possible to read from the stream of incremental changes made to any continuous view, or rows selected by a continuous transform. Output streams are regular PipelineDB streams and as such can be ready by other continuous views or transforms. They're accessed via the the :code:`output_of` function invoked on a continuous view or transform.
 
-Each row in an output stream always contains an old and new tuple representing a change made to the underlying continuous view. If the change corresponds to a continuous view insert, the old tuple will be :code:`NULL`. If the change corresponds to a delete (currently this is only possible when a sliding-window tuple goes out of window), the new tuple is :code:`NULL`.
+For continuous views, each row in an output stream always contains an **old** and **new** tuple representing a change made to the underlying continuous view. If the change corresponds to a continuous view insert, the old tuple will be :code:`NULL`. If the change corresponds to a delete (currently this is only possible when a sliding-window tuple goes out of window), the new tuple is :code:`NULL`.
 
 Let's look at a simple example to illustrate some of these concepts in action. Consider a trivial continuous view that simply sums a single column of a stream:
 
@@ -173,6 +173,8 @@ Now imagine a scenario in which we'd like to make a record of each time the sum 
     WHERE abs((new).sum - (old).sum) > 10;
 
 .. note:: **old** and **new** tuples must be wrapped in parentheses
+
+Check out :ref:`ct-output-streams` for more information about output streams on continuous transforms.
 
 ==================================
 Output Streams on Sliding Windows
