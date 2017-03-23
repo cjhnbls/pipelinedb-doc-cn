@@ -123,6 +123,10 @@ Miscellaneous Aggregates
 
   Adds 4-byte hashes of each input expression to the bucket with the given **bucket_id**. Each hash may only be present precisely once in one bucket at any given time. Buckets can therefore be thought of as exclusive sets of hashes of the input expressions.
 
+**bucket_agg ( expression , bucket_id , timestamp )**
+
+  Same as above, but allows a **timestamp** expression to determine bucket entry order. That is, only a value's *latest* entry will cause it to change buckets.
+
 See :ref:`misc-funcs` for functionality that can be used to manipulate **bucket_agg** objects.
 
 **exact_count_distinct ( expression )**
