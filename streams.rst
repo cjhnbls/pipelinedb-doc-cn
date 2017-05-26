@@ -154,7 +154,7 @@ Output Streams
 
 .. versionadded:: 0.9.5
 
-Output streams make it possible to read from the stream of incremental changes made to any continuous view, or rows selected by a continuous transform. Output streams are regular PipelineDB streams and as such can be ready by other continuous views or transforms. They're accessed via the the :code:`output_of` function invoked on a continuous view or transform.
+Output streams make it possible to read from the stream of incremental changes made to any continuous view, or rows selected by a continuous transform. Output streams are regular PipelineDB streams and as such can be read by other continuous views or transforms. They're accessed via the the :code:`output_of` function invoked on a continuous view or transform.
 
 For continuous views, each row in an output stream always contains an **old** and **new** tuple representing a change made to the underlying continuous view. If the change corresponds to a continuous view insert, the old tuple will be :code:`NULL`. If the change corresponds to a delete (currently this is only possible when a sliding-window tuple goes out of window), the new tuple is :code:`NULL`.
 
