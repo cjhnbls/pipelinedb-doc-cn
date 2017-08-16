@@ -106,14 +106,14 @@ To :code:`DROP` a continuous view from the system, use the :code:`DROP CONTINUOU
 
 This will remove the continuous view from the system along with all of its associated resources.
 
-TRUNCATE CONTINUOUS VIEW
----------------------------
+Truncating CONTINUOUS VIEWs
+-----------------------------
 
-To remove all of a continuous view's data without removing the continuous view itself, :code:`TRUNCATE CONTINUOUS VIEW` can be used:
+To remove all of a continuous view's data without removing the continuous view itself, the :code:`truncate_continuous_view` function can be used:
 
 .. code-block:: pipeline
 
-	TRUNCATE CONTINUOUS VIEW name
+    SELECT truncate_continuous_view('name');
 
 This command will efficiently remove all of the continuous view's rows, and is therefore analagous to `PostgreSQL's TRUNCATE`_ command.
 
@@ -199,15 +199,14 @@ Activation and Deactivation
 
 Because continuous views are continuously processing input streams, it can be useful to have a notion of starting and stopping that processing without having to completely shutdown PipelineDB. For example, if a continuous view incurs an unexpected amount of system load or begins throwing errors, it may be useful to temporarily stop continuous processing for that view (or all of them) until the issue is resolved.
 
-This level of control is provided by the :code:`ACTIVATE` and :code:`DEACTIVATE` commands, which are synonymous with "play" and "pause". When continuous views are *active*, they are actively reading from their input streams and incrementally updating their results accordingly. Conversely, *inactive* continuous views are not reading from their input streams and are not updating their results. PipelineDB remains functional when continuous views are inactive, and continuous views themselves are still readable--they're just not updating.
+This level of control is provided by the :code:`activate` and :code:`deactivate` functions, which are synonymous with "play" and "pause". When continuous views are *active*, they are actively reading from their input streams and incrementally updating their results accordingly. Conversely, *inactive* continuous views are not reading from their input streams and are not updating their results. PipelineDB remains functional when continuous views are inactive, and continuous views themselves are still readable--they're just not updating.
 
-The syntax for the :code:`ACTIVATE` and :code:`DEACTIVATE` commands is simple:
+The function signatures take only a continuous view or transform name:
 
 .. code-block:: pipeline
 
-	ACTIVATE | DEACTIVATE [ continuous view or transform name ]
-
-When a continuous view or transform name is specified, only that object will be affected by the command. If no arguments are given, all continuous views and transforms are affected.
+	SELECT activate('continuous_view_or_transform');
+	SELECT deactivate('continuous_view_or_transform');
 
 .. important:: When continuous views are inactive, any events written to their input streams while they're inactive will never be read by that continuous view, even after they're activated again.
 

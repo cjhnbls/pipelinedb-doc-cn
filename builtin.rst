@@ -172,6 +172,10 @@ See :ref:`tdigest-aggs` for aggregates that can be used to generate T-Digest obj
 Miscellaneous Functions
 -----------------------------
 
+**activate ( name )**
+
+  Acitvates the given continuous view or transform.
+
 **bucket_cardinality ( bucket_agg, bucket_id )**
 
   Returns the cardinality of the given **bucket_id** within the given **bucket_agg**.
@@ -196,6 +200,10 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
       date_round(arrival_timestam, '10 minutes') AS bucket_10m, COUNT(*) FROM stream
       GROUP BY bucket_10m;
 
+**deactivate ( name )**
+
+  Deacitvates the given continuous view or transform.
+
 **year ( timestamp )**
 
   Truncate the given timestamp down to its **year**.
@@ -215,6 +223,10 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 **minute ( timestamp )**
 
   Truncate the given timestamp down to its **minute**.
+
+**truncate_continuous_view ( name )**
+
+  Truncates all rows from the given continuous view.
 
 **second ( timestamp )**
 
