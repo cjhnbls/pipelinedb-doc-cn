@@ -25,7 +25,6 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
       [ FROM from_item [, ...] ]
       [ WHERE condition ]
       [ GROUP BY expression [, ...] ]
-      [ HAVING condition [, ...] ]
       [ WINDOW window_name AS ( window_definition ) [, ...] ]
 
   where from_item can be one of:
