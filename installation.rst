@@ -19,7 +19,9 @@ Once you have PostgreSQL installed on your system, you just need to install the 
 apt
 ------------
 
-First, add our **apt** repository to your system:
+First, add our **apt** repository to your system (`inspect apt.sh`_):
+
+.. _`inspect apt.sh`: http://download.pipelinedb.com/apt.sh
 
 .. code-block:: sh
 
@@ -34,7 +36,9 @@ Now simply install the latest PipelineDB package:
 yum
 ---------------
 
-Add our **yum** repository to your system:
+Add our **yum** repository to your system (`inspect yum.sh`_):
+
+.. _`inspect yum.sh`: http://download.pipelinedb.com/yum.sh
 
 .. code-block:: sh
 
