@@ -74,26 +74,6 @@ To install the PipelineDB Debian package, run:
 
 	sudo dpkg -i pipelinedb-postgresql-<pg version>_<pipelindb version>.deb
 
-OS X
-----
-
-Just double-click the :code:`pipelinedb-<version>.pkg` file to launch the OS X Installer. For older versions of OS X, you might need to install a few packages that PipelineDB depends on:
-
-.. code-block:: sh
-
-  brew install json-c freexl
-
-Initializing PipelineDB
-------------------------
-
-Once both PostgreSQL and PipelineDB are installed, you can initialize a PostgreSQL database directory:
-
-.. code-block:: sh
-
-	initdb -D <data directory>
-
-where :code:`<data directory>` is a nonexistent directory. Once this directory has been successfully initialized, you can run PostgreSQL.
-
 Creating the PipelineDB Extension
 ------------------------------------------
 
@@ -151,18 +131,3 @@ For example, to allow incoming connections from any host:
 -------------
 
 Now you're ready to put PipelineDB to work! Check out the :ref:`continuous-views` or :ref:`quickstart` sections to get started.
-
-Docker
----------------------
-
-A PipelineDB Docker image is also available (thanks to Josh Berkus). It can be run with:
-
-.. code-block:: sh
-
-  docker run -v /dev/shm:/dev/shm pipelinedb/pipelinedb-postgresql-10
-
-This image exposes port :code:`5432` for interaction with PipelineDB; credentials are user :code:`pipeline`, password :code:`pipeline`.
-
-The database gets installed to :code:`/mnt/pipelinedb`, so if you want to put that on real storage, or modify the configuration files, then simply mount that as a volume before starting the image for the first time.
-
-.. note:: The configuration which installs with the image is appropriate for testing on your laptop. If you deploy this to production, you will want to edit pipelinedb.conf and substantially increase resource limits for most things.
