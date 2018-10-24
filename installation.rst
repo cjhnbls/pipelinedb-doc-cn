@@ -31,7 +31,7 @@ Now simply install the latest PipelineDB package:
 
 .. code-block:: sh
 
-	apt-get install pipelinedb-postgresql-10
+	sudo apt-get install pipelinedb-postgresql-10
 
 yum
 ---------------
@@ -48,7 +48,7 @@ Install the latest PipelineDB package:
 
 .. code-block:: sh
 
- yum install pipelinedb-postgresql-10
+ sudo yum install pipelinedb-postgresql-10
 
 .. note:: **apt** and **yum** repositories only need to be added to your system a single time. Once you've added them, you don't need to run these scripts again. You need only run the installation commands to get new versions of PipelineDB.
 
