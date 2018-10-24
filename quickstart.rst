@@ -3,19 +3,14 @@
 Quickstart
 =======================
 
-Initialize a data directory and start the PipelineDB server:
+Initialize a PostgreSQL data directory and start server:
 
 .. code-block:: bash
 
-	pipeline-init -D <data directory>
-	pipelinedb -D <data directory>
+	initdb -D <data directory>
+	postgres -D <data directory>
 
 Now enable continuous query execution. This only needs to be done once and is remembered across restarts.
-
-.. code-block:: bash
-
-	psql -h localhost -p 5432 -d pipeline -c "ACTIVATE"
-
 
 Wikipedia Traffic
 -----------------
@@ -32,9 +27,15 @@ First, let's create our continuous view using :code:`psql`:
 
 .. code-block:: bash
 
-	psql -h localhost -p 5432 -d pipeline -c "
-	CREATE STREAM wiki_stream (hour timestamp, project text, title text, view_count bigint, size bigint);
-	CREATE CONTINUOUS VIEW wiki_stats AS
+	psql -c "
+	CREATE FOREIGN TABLE wiki_stream (
+		hour timestamp,
+		project text,
+		title text,
+		view_count bigint,
+		size bigint)
+	SERVER pipelinedb;
+	CREATE VIEW wiki_stats WITH (action=materialize) AS
 	SELECT hour, project,
 		count(*) AS total_pages,
 		sum(view_count) AS total_views,
@@ -51,12 +52,12 @@ Now we'll decompress the dataset as a stream and write it to :code:`stdin`, whic
 .. code-block:: bash
 
 		curl -sL http://pipelinedb.com/data/wiki-pagecounts | gunzip | \
-			psql -h localhost -p 5432 -d pipeline -c "
+			psql -c "
 			COPY wiki_stream (hour, project, title, view_count, size) FROM STDIN"
 
 Note that this dataset is large, so the above command will run for quite a while (cancel it whenever you'd like). As it's running, select from the continuous view as it ingests data from the input stream:
 
 .. code-block:: bash
 
-	psql -h localhost -p 5432 -d pipeline -c "
+	psql -c "
 	SELECT * FROM wiki_stats ORDER BY total_views DESC";

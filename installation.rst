@@ -1,35 +1,74 @@
 .. _installation:
 
-Installation
-==============
+PipelineDB Installation
+===========================
 
-Download the PipelineDB binary for your OS from our `downloads <http://pipelinedb.com/download>`_ page.
+Install PostgreSQL
+---------------------------
 
-RPM
------------
+Since PipelineDB runs as an extension to PostreSQL, begin by `installing PostgreSQL`_.
+
+.. note:: PipelineDB currently supports PostgreSQL versions 10.1, 10.2, 10.3, 10.4 and 10.5.
+
+.. _`installing PostgreSQL`: https://www.postgresql.org/download/
+
+Once you have PostgreSQL installed on your system, you just need to install the PipelineDB binaries and then create the PipelineDB extension within your PostgreSQL database. You can install binaries from our **apt** or **yum** repositories or you can download packages from our `release archives`_ and install them directly.
+
+.. _`release archives`: https://github.com/pipelinedb/pipelinedb/releases
+
+apt
+------------
+
+First, add our **apt** repository to your system:
+
+.. code-block:: sh
+
+	curl -s http://download.pipelinedb.com/apt.sh | sudo bash
+
+Now simply install the latest PipelineDB package:
+
+.. code-block:: sh
+
+	apt-get install pipelinedb-postgresql-10
+
+yum
+---------------
+
+Add our **yum** repository to your system:
+
+.. code-block:: sh
+
+	curl -s http://download.pipelinedb.com/yum.sh | sudo bash
+
+Install the latest PipelineDB package:
+
+.. code-block:: sh
+
+ yum install pipelinedb-postgresql-10
+
+.. note:: **apt** and **yum** repositories only need to be added to your system a single time. Once you've added them, you don't need to run these scripts again. You need only run the installation commands to get new versions of PipelineDB.
+
+-------------------------
+
+You may also download binary packages from our `release <https://github.com/pipelinedb/pipelinedb/releases>`_ archives and install them directly.
+
+RPM Packages
+--------------------
 
 To install the PipelineDB RPM package, run:
 
 .. code-block:: sh
 
-	sudo rpm -ivh pipelinedb-<version>.rpm
+	sudo rpm -ivh pipelinedb-postgresql-<pg version>_<pipelindb version>.rpm
 
-This will install PipelineDB at :code:`/usr/lib/pipelinedb`. To install at a prefix of your choosing, use the :code:`--prefix` argument:
-
-.. code-block:: sh
-
-	sudo rpm -ivh --prefix=/path/to/pipelinedb pipelinedb-<version>.rpm
-
-Debian
------------
+Debian Packages
+---------------------
 
 To install the PipelineDB Debian package, run:
 
 .. code-block:: sh
 
-	sudo dpkg -i pipelinedb-<version>.deb
-
-This will install PipelineDB at :code:`/usr/lib/pipelinedb`.
+	sudo dpkg -i pipelinedb-postgresql-<pg version>_<pipelindb version>.deb
 
 OS X
 ----
@@ -43,82 +82,50 @@ Just double-click the :code:`pipelinedb-<version>.pkg` file to launch the OS X I
 Initializing PipelineDB
 ------------------------
 
-Once PipelineDB is installed, you can initialize a database directory. This is where PipelineDB will store all the files and data associated with a database. To initialize a data directory, run:
+Once both PostgreSQL and PipelineDB are installed, you can initialize a PostgreSQL database directory:
 
 .. code-block:: sh
 
-	pipeline-init -D <data directory>
+	initdb -D <data directory>
 
-where :code:`<data directory>` is a nonexistent directory. Once this directory has been successfully initialized, you can run a PipelineDB server.
+where :code:`<data directory>` is a nonexistent directory. Once this directory has been successfully initialized, you can run PostgreSQL.
 
-Running PipelineDB
+Creating the PipelineDB Extension
+------------------------------------------
+
+In order for PipelineDB to run, the :code:`shared_preload_libraries` configuration parameter must be set in :code:`postgresql.conf`, which can be found underneath your data directory. It's also a good idea to set :code:`max_worker_processes` to something reasonably high to give PipelineDB worker processes plenty of capacity:
+
+.. code-block:: sh
+
+	# At the bottom of <data directory>/postgresql.conf
+	shared_preload_libraries = 'pipelinedb'
+	max_worker_processes = 128
+	
+Running PostgreSQL
 ---------------------
 
 To run the PipelineDB server in the background, use the :code:`pipeline-ctl` driver and point it to your newly initialized data directory:
 
 .. code-block:: sh
 
-	pipeline-ctl -D <data directory> -l pipelinedb.log start
+	pg_ctl -D <data directory> -l postgresql.log start
 
-The :code:`-l` option specifies the path of a logfile to log to. The :code:`pipeline-ctl` driver can also be used to stop running servers:
-
-.. code-block:: sh
-
-	pipeline-ctl -D <data directory> stop
-
-Run :code:`pipeline-ctl --help` to see other available functionality. Finally, the PipelineDB server can also be run in the foreground directly:
+To connect to a running server using the default database, use PostgreSQL's standard client, `psql`_. Since PipelineDB is an extension of PostgreSQL, you'll need to create the PipelineDB extension:
 
 .. code-block:: sh
 
-	pipelinedb -D <data directory>
+	psql -c "CREATE EXTENSION pipelinedb"
 
-To connect to a running server using the default database "pipeline", the :code:`pipeline` command can be used:
+Once the PipelineDB extension has been created, you're ready to start using PipelineDB!
 
-.. code-block:: sh
-
-	pipeline pipeline
-
-`PostgreSQL's`_ standard client, :code:`psql`, can also be used to connect to PipelineDB. Note that PipelineDB's default port is :code:`5432`:
-
-.. _`PostgreSQL's`:  http://www.postgresql.org/download/
-
-.. code-block:: sh
-
-	psql -p 5432 -h localhost pipeline
+.. _`psql`:  https://www.postgresql.org/docs/current/static/app-psql.html
 
 You can check out the :ref:`quickstart` section to start streaming data into PipelineDB right now.
-
-Debug Mode
---------------------------
-
-.. versionadded:: 0.9.1
-
-The PipelineDB server can also be run in debug mode, which enables assertions as well as additional diagnostic output when something such as a crash occurs. Debug mode is designed to enable us to better support users when something goes wrong. It can be run in two ways:
-
-First, with the :code:`-d`/:code:`--debug` flag in conjunction with :code:`pipeline-ctl` binary:
-
-.. code-block:: sh
-
-	pipeline-ctl -d -D ... start
-	pipeline-ctl --debug -D ... start
-
-Or by executing the :code:`pipelinedb-debug` binary directly:
-
-.. code-block:: sh
-
-	pipelinedb-debug -D <data directory>
-
-.. note:: The debug-mode binary uses unoptimized code and includes assertions and debug symbols, and as a result is not optimized for performance. Debug mode should only be used when reproducing errors.
-
 
 Configuration
 ---------------------
 
-PipelineDB's configuration is generally synonymous with `PostgreSQL's configuration`_, so that is a good place to look for details about what everything in :code:`pipelinedb.conf` does.
-
-.. _`PostgreSQL's configuration`: http://www.postgresql.org/docs/current/static/runtime-config.html
-
-By default, PipelineDB is not configured to allow incoming connections from remote hosts. To enable incoming connections, first set the following line in :code:`pipelinedb.conf`:
+By default, PostgreSQL is not configured to allow incoming connections from remote hosts. To enable incoming connections, first set the following line in :code:`postgresql.conf`:
 
 .. code-block:: sh
 
@@ -148,7 +155,7 @@ A PipelineDB Docker image is also available (thanks to Josh Berkus). It can be r
 
 .. code-block:: sh
 
-  docker run -v /dev/shm:/dev/shm pipelinedb/pipelinedb
+  docker run -v /dev/shm:/dev/shm pipelinedb/pipelinedb-postgresql-10
 
 This image exposes port :code:`5432` for interaction with PipelineDB; credentials are user :code:`pipeline`, password :code:`pipeline`.
 

@@ -14,7 +14,6 @@ Below you'll find a description of all the aggregates that PipelineDB supports. 
 .. note:: For the aggregates that have PostgreSQL and PostGIS equivalents, it may be helpful for you to consult the excellent `PostgreSQL aggregates`_ or `PostGIS aggregates`_ documentation.
 
 .. _`PostgreSQL aggregates`: http://www.postgresql.org/docs/current/static/functions-aggregate.html
-.. _`PostGIS aggregates`: http://postgis.net/docs/manual-1.4/ch08.html#PostGIS_Aggregate_Functions
 
 ----------------------------
 
@@ -44,41 +43,41 @@ See :ref:`bloom-funcs` for functionality that can be used to manipulate Bloom fi
 
 .. _cmsketch-aggs:
 
-Count-Min Sketch Aggregates
+Frequency Tracking Aggregates
 -----------------------------
 
-**cmsketch_agg ( expression )**
+**freq_agg ( expression )**
 
-	Adds all input values to a :ref:`count-min-sketch`.
+	Adds all input values to an internal :ref:`count-min-sketch`, enabling efficient online computation of the frequency of each input expression.
 
-**cmsketch_agg ( expression, epsilon, p )**
+**freq_agg ( expression, epsilon, p )**
 
 	Same as above, but accepts **epsilon** and **p** as parameters for the underlying **cmsketch**. **epsilon** determines the acceptable error rate of the **cmsketch**, and defaults to **0.002** (0.2%). **p** determines the confidence, and defaults to **0.995** (99.5%). Lower **epsilon** and **p** will result in smaller **cmsketch** structures, and vice versa.
 
-**cmsketch_merge_agg ( count-min sketch )**
+**freq_merge_agg ( count-min sketch )**
 
 	Merges all input Count-min sketches into a single one containing all of the information of the input Count-min sketches.
 
 See :ref:`cmsketch-funcs` for functionality that can be used to manipulate Count-Min sketches.
 
-.. _fss-aggs:
+.. _topk-aggs:
 
-Filtered-Space Saving Aggregates
+Top-K Aggregates
 --------------------------------------
 
-**fss_agg ( expression , k )**
+**topk_agg ( expression , k )**
 
-	Adds all input values to a :ref:`fss` data structure sized for the given k, incrementing each value's count by 1 each time it is added.
+	Tracks the top k input expressions by adding all input values to a :ref:`topk` data structure sized for the given **k**, incrementing each value's count by **1** each time it is added.
 
-**fss_agg_weighted (expression, k, weight )**
+**topk_agg (expression, k, weight )**
 
-	Adds all input values to an FSS sized for the given k, incrementing each value's count by the given weight each time it is added.
+	Same as above, but associates the given weight to the input expression (rather than a default weight of 1).
 
-**fss_merge_agg ( fss )**
+**topk_merge_agg ( topk )**
 
-	Merges all FSS inputs into a single FSS.
+	Merges all **topk** inputs into a single **topk** data structure.
 
-See :ref:`fss-funcs` for functionality that can be used to manipulate Filtered-Space Saving objects.
+See :ref:`topk-funcs` for functionality that can be used to manipulate **topk** objects.
 
 .. _hll-aggs:
 
@@ -101,18 +100,18 @@ See :ref:`hll-funcs` for functionality that can be used to manipulate HyperLogLo
 
 .. _tdigest-aggs:
 
-T-Digest Aggregates
+Distribution Aggregates
 -------------------------------
 
-**tdigest_agg ( expression )**
+**dist_agg ( expression )**
 
-	Adds all input values to a :ref:`t-digest`.
+	Adds all input values to a :ref:`t-digest` in order to track the distribution of all input expressions.
 
-**tidgest_merge_agg ( tdigest )**
+**dist_merge_agg ( tdigest )**
 
-  Merges all input T-Digest's into a single one representing all of the information contained in the input T-Digests.
+  Merges all input **tdigests** into a single one representing all of the information contained in the input **tdigests**.
 
-See :ref:`tdigest-funcs` for functionality that can be used to manipulate T-Digest objects.
+See :ref:`tdigest-funcs` for functionality that can be used to manipulate **tdigest** objects.
 
 .. _misc-aggs:
 
@@ -212,48 +211,6 @@ Let's look at an example:
   pipeline=# -- a single average on all 6 of the above inserted values, yet we only
   pipeline=# -- needed two rows to do it.
 
-
-------------------------------
-
-CREATE AGGREGATE
--------------------
-
-In addition to PipelineDB's built-in aggregates, user-defined aggregates also work with continuous views. User-defined combinable aggregates can be created with PostgreSQL's `CREATE AGGREGATE`_ command. To make an aggregate combinable, a **combinefunc** must be given. **combineinfunc** and **transoutfunc** are optional:
-
-.. code-block:: pipeline
-
-	CREATE AGGREGATE name ( [ argmode ] [ argname ] arg_data_type [ , ... ] ) (
-		...
-		COMBINEFUNC = combinefunc,
-		[ , COMBINEINFUNC = combineinfunc ]
-		[ , TRANSOUTFUNC = transoutfunc ]
-	)
-
-.. _CREATE AGGREGATE: http://www.postgresql.org/docs/current/static/sql-createaggregate.html
-
-
-**combinefunc ( stype, stype )**
-
-	A function that takes two transition states and returns a single transition state. For example, here's an example of a combine function for an integer :code:`avg` implementation:
-
-.. code-block:: pipeline
-
-	CREATE FUNCTION avg_combine(state integer[], incoming integer[]) RETURNS integer[] AS $$
-	BEGIN
-		RETURN ARRAY[state[1] + incoming[1], state[2] + incoming[2]];
-	END;
-	$$
-	LANGUAGE plpgsql
-
-The transition state is represented as a 2-element array containing the number of elements and their sum, which can be used to compute a final.
-
-**combineinfunc ( any )**
-
-	A function that deserializes the aggregate's transition state from an external to internal representation. **Deserialization is only necessary when the transition state type is not a native type.**
-
-**transoutfunc ( stype )**
-
-	A function that serializes the aggregate's transition state from an internal to external representation that can be stored in a table cell. **Serialization is only necessary when the transition state type is not a native type.**
 
 ------------------------------
 
@@ -418,7 +375,7 @@ Ordered-set Aggregates
 
 **ordered-set** aggregates apply ordering to their input in order to obtain their results, so they use the :code:`WITHIN GROUP` clause. Its syntax is as follows:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
@@ -426,13 +383,13 @@ Let's look at a couple examples.
 
 Compute the 99th percentile of **value**:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value) FROM some_table;
 
 Or with a continuous view:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	CREATE CONTINUOUS VIEW percentile AS
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value::float8)
@@ -459,13 +416,13 @@ Hypothetical-set Aggregates
 
 The hypothetical-set aggregates use the :code:`WITHIN GROUP` clause to define the input rows. Its syntax is as follows:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
 Here is an example of of a hypothetical-set aggregate being used by a continuous view:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
 	CREATE CONTINUOUS VIEW continuous_rank AS
 	SELECT rank(42) WITHIN GROUP (ORDER BY value::float8)
@@ -510,6 +467,6 @@ Unsupported Aggregates
 
 	:(
 
-**aggregate_name (DISTINCT expression)**
+**<aggregate_name> (DISTINCT expression)**
 
 	Only the :code:`count` aggregate function is supported with a :code:`DISTINCT` expression as noted above in the General Aggregates section. In future releases, we might leverage :ref:`bloom-filter` to allow :code:`DISTINCT` expressions for all aggregate functions.

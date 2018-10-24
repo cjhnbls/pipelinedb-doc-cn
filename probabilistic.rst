@@ -33,9 +33,9 @@ Currently no PipelineDB functionality internally uses Count-min sketch, although
 
 .. _`Count-Min Sketch`: https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch
 
-.. _fss:
+.. _topk:
 
-Filtered-Space Saving Top-K
+Top-K
 ----------------------------
 
 `Filtered-Space Saving`_ (FSS) is a data structure and algorithm combination useful for accurately estimating the top k most frequent values appearing in a stream while using a constant, minimal memory footprint. The obvious approach to computing top-k is to simply keep a table of values and their associated frequencies, which is not practical for streams.

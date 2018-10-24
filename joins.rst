@@ -3,7 +3,7 @@
 Continuous JOINs
 ============================
 
-:ref:`continuous-views` are not limited to selecting exclusively from :ref:`streams`. Often it can be useful to augment or combine incoming streaming data with static data stored in PipelineDB tables. This can be easily accomplished using what are called stream-table joins.
+:ref:`continuous-views` are not limited to selecting exclusively from :ref:`streams`. Often it can be useful to augment or combine incoming time-series data with static data stored in PipelineDB tables. This can be easily accomplished using what are called stream-table joins.
 
 Stream-table JOINs
 ----------------------
@@ -13,8 +13,6 @@ Stream-table joins work by joining an incoming event with matching rows that exi
 Supported Join Types
 --------------------
 
-.. versionadded:: 0.9.2
-
 Streams only support a subset of :code:`JOIN` types. :code:`CROSS JOIN` and :code:`FULL JOIN` are **not** supported. :code:`LEFT JOIN` and :code:`RIGHT JOIN` are only supported when the stream is on the side of the :code:`JOIN` whose unmatched rows are returned. :code:`ANTI JOIN` and :code:`SEMI JOIN` require an index on the column of the relation that is being join on.
 
 Examples
@@ -22,24 +20,24 @@ Examples
 
 **Count the number of events whose id was in the "whitelist" table at some point in time:**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	CREATE CONTINUOUS VIEW count_whitelisted AS SELECT COUNT(*) FROM
-	stream JOIN whitelist ON stream.id = whitelist.id;
+	CREATE VIEW count_whitelisted AS SELECT COUNT(*) FROM
+	 stream JOIN whitelist ON stream.id = whitelist.id;
 
 **Augment incoming user data with richer user information stored in the "users" table:**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	CREATE CONTINUOUS VIEW augmented AS SELECT user_data.full_name, COUNT(*)
-	FROM stream JOIN user_data on stream.id::integer = user_data.id
+	CREATE VIEW augmented AS SELECT user_data.full_name, COUNT(*)
+	 FROM stream JOIN user_data on stream.id::integer = user_data.id
 	GROUP BY user_data.full_name;
 
 **Spatially join incoming coordinates to their nearest city, and summarize by city name:**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	CREATE CONTINUOUS VIEW spatial AS SELECT cities.name, COUNT(*) FROM
+	CREATE VIEW spatial AS SELECT cities.name, COUNT(*) FROM
 	geo_stream, cities WHERE st_within(geo_stream.coords::geometry, cities.borders)
 	GROUP BY cities.name;
 

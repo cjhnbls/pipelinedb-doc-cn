@@ -3,22 +3,20 @@
 Continuous Transforms
 ====================
 
-.. versionadded:: 0.9.0
+Continuous transforms can be used to continuously transform incoming time-series data without storing it. Since no data is stored, continuous transforms don't support aggregations. The result of the transformation can be piped into another stream or written to an external data store.
 
-Continuous transforms can be used to continuously transform incoming data without storing it. Since no data is stored, continuous transforms don't support aggregations. The result of the transformation can be piped into another stream or written to an external data store.
-
-CREATE CONTINUOUS TRANSFORM
+Creating Continuous Transforms
 ---------------------------
 
-Here's the syntax for creating a continuous transform:
+Transforms are defined as PostgreSQL views with the :code:`action` parameter set to :code:`transform`. Here's the syntax for creating a continuous transform:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	CREATE CONTINUOUS TRANSFORM name AS query [ THEN EXECUTE PROCEDURE function_name ( arguments ) ]
+	CREATE VIEW name (WITH action=transform [, outputfunc=function_name( arguments ) ]) AS query 
 
 **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   SELECT expression [ [ AS ] output_name ] [, ...]
       [ FROM from_item [, ...] ]
@@ -38,72 +36,69 @@ Here's the syntax for creating a continuous transform:
 
 .. note:: You can think of continuous transforms as being `triggers <http://www.postgresql.org/docs/9.1/static/sql-createtrigger.html>`_ on top of incoming streaming data where the trigger function is executed for each new row output by the continuous transform. Internally the function is executed as an :code:`AFTER INSERT FOR EACH ROW` trigger so there is no :code:`OLD` row and the :code:`NEW` row contains the row output by the continuous tranform.
 
-DROP CONTINUOUS TRANSFORM
+Dropping Continuous Transforms
 ---------------------------
 
-To :code:`DROP` a continuous transform from the system, use the :code:`DROP CONTINUOUS TRANSFORM` command. Its syntax is simple:
+To :code:`DROP` a continuous transform from the system, use the :code:`DROP VIEW` command. Its syntax is simple:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	DROP CONTINUOUS TRANSFORM name
+	DROP VIEW continuous_transform;
 
 This will remove the continuous transform from the system along with all of its associated resources.
 
 Viewing Continuous Transforms
 ---------------------------
 
-To view the continuous transforms currently in the system, you can run the following query:
+To view the continuous transforms and their definitions currently in the system, you can run the following query:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	SELECT * FROM pipeline_transforms();
+	SELECT * pipelinedb.transforms;
 
 .. _ct-output-streams:
 
 Continuous Transform Output Streams
 ---------------------------------------
 
-.. versionadded:: 0.9.6
-
 All continuous transforms have :ref:`output-streams` associated with them, making it easy for other transforms or continuous views to read from them. A continuous transform's output stream simply contains whatever rows the transform selects.
 
 For example, here's a simple transform that joins incoming rows with a table:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-  CREATE CONTINUOUS TRANSFORM t AS
+  CREATE VIEW t WITH (action=transform) AS
     SELECT t.y FROM some_stream s JOIN some_table t ON s.x = t.x;
 
 This transform now writes values from the joined table out to its output stream, which can be read using :code:`output_of`:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-  CREATE CONTINUOUS VIEW v AS
+  CREATE VIEW v WITH (action=materialize) AS
     SELECT sum(y) FROM output_of('t');
 
-Built-in Transform Triggers
----------------------------
+Built-in Transform Output Functions
+-------------------------------------------
 
 In order to provide more flexibility over a continuous transform's output than their built-in output streams provide, PipelineDB exposes an interface to receive a transform's rows using a trigger function. Trigger functions attached to tranforms can then do whatever you'd like with the rows they receive, including write out to other streams.
 
-Currently, PipelineDB provides only one built-in trigger function, :code:`pipeline_stream_insert`, that can be used with continuous transforms. It inserts the output of the continuous transform into all the streams that are provided as the string literal arguments. For example:
+Currently, PipelineDB provides only one built-in trigger function, :code:`pipelinedb.insert_into_stream`, that can be used with continuous transforms. It inserts the output of the continuous transform into all the streams that are provided as the string literal arguments. For example:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-  CREATE CONTINUOUS TRANSFORM t AS
-    SELECT x::int, y::int FROM stream WHERE mod(x, 2) = 0
-    THEN EXECUTE PROCEDURE pipeline_stream_insert('even_stream');
+  CREATE VIEW t WITH (action=transform, outputfunc=pipelinedb.insert_into_stream('even_stream)) AS
+    SELECT x, y FROM stream WHERE mod(x, 2) = 0;
 
 This continuous transform will insert all values of :code:`(x, y)` into :code:`even_stream` where :code:`x` is even.
 
-.. important:: All arguments to :code:`pipeline_stream_insert` must be valid names of streams that already exist in the system, otherwise an error will be thrown.
+.. important:: All arguments to :code:`pipelinedb.insert_into_stream` must be valid names of streams that already exist in the system, otherwise an error will be thrown.
 
-Creating Your Own Trigger
---------------------------
+Creating Your Own Output Function
+--------------------------------------
 
-You can also create your own trigger function which can be used with continuous transforms. For example if you want to insert the output into a table, you could do something like:
+You can also create your own output function that can be used with continuous transforms. For example, if you want to insert the output into a table, you could do something like:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   CREATE TABLE t (user text, value int);
 
@@ -117,6 +112,5 @@ You can also create your own trigger function which can be used with continuous 
     $$
     LANGUAGE plpgsql;
 
-  CREATE CONTINUOUS TRANSFORM ct AS
-    SELECT user::text, value::int FROM stream WHERE value > 100
-    THEN EXECUTE PROCEDURE insert_into_t();
+  CREATE VIEW ct WITH (action=transform, outputfunc=insert_into_t) AS
+    SELECT user::text, value::int FROM stream WHERE value > 100;

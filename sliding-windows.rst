@@ -28,16 +28,16 @@ Even though sliding windows are a new concept for a SQL database, PipelineDB doe
 
 **What users have I seen in the last minute?**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	CREATE CONTINUOUS VIEW recent_users WITH (sw = '1 minute') AS
+	CREATE VIEW recent_users WITH (sw = '1 minute') AS
 	   SELECT user_id::integer FROM stream;
 
 Internally, PipelineDB will rewrite this query to the following:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-  CREATE CONTINUOUS VIEW recent_users AS
+  CREATE VIEW recent_users AS
      SELECT user_id::integer FROM stream
   WHERE (arrival_timestamp > clock_timestamp() - interval '1 minute');
 
@@ -61,33 +61,33 @@ Let's look at a few examples:
 
 **How many users have I seen in the last minute?**
 
-.. code-block:: pipeline
+.. code-block:: psql
 
-	CREATE CONTINUOUS VIEW count_recent_users WITH (sw = '1 minute') AS
+	CREATE VIEW count_recent_users WITH (sw = '1 minute') AS
 	   SELECT COUNT(*) FROM stream;
 
 Each time a :code:`SELECT` is run on this continuous view, the count it returns will be the count of only the events seen within the last minute. For example, if events stopped coming in, the count would decrease each time a :code:`SELECT` was run on the continuous view. This behavior works for all of the :ref:`aggregates` that PipelineDB supports:
 
 **What is the 5-minute moving average temperature of my sensors?**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	CREATE CONTINUOUS VIEW sensor_temps WITH (sw = '5 minutes') AS
+	CREATE VIEW sensor_temps WITH (sw = '5 minutes') AS
 	   SELECT sensor::integer, AVG(temp::numeric) FROM sensor_stream
 	GROUP BY sensor;
 
 **How many unique users have we seen over the last 30 days?**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	CREATE CONTINUOUS VIEW uniques WITH (sw = '30 days') AS
+	CREATE VIEW uniques WITH (sw = '30 days') AS
 	   SELECT COUNT(DISTINCT user::integer) FROM user_stream;
 
 **What is my server's 99th precentile response latency over the last 5 minutes?**
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-	CREATE CONTINUOUS VIEW latency WITH (sw = '5 minutes') AS
+	CREATE VIEW latency WITH (sw = '5 minutes') AS
 	   SELECT server_id::integer, percentile_cont(0.99)
 	   WITHIN GROUP (ORDER BY latency::numeric) FROM server_stream
 	GROUP BY server_id;
@@ -111,24 +111,6 @@ Obviously, sliding-window rows in continuous views become invalid after a certai
 -----------------------
 
 
-Multiple Windows
--------------------------------
-
-It is relatively common to have a need for multiple sliding-windows for the same query. For example, keeping track of user event counts for the last
-5 minutes, 10 minutes, one day, etc. For this reason, PipelineDB supports the creation of regular views over a single sliding window continuous view,
-which ultimately saves resources because only a single continuous view is actually being updated internally.
-
-For example, to maintain counts over three different window sizes:
-
-.. code-block:: pipeline
-
-  CREATE CONTINUOUS VIEW sw0 WITH (sw = '1 hour') AS SELECT COUNT(*) FROM event_stream;
-  CREATE VIEW sw1 WITH (sw = '5 minutes') AS SELECT * FROM sw0;
-  CREATE VIEW sw2 WITH (sw = '10 minutes') AS SELECT * FROM sw0;
-
-Note that :code:`sw1` and :code:`sw2` are not defined using the :code:`CONTINUOUS` keyword. However, querying them will only return rows that are
-within their own respective windows.
-
 step_factor
 -------------------------
 
@@ -145,9 +127,9 @@ You have probably noticed at this point that step aggregates can be a significan
 Here's an example of using **step_factor** in conjunction with **sw** to aggregate over an hour with a step size of 30 minutes:
 
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-  CREATE CONTINUOUS VIEW hourly (WITH sw = '1 hour', step_factor = 50)
+  CREATE VIEW hourly (WITH sw = '1 hour', step_factor = 50)
     AS SELECT COUNT(*) FROM stream;
 
 -----------------------------

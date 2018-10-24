@@ -3,16 +3,16 @@
 Clients
 ============
 
-Since PipelineDB is compatible with PostgreSQL 9.5, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.
+Since PipelineDB runs as an extension of PostgreSQL 10.2+, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.
 
-Here you'll find examples of a simple PipelineDB application written in a few different languages and clients. The application simply creates the :code:`CONTINUOUS VIEW`:
+Here you'll find examples of a simple PipelineDB application written in a few different languages and clients. The application simply creates the continuous view:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-  CREATE CONTINUOUS VIEW continuous view AS
+  CREATE VIEW continuous view WITH (action=materialize) AS
 	SELECT x::integer, COUNT(*) FROM stream GROUP BY x;
 
-The application then emits :code:`100,000` events resulting in :code:`10` unique groupings for the :code:`CONTINUOUS VIEW`, and prints out the results.
+The application then emits :code:`100,000` events resulting in :code:`10` unique groupings for the continuous view, and prints out the results.
 
 Python
 ----------------
@@ -28,8 +28,13 @@ For this example in Python, you'll need to have psycopg2_ installed.
   conn = psycopg2.connect('dbname=test user=user host=localhost port=5432')
   pipeline = conn.cursor()
 
+  create_stream = """
+  CREATE FOREIGN TABLE stream (x integer) SERVER pipelinedb
+  """
+  pipeline.execute(create_stream)
+
   create_cv = """
-  CREATE CONTINUOUS VIEW continuous_view AS SELECT x::integer, COUNT(*) FROM stream GROUP BY x
+  CREATE VIEW continuous_view WITH (action=materialize) AS SELECT x::integer, COUNT(*) FROM stream GROUP BY x
   """
   pipeline.execute(create_cv)
   conn.commit()
@@ -53,7 +58,7 @@ For this example in Python, you'll need to have psycopg2_ installed.
 
       print x, count
 
-  pipeline.execute('DROP CONTINUOUS VIEW continuous_view')
+  pipeline.execute('DROP VIEW continuous_view')
   pipeline.close()
 
 ----------------------
@@ -76,13 +81,21 @@ This example in Ruby uses the pg_ gem.
 	# uniques     - count the number of unique users for each url
 	# p99_latency - determine the 99th-percentile latency for each url
 
+	s = "
+	CREATE FOREIGN TABLE page_views (
+		url text,
+		cookie text,
+		latency integer
+	) SERVER pipelinedb"
+	pipeline.exec(s)
+
 	q = "
-	CREATE CONTINUOUS VIEW v AS
+	CREATE VIEW v WITH (action=materialize) AS
 	SELECT
-	  url::text,
+	  url,
 	  count(*) AS total_count,
-	  count(DISTINCT cookie::text) AS uniques,
-	  percentile_cont(0.99) WITHIN GROUP (ORDER BY latency::integer) AS p99_latency
+	  count(DISTINCT cookie) AS uniques,
+	  percentile_cont(0.99) WITHIN GROUP (ORDER BY latency) AS p99_latency
 	FROM page_views GROUP BY url"
 
 	pipeline.exec(q)
@@ -112,7 +125,7 @@ This example in Ruby uses the pg_ gem.
 	end
 
 	# Clean up
-	pipeline.exec('DROP CONTINUOUS VIEW v')
+	pipeline.exec('DROP VIEW v')
 
 
 ----------------------
@@ -147,7 +160,9 @@ For this example you'll need to have JDBC_ installed and on your :code:`CLASSPAT
 
       Statement stmt = conn.createStatement();
       stmt.executeUpdate(
-        "CREATE CONTINUOUS VIEW v AS SELECT x::integer, COUNT(*) FROM stream GROUP BY x");
+        "CREATE FOREIGN TABLE stream (x integer) SERVER pipelinedb");
+      stmt.executeUpdate(
+        "CREATE VIEW v WITH (action=materialize) AS SELECT x::integer, COUNT(*) FROM stream GROUP BY x");
 
       for (int i=0; i<100000; i++)
       {
@@ -170,7 +185,7 @@ For this example you'll need to have JDBC_ installed and on your :code:`CLASSPAT
       }
 
       // Clean up
-      stmt.executeUpdate("DROP CONTINUOUS VIEW v");
+      stmt.executeUpdate("DROP VIEW v");
       conn.close();
     }
   }

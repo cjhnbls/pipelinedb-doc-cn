@@ -17,7 +17,7 @@ Let's say we already have a PipelineDB instance running on :code:`localhost:5432
 
 .. code-block:: bash
 
-  $ psql -h localhost -p 5432 -d pipeline -c \
+  $ psql -h localhost -p 5432 -d postgres -c \
   "CREATE ROLE replicator WITH LOGIN REPLICATION;"
 
   CREATE ROLE
@@ -30,13 +30,13 @@ Next we need to add an entry for the standby to the `pg_hba.conf <http://www.pos
 
   host replication replicator 0.0.0.0/0 trust
 
-Next, we need to set a few configuration parameters on the primary by either updating the :code:`pipelinedb.conf` file or passing them as :code:`-c` flags when starting up :code:`pipelinedb`. Set `wal_level <http://www.postgresql.org/docs/9.4/static/runtime-config-wal.html#GUC-WAL-LEVEL>`_ to :code:`hot_standby`, `hot_standby <http://www.postgresql.org/docs/9.0/static/runtime-config-wal.html#GUC-HOT-STANDBY>`_ to :code:`on`, `max_replication_slots <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-MAX-REPLICATION-SLOTS>`_ to 1, and `max_wal_senders <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-MAX-WAL-SENDERS>`_ to 2. Even though one standby node only needs one sender connection, 2 are needed while bootstrapping (not necessarily, but at least in the method documented below). You will need to restart the primary after updating these parameters.
+Next, we need to set a few configuration parameters on the primary by either updating the :code:`postgresql.conf` file or passing them as :code:`-c` flags when starting up :code:`postgresql`. Set `wal_level <http://www.postgresql.org/docs/9.4/static/runtime-config-wal.html#GUC-WAL-LEVEL>`_ to :code:`hot_standby`, `hot_standby <http://www.postgresql.org/docs/9.0/static/runtime-config-wal.html#GUC-HOT-STANDBY>`_ to :code:`on`, `max_replication_slots <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-MAX-REPLICATION-SLOTS>`_ to 1, and `max_wal_senders <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-MAX-WAL-SENDERS>`_ to 2. Even though one standby node only needs one sender connection, 2 are needed while bootstrapping (not necessarily, but at least in the method documented below). You will need to restart the primary after updating these parameters.
 
 Last we will create a `replication slot <http://www.postgresql.org/docs/9.4/static/warm-standby.html#STREAMING-REPLICATION-SLOTS>`_ for the standby. Replication slots are a means for the standby to *register* with the primary, so that it is always aware of what WAL segments need to be kept around. Once a standby has consumed a WAL segment, it updates the :code:`restart_lsn` column in the `pg_replication_slots <http://www.postgresql.org/docs/9.4/static/catalog-pg-replication-slots.html>`_ catalog so that the primary knows it can now garbage collect that WAL segment.
 
 .. code-block:: bash
 
-  $ psql -h localhost -p 5432 -d pipeline -c \
+  $ psql -h localhost -p 5432 -d postgres -c \
   "SELECT * FROM pg_create_physical_replication_slot('replicator_slot');"
 
       slot_name    | xlog_position
@@ -49,7 +49,7 @@ This is all the setup work we need to do on the primary. Let's move on to the st
 
 .. code-block:: bash
 
-  $ pipeline-basebackup -X stream -D /path/to/standby_datadir -h localhost -p 5432 -U replicator
+  $ pg_basebackup -X stream -D /path/to/standby_datadir -h localhost -p 5432 -U replicator
 
 This :code:`-X stream` argument is what requires the second slot when taking a base backup. Essentially what this does is stream the WAL for changes that take place while the base backup is happening, so we don't need to manually configure the `wal_keep_segments <http://www.postgresql.org/docs/9.4/static/runtime-config-replication.html#GUC-WAL-KEEP-SEGMENTS>`_ parameter.
 
@@ -66,7 +66,7 @@ We're all set now. Let's fire off the hot standby on post :code:`6544`.
 
 .. code-block:: bash
 
-  pipeline-ctl start -D /path/to/standby_datadir -o "-p 6544"
+  pg_ctl start -D /path/to/standby_datadir -o "-p 6544"
 
 You should see something like the following in the standby's log file:
 
@@ -82,7 +82,7 @@ Just to make sure, connect to the standby and confirm it's in recovery mode.
 
 .. code-block:: bash
 
-  $ psql -h localhost -p 6544 -d pipeline -c \
+  $ psql -h localhost -p 6544 -d postgres -c \
   "SELECT pg_is_in_recovery();"
 
    pg_is_in_recovery
@@ -93,11 +93,7 @@ Just to make sure, connect to the standby and confirm it's in recovery mode.
 High Availability
 -----------------
 
-PostgreSQL doesn't come with high availability options out of the box. Most deployments will rely on manually promoting the hot standby in case of a primary failure. `Failover <http://www.postgresql.org/docs/9.4/static/warm-standby-failover.html>`_ can be triggered by :code:`pipeline-ctl promote` or touching a trigger file is there is a :code:`trigger_file` setting in the :code:`recovery.conf` file. `Compose.io <https://www.compose.io>`_ has a good `blog post <https://www.compose.io/articles/high-availability-for-postgresql-batteries-not-included/>`_ about how they designed their HA solution. You could potentially reuse their `Governor <https://github.com/compose/governor>`_ system; make sure to change the PostgreSQL binaries referenced in the code to their PipelineDB equivalent ones though.
+PostgreSQL doesn't come with high availability options out of the box. Most deployments will rely on manually promoting the hot standby in case of a primary failure. `Failover <http://www.postgresql.org/docs/9.4/static/warm-standby-failover.html>`_ can be triggered by :code:`pg_ctl promote` or touching a trigger file is there is a :code:`trigger_file` setting in the :code:`recovery.conf` file. `Compose.io <https://www.compose.io>`_ has a good `blog post <https://www.compose.io/articles/high-availability-for-postgresql-batteries-not-included/>`_ about how they designed their HA solution. You could potentially reuse their `Governor <https://github.com/compose/governor>`_ system; make sure to change the PostgreSQL binaries referenced in the code to their PipelineDB equivalent ones though.
 
 Please get in touch if all of this seems inadequte and we'll help you figure something out!
 
-Logical Decoding
-----------------
-
-While we haven't yet played around with logical decoding, there is no reason to believe that it wouldn't work without any hiccups as well. If you are a user of logical decoding and find that PipelineDB is incompatible with it, please let us know!
