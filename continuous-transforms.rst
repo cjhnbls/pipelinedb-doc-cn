@@ -1,12 +1,12 @@
 .. _continuous-transforms:
 
 Continuous Transforms
-====================
+========================
 
 Continuous transforms can be used to continuously transform incoming time-series data without storing it. Since no data is stored, continuous transforms don't support aggregations. The result of the transformation can be piped into another stream or written to an external data store.
 
 Creating Continuous Transforms
----------------------------
+------------------------------------
 
 Transforms are defined as PostgreSQL views with the :code:`action` parameter set to :code:`transform`. Here's the syntax for creating a continuous transform:
 
@@ -37,7 +37,7 @@ Transforms are defined as PostgreSQL views with the :code:`action` parameter set
 .. note:: You can think of continuous transforms as being `triggers <http://www.postgresql.org/docs/9.1/static/sql-createtrigger.html>`_ on top of incoming streaming data where the trigger function is executed for each new row output by the continuous transform. Internally the function is executed as an :code:`AFTER INSERT FOR EACH ROW` trigger so there is no :code:`OLD` row and the :code:`NEW` row contains the row output by the continuous tranform.
 
 Dropping Continuous Transforms
----------------------------
+------------------------------------
 
 To :code:`DROP` a continuous transform from the system, use the :code:`DROP VIEW` command. Its syntax is simple:
 
@@ -48,7 +48,7 @@ To :code:`DROP` a continuous transform from the system, use the :code:`DROP VIEW
 This will remove the continuous transform from the system along with all of its associated resources.
 
 Viewing Continuous Transforms
----------------------------
+-----------------------------------
 
 To view the continuous transforms and their definitions currently in the system, you can run the following query:
 
