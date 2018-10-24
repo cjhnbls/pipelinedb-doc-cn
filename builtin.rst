@@ -190,9 +190,9 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 
   "Floors" a date down to the nearest **resolution** (or bucket) expressed as an interval. This is typically useful for summarization. For example, to summarize events into 10-minute buckets:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
-    CREATE CONTINUOUS VIEW v AS SELECT
+    CREATE VIEW v AS SELECT
       date_round(arrival_timestam, '10 minutes') AS bucket_10m, COUNT(*) FROM stream
       GROUP BY bucket_10m;
 

@@ -51,7 +51,7 @@ where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
   Any expression that evaluates to a result of type :code:`boolean`. Any row that does not satisfy this condition will be eliminated from the output. A row satisfies the condition if it returns :code:`true` when the actual row values are substituted for any variable references.
 
-.. note:: This has mainly covered only the syntax for :code:`CREATE CONTINUOUS VIEW`. To learn more about the semantics of each of these query elements, you should consult the `PostgreSQL SELECT documentation`_.
+.. note:: This has mainly covered only the syntax for creating continuous views. To learn more about the semantics of each of these query elements, you should consult the `PostgreSQL SELECT documentation`_.
 
 .. _PostgreSQL SELECT documentation: https://www.postgresql.org/docs/current/static/sql-select.html
 

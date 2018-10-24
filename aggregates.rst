@@ -177,9 +177,9 @@ Let's look at an example:
 
 .. code-block:: pipeline
 
-  pipeline=# CREATE CONTINUOUS VIEW v AS
+  pipeline=# CREATE VIEW v AS
 	SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
-  CREATE CONTINUOUS VIEW
+  CREATE VIEW
   pipeline=# INSERT INTO stream (g, x) VALUES (0, 10), (0, 10), (0, 10), (0, 10), (0, 10);
   INSERT 0 5
   pipeline=# INSERT INTO stream (g, x) VALUES (1, 20);
@@ -391,7 +391,7 @@ Or with a continuous view:
 
 .. code-block:: sql
 
-	CREATE CONTINUOUS VIEW percentile AS
+	CREATE VIEW percentile AS
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value::float8)
 	FROM some_stream;
 
@@ -424,7 +424,7 @@ Here is an example of of a hypothetical-set aggregate being used by a continuous
 
 .. code-block:: sql
 
-	CREATE CONTINUOUS VIEW continuous_rank AS
+	CREATE VIEW continuous_rank AS
 	SELECT rank(42) WITHIN GROUP (ORDER BY value::float8)
 	FROM some_stream;
 

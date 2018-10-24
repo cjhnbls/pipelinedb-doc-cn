@@ -193,7 +193,7 @@ Let's see what this actually looks like:
   pipeline=# CREATE VIEW v AS SELECT COUNT(*) FROM stream;
   CREATE VIEW
   pipeline=# CREATE VIEW v_real_deltas AS SELECT (delta).sum FROM output_of('v');
-  CREATE CONTINUOUS VIEW
+  CREATE VIEW
   pipeline=# INSERT INTO stream (x) VALUES (1);
   INSERT 0 1
   pipeline=# SELECT * FROM v_real_deltas;
@@ -240,10 +240,10 @@ Sometimes you might want to update only a select set of continuous queries (view
 
 .. code-block:: psql
 
-  pipeline=# CREATE CONTINUOUS VIEW v0 AS SELECT COUNT(*) FROM stream;
-  CREATE CONTINUOUS VIEW
-  pipeline=# CREATE CONTINUOUS VIEW v1 AS SELECT COUNT(*) FROM stream;
-  CREATE CONTINUOUS VIEW
+  pipeline=# CREATE VIEW v0 AS SELECT COUNT(*) FROM stream;
+  CREATE VIEW
+  pipeline=# CREATE VIEW v1 AS SELECT COUNT(*) FROM stream;
+  CREATE VIEW
   pipeline=# INSERT INTO stream (x) VALUES (1);
   INSERT 0 1
   pipeline=# SET stream_targets TO v0;
