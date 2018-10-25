@@ -175,41 +175,40 @@ For this type of operation, PipelineDB exposes the special **combine** aggregate
 
 Let's look at an example:
 
-.. code-block:: pipeline
+.. code-block:: psql
 
-  pipeline=# CREATE VIEW v AS
-	SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
+  postgres=# CREATE VIEW v AS SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
   CREATE VIEW
-  pipeline=# INSERT INTO stream (g, x) VALUES (0, 10), (0, 10), (0, 10), (0, 10), (0, 10);
+  postgres=# INSERT INTO stream (g, x) VALUES (0, 10), (0, 10), (0, 10), (0, 10), (0, 10);
   INSERT 0 5
-  pipeline=# INSERT INTO stream (g, x) VALUES (1, 20);
+  postgres=# INSERT INTO stream (g, x) VALUES (1, 20);
   INSERT 0 1
-  pipeline=# SELECT * FROM v;
+  postgres=# SELECT * FROM v;
    g |         avg
   ---+---------------------
    0 | 10.0000000000000000
    1 | 20.0000000000000000
   (2 rows)
 
-  pipeline=# SELECT avg(avg) FROM v;
+  postgres=# SELECT avg(avg) FROM v;
            avg
   ---------------------
    15.0000000000000000
   (1 row)
 
-  pipeline=# -- But that didn't take into account that the value of 10 weighs much more,
-  pipeline=# -- because it was inserted 5 times, whereas 20 was only inserted once.
-  pipeline=# -- combine() will take this weight into account
-  pipeline=#
-  pipeline=# SELECT combine(avg) FROM v;
+  postgres=# -- But that didn't take into account that the value of 10 weighs much more,
+  postgres=# -- because it was inserted 5 times, whereas 20 was only inserted once.
+  postgres=# -- combine() will take this weight into account
+  postgres=#
+  postgres=# SELECT combine(avg) FROM v;
          combine
   ---------------------
    11.6666666666666667
   (1 row)
 
-  pipeline=# -- There we go! This is the same average we would have gotten if we ran
-  pipeline=# -- a single average on all 6 of the above inserted values, yet we only
-  pipeline=# -- needed two rows to do it.
+  postgres=# -- There we go! This is the same average we would have gotten if we ran
+  postgres=# -- a single average on all 6 of the above inserted values, yet we only
+  postgres=# -- needed two rows to do it.
 
 
 ------------------------------

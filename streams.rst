@@ -42,7 +42,7 @@ Columns can be added to streams using :code:`ALTER STREAM`:
 
 .. code-block:: psql
 
-  pipeline=# ALTER FOREIGN TABLE stream ADD COLUMN x integer;
+  postgres=# ALTER FOREIGN TABLE stream ADD COLUMN x integer;
   ALTER FOREIGN TABLE
 
 .. note:: Columns cannot be dropped from streams.
@@ -51,9 +51,9 @@ Streams can be dropped with the :code:`DROP FOREIGN TABLE` command. Below is an 
 
 .. code-block:: psql
 
-  pipeline=# CREATE FOREIGN TABLE stream (x integer, y integer) SERVER pipelinedb;
+  postgres=# CREATE FOREIGN TABLE stream (x integer, y integer) SERVER pipelinedb;
   CREATE FOREIGN TABLE
-  pipeline=# CREATE VIEW v AS SELECT sum(x + y) FROM stream;
+  postgres=# CREATE VIEW v AS SELECT sum(x + y) FROM stream;
   CREATE VIEW
 
 Writing To Streams
@@ -190,22 +190,22 @@ Let's see what this actually looks like:
 
 .. code-block:: psql
 
-  pipeline=# CREATE VIEW v AS SELECT COUNT(*) FROM stream;
+  postgres=# CREATE VIEW v AS SELECT COUNT(*) FROM stream;
   CREATE VIEW
-  pipeline=# CREATE VIEW v_real_deltas AS SELECT (delta).sum FROM output_of('v');
+  postgres=# CREATE VIEW v_real_deltas AS SELECT (delta).sum FROM output_of('v');
   CREATE VIEW
-  pipeline=# INSERT INTO stream (x) VALUES (1);
+  postgres=# INSERT INTO stream (x) VALUES (1);
   INSERT 0 1
-  pipeline=# SELECT * FROM v_real_deltas;
+  postgres=# SELECT * FROM v_real_deltas;
   sum
   -----
      1
   (1 row)
-  pipeline=# INSERT INTO stream (x) VALUES (2);
+  postgres=# INSERT INTO stream (x) VALUES (2);
   INSERT 0 1
-  pipeline=# INSERT INTO stream (x) VALUES (3);
+  postgres=# INSERT INTO stream (x) VALUES (3);
   INSERT 0 1
-  pipeline=# SELECT * FROM v_real_deltas;
+  postgres=# SELECT * FROM v_real_deltas;
   sum
   -----
      1
@@ -240,33 +240,33 @@ Sometimes you might want to update only a select set of continuous queries (view
 
 .. code-block:: psql
 
-  pipeline=# CREATE VIEW v0 AS SELECT COUNT(*) FROM stream;
+  postgres=# CREATE VIEW v0 AS SELECT COUNT(*) FROM stream;
   CREATE VIEW
-  pipeline=# CREATE VIEW v1 AS SELECT COUNT(*) FROM stream;
+  postgres=# CREATE VIEW v1 AS SELECT COUNT(*) FROM stream;
   CREATE VIEW
-  pipeline=# INSERT INTO stream (x) VALUES (1);
+  postgres=# INSERT INTO stream (x) VALUES (1);
   INSERT 0 1
-  pipeline=# SET stream_targets TO v0;
+  postgres=# SET stream_targets TO v0;
   SET
-  pipeline=# INSERT INTO stream (x) VALUES (1);
+  postgres=# INSERT INTO stream (x) VALUES (1);
   INSERT 0 1
-  pipeline=# SET stream_targets TO DEFAULT;
+  postgres=# SET stream_targets TO DEFAULT;
   SET
-  pipeline=# INSERT INTO stream (x) VALUES (1);
+  postgres=# INSERT INTO stream (x) VALUES (1);
   INSERT 0 1
-  pipeline=# SELECT count FROM v0;
+  postgres=# SELECT count FROM v0;
    count
   -------
        3
   (1 row)
 
-  pipeline=# SELECT count FROM v1;
+  postgres=# SELECT count FROM v1;
    count
   -------
        2
   (1 row)
 
-  pipeline=#
+  postgres=#
 
 .. _arrival-ordering:
 
