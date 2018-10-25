@@ -88,7 +88,7 @@ In order for PipelineDB to run, the :code:`shared_preload_libraries` configurati
 Running PostgreSQL
 ---------------------
 
-To run the PipelineDB server in the background, use the :code:`pipeline-ctl` driver and point it to your newly initialized data directory:
+To run the PostgreSQL server in the background, use the :code:`pg_ctl` driver and point it to your newly initialized data directory:
 
 .. code-block:: sh
 
