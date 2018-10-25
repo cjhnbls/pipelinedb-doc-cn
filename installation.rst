@@ -94,7 +94,9 @@ To run the PostgreSQL server in the background, use the :code:`pg_ctl` driver an
 
 	pg_ctl -D <data directory> -l postgresql.log start
 
-To connect to a running server using the default database, use PostgreSQL's standard client, `psql`_. Since PipelineDB is an extension of PostgreSQL, you'll need to create the PipelineDB extension:
+To connect to a running server using the default database, use PostgreSQL's standard client, `psql`_.
+
+Finally, create the PipelineDB extension:
 
 .. code-block:: sh
 
