@@ -20,7 +20,7 @@ Continuous views are defined as PostgreSQL views with the :code:`action` paramet
 
 where **query** is a subset of a PostgreSQL :code:`SELECT` statement:
 
-.. code-block:: pipeline
+.. code-block:: sql
 
   SELECT [ DISTINCT [ ON ( expression [, ...] ) ] ]
       expression [ [ AS ] output_name ] [, ...]

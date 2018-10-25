@@ -12,7 +12,7 @@ PipelineDB supports ingesting data from Kafka topics into streams. All of this f
 
 **pipeline_kafka** internally uses shared memory to sync state between background workers, so it must be loaded as a shared library. You can do so by adding the following line to your :code:`pipelinedb.conf` file. If you're already loading some shared libraries, then simply add :code:`pipeline_kafka` as a comma-separated list.
 
-.. code-block:: pipeline
+.. code-block:: sh
 
   shared_preload_libraries = pipeline_kafka
 
@@ -20,9 +20,9 @@ You can now load the extention into a database:
 
 .. _`PostgreSQL's COPY`: http://www.postgresql.org/docs/current/static/sql-copy.html
 
-.. code-block:: pipeline
+.. code-block:: psql
 
-	# CREATE EXTENSION pipeline_kafka;
+	postgres=# CREATE EXTENSION pipeline_kafka;
 	CREATE EXTENSION
 
 Before you can start using **pipeline_kafka**, you must add a broker for your Kafka deployment.
@@ -107,9 +107,9 @@ The repository for the extension is located `here <https://github.com/pipelinedb
 
 To enable the extension, it must be explicitly loaded:
 
-.. code-block:: pipeline
+.. code-block:: psql
 
-	# CREATE EXTENSION pipeline_kinesis;
+	postgres=# CREATE EXTENSION pipeline_kinesis;
 	CREATE EXTENSION
 
 To start ingestion, you must first tell pipeline where and how to get kinesis
