@@ -3,14 +3,7 @@
 Quickstart
 =======================
 
-Initialize a PostgreSQL data directory and start server:
-
-.. code-block:: bash
-
-	initdb -D <data directory>
-	postgres -D <data directory>
-
-Now enable continuous query execution. This only needs to be done once and is remembered across restarts.
+First, complete the :ref:`installation` process.
 
 Wikipedia Traffic
 -----------------
