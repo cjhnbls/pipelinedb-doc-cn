@@ -109,7 +109,7 @@ Distribution Aggregates
 
 **dist_agg ( expression, compression )**
 
-	Same as above, but builds the underyling **tdigest** using the given compression. **compression** must be an integer in the range :code:`[20, 1000]`. A higher value for **compression** will yield a larger **tdigest** with but with more precision than a smaller **tdigest** with a lower **compression** value.
+	Same as above, but builds the underyling **tdigest** using the given **compression**. **compression** must be an integer in the range :code:`[20, 1000]`. A higher value for **compression** will yield a larger **tdigest** with but with more precision than a smaller **tdigest** with a lower **compression** value.
 
 **dist_merge_agg ( tdigest )**
 
