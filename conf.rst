@@ -35,7 +35,7 @@ Configuration
 
 **pipelinedb.ttl_expiration_batch_size**
 
-  Sets the maximum number of rows that a reaper will delete from a continuous view at a time. This is designed to minimize long-running transactions. A value of **0** means an unlimited number of rows can be deleted in a given transaction.  *Default: 10000.*
+  Sets the maximum number of rows that a reaper will delete from a continuous view per transaction. This is designed to minimize long-running transactions. A value of **0** means an unlimited number of rows can be deleted in a given transaction.  *Default: 10000.*
 
 **pipelinedb.ttl_expiration_threshold**
 
