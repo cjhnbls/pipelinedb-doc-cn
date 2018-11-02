@@ -255,7 +255,7 @@ Operational Functions
 
         Returns a string containing all of the version information for your PipelineDB installation.
 
-System views
+System Views
 ---------------------------
 
 PipelineDB includes a number of system views for viewing useful information about your continuous views and transforms:
