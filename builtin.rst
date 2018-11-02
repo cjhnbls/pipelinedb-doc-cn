@@ -220,13 +220,18 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 
   Returns the cardinality of the given set array. Sets can be built using **set_agg**.
 
+.. _operations:
+
+Operational Functions
+------------------------------------------
+
 **pipelinedb.activate ( name )**
 
-  Acitvates the given continuous view or transform.
+  Acitvates the given continuous view or transform. See :ref:`activation-deactivation` for more information.
 
 **pipelinedb.deactivate ( name )**
 
-	Deacitvates the given continuous view or transform.
+	Deacitvates the given continuous view or transform. See :ref:`activation-deactivation` for more information.
 
 **pipelinedb.combine_table( continuous view name, table )**
 

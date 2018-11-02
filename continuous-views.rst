@@ -152,6 +152,8 @@ TTLs can be added, modified, and removed from continuous views via the **pipelin
 	Passing :code:`NULL` for both the **ttl** and **ttl_column** parameters will effectively remove a TTL from the given continuous view. Note that a TTL cannot be modified on or removed from a sliding-window continuous view.
 
 
+.. _activation-deactivation:
+
 Activation and Deactivation
 ----------------------------
 
@@ -163,10 +165,14 @@ The function signatures take only a continuous view or transform name:
 
 .. code-block:: sql
 
-	SELECT activate('continuous_view_or_transform');
-	SELECT deactivate('continuous_view_or_transform');
+	SELECT pipelinedb.activate('continuous_view_or_transform');
+	SELECT pipelinedb.deactivate('continuous_view_or_transform');
+
+:ref:`continuous-transforms` can also be activated and deactivated.
 
 .. important:: When continuous queries (views or transforms) are inactive, any events written to their input streams while they're inactive will never be read by that continuous query, even after they're activated again.
+
+See :ref:`operations` for more information.
 
 Examples
 ---------------------
