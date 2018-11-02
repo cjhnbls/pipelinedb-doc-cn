@@ -235,7 +235,7 @@ Operational Functions
 
 **pipelinedb.combine_table( continuous view name, table )**
 
-	:ref:`combine` the rows from the given **table** into the given continuous view. **combine_table** uses the given continuous view's query definition to combine aggregates from both relations with no loss of information.
+	:ref:`combine` the rows from the given **table** into the given continuous view. **combine_table** uses the given continuous view's query definition to combine aggregate values from both relations with no loss of information.
 
 	**combine_table** can be used for purposes such as backfilling a continuous view (possibly running on a completely separate installation) by combining the backfilled rows into the "live" continuous view only once they have been fully populated.
 
