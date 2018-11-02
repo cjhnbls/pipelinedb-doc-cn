@@ -11,7 +11,7 @@ Configuration
     * **sync_receive** (default): return as soon as the inserts have been received by a worker process
     * **sync_commit**: return only when the downstream combiner has committed all changes resulting from the inserted rows
 
-.. note:: :code:`sync_commit` is primarly used for testing purposes and is not meant for production workloads due to significantly increased latency.
+.. note:: :code:`sync_commit` is primarly used for testing purposes and is not meant for production workloads due to significantly increased write latency.
 
 **pipelinedb.num_combiners**
 
