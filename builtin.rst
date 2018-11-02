@@ -168,10 +168,6 @@ See :ref:`tdigest-aggs` for aggregates that can be used to generate **tdigest** 
 Miscellaneous Functions
 -----------------------------
 
-**activate ( name )**
-
-  Acitvates the given continuous view or transform.
-
 **bucket_cardinality ( bucket_agg, bucket_id )**
 
   Returns the cardinality of the given **bucket_id** within the given **bucket_agg**.
@@ -195,10 +191,6 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
     CREATE VIEW v AS SELECT
       date_round(arrival_timestam, '10 minutes') AS bucket_10m, COUNT(*) FROM stream
       GROUP BY bucket_10m;
-
-**deactivate ( name )**
-
-  Deacitvates the given continuous view or transform.
 
 **year ( timestamp )**
 
@@ -232,9 +224,19 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 
   Returns the cardinality of the given set array. Sets can be built using **set_agg**.
 
-**pipelinedb.version ( )**
+**pipelinedb.activate ( name )**
 
-        Returns a string containing all of the version information for your PipelineDB installation.
+  Acitvates the given continuous view or transform.
+
+**pipelinedb.deactivate ( name )**
+
+	Deacitvates the given continuous view or transform.
+
+**pipelinedb.combine_table( continuous view name, table )**
+
+	:ref:`combine` the rows from the given **table** into the given continuous view. **combine_table** uses the given continuous view's query definition to combine aggregates from both relations with no loss of information.
+
+	**combine_table** can be used for purposes such as backfilling a continuous view (possibly running on a completely separate installation) by combining the backfilled rows only once they have been fully populated.
 
 **pipelinedb.get_views ( )**
 
@@ -243,3 +245,7 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 **pipelinedb.get_transforms ( )**
 
         Returns the set of all continuous transforms.
+
+**pipelinedb.version ( )**
+
+        Returns a string containing all of the version information for your PipelineDB installation.
