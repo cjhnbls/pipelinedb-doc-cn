@@ -49,10 +49,6 @@ Configuration
 
   Sets the maximum memory to be used for combining partial results for continuous queries. This much memory can be used by each combiner processes's internal sort operation and hash table before switching to temporary disk files. *Default: 256mb.*
 
-**pipelinedb.continuous_queries_enabled**
-
-  Toggles whether continuous queries should be enabled by default for newly created databases. *Default: false.*
-
 **pipelinedb.anonymous_update_checks**
 
   Toggles whether PipelineDB should anonymous check if a new version is available. *Default: true.*
