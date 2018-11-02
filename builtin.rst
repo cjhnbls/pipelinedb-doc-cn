@@ -212,10 +212,6 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 
   Truncate the given timestamp down to its **minute**.
 
-**truncate_continuous_view ( name )**
-
-  Truncates all rows from the given continuous view.
-
 **second ( timestamp )**
 
   Truncate the given timestamp down to its **second**.
@@ -245,6 +241,10 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 **pipelinedb.get_transforms ( )**
 
         Returns the set of all continuous transforms.
+
+**pipelinedb.truncate_continuous_view ( name )**
+
+  Truncates all rows from the given continuous view.
 
 **pipelinedb.version ( )**
 
