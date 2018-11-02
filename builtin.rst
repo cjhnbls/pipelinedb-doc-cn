@@ -254,3 +254,56 @@ Operational Functions
 **pipelinedb.version ( )**
 
         Returns a string containing all of the version information for your PipelineDB installation.
+
+System views
+---------------------------
+
+PipelineDB includes a number of system views for viewing useful information about your continuous views and transforms:
+
+**pipelinedb.views**
+
+Describes continuous views.
+
+.. code-block:: psql
+
+	  View "pipelinedb.views"
+ 	Column |  Type   |
+	-------+---------+
+ 	id     | oid     |
+ 	schema | text    |
+ 	name   | text    |
+ 	active | boolean |
+ 	query  | text    |
+
+Describes continuous views.
+
+**pipelinedb.transforms**
+
+Describes continuous transforms.
+
+.. code-block:: psql
+
+	  View "pipelinedb.transforms"
+ 	Column |  Type   |
+	-------+---------+
+ 	id     | oid     |
+ 	schema | text    |
+ 	name   | text    |
+ 	active | boolean |
+	tgfunc | text    |
+	tgargs | test[]  |
+ 	query  | text    |
+
+**pipelinedb.stream_readers**
+
+For each stream, shows all of the continuous queries that are reading from it.
+
+.. code-block:: psql
+
+     View "pipelinedb.transforms"
+  Column             |  Type     |
+  -------------------+-----------+
+  stream             | text      |
+  continuous_queries | text[]    |
+
+More system views are available for viewing :ref:`stats` for PipelineDB processes, continuous queries, and streams.
