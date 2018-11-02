@@ -236,7 +236,7 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 
 	:ref:`combine` the rows from the given **table** into the given continuous view. **combine_table** uses the given continuous view's query definition to combine aggregates from both relations with no loss of information.
 
-	**combine_table** can be used for purposes such as backfilling a continuous view (possibly running on a completely separate installation) by combining the backfilled rows only once they have been fully populated.
+	**combine_table** can be used for purposes such as backfilling a continuous view (possibly running on a completely separate installation) by combining the backfilled rows into the "live" continuous view only once they have been fully populated.
 
 **pipelinedb.get_views ( )**
 
