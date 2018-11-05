@@ -262,7 +262,7 @@ PipelineDB includes a number of system views for viewing useful information abou
 
 **pipelinedb.views**
 
-Describes continuous views.
+Describes :ref:`continuous-views`.
 
 .. code-block:: psql
 
@@ -275,11 +275,9 @@ Describes continuous views.
  	active | boolean |
  	query  | text    |
 
-Describes continuous views.
-
 **pipelinedb.transforms**
 
-Describes continuous transforms.
+Describes :ref:`continuous-transforms`.
 
 .. code-block:: psql
 
