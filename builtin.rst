@@ -289,7 +289,7 @@ Describes :ref:`continuous-transforms`.
  	name   | text    |
  	active | boolean |
 	tgfunc | text    |
-	tgargs | test[]  |
+	tgargs | text[]  |
  	query  | text    |
 
 **pipelinedb.stream_readers**
