@@ -143,7 +143,7 @@ For example, to allow incoming connections from any host:
 Docker
 ---------------------
 
-PipelineDB is available as a Docker image, making it very easy to run on platforms that don't currently have official packages. The PipelineDB extension will automatically be created upon database initialization, so :ref:`creating-extension` is is not necessary.
+PipelineDB is available as a Docker image, making it very easy to run on platforms that don't currently have official packages. The PipelineDB extension will automatically be created upon database initialization, so :ref:`creating-extension` is is not necessary with the Docker image.
 
 You can run the PipelineDB Docker container via :code:`docker run`:
 
