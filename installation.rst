@@ -32,10 +32,10 @@ Now simply install the latest PipelineDB package:
 .. code-block:: sh
 
   # PostgreSQL 10
-  sudo apt-get install pipelinedb-postgresql-11
+  sudo apt-get install pipelinedb-postgresql-10
 
   # PostgreSQL 11
-  sudo apt-get install pipelinedb-postgresql-10
+  sudo apt-get install pipelinedb-postgresql-11
 
 yum
 ---------------
@@ -81,6 +81,8 @@ To install the PipelineDB Debian package, run:
 .. code-block:: sh
 
 	sudo dpkg -i pipelinedb-postgresql-<pg version>_<pipelindb version>.deb
+
+.. _creating-extension:
 
 Creating the PipelineDB Extension
 ------------------------------------------
@@ -141,19 +143,9 @@ For example, to allow incoming connections from any host:
 Docker
 ---------------------
 
-PipelineDB is available as a Docker image, making it very easy to run on platforms that don't currently have official packages.
+PipelineDB is available as a Docker image, making it very easy to run on platforms that don't currently have official packages. The PipelineDB extension will automatically be created upon database initialization, so :ref:`creating-extension` is is not necessary.
 
-Retrieve the image via :code:`docker pull`:
-
-.. code-block:: sh
-
-  # PostgreSQL 10
-  docker pull pipelinedb/pipelinedb-postgresql-10
-
-  # PostgreSQL 11
-  docker pull pipelinedb/pipelinedb-postgresql-11
-
-Once you have the image, you can run PipelineDB via :code:`docker run`:
+You can run the PipelineDB Docker container via :code:`docker run`:
 
 .. code-block:: sh
   
