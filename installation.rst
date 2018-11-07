@@ -8,7 +8,7 @@ Install PostgreSQL
 
 Since PipelineDB runs as an extension to PostreSQL, begin by `installing PostgreSQL`_.
 
-.. note:: PipelineDB currently supports PostgreSQL versions 10.1, 10.2, 10.3, 10.4 and 10.5.
+.. note:: PipelineDB currently supports PostgreSQL versions 10.1, 10.2, 10.3, 10.4, 10.5, and 11.0.
 
 .. _`installing PostgreSQL`: https://www.postgresql.org/download/
 
@@ -31,7 +31,11 @@ Now simply install the latest PipelineDB package:
 
 .. code-block:: sh
 
-	sudo apt-get install pipelinedb-postgresql-10
+  # PostgreSQL 10
+  sudo apt-get install pipelinedb-postgresql-11
+
+  # PostgreSQL 11
+  sudo apt-get install pipelinedb-postgresql-10
 
 yum
 ---------------
@@ -48,7 +52,11 @@ Install the latest PipelineDB package:
 
 .. code-block:: sh
 
+ # PostgreSQL 10
  sudo yum install pipelinedb-postgresql-10
+  
+ # PostgreSQL 11
+ sudo yum install pipelinedb-postgresql-11
 
 .. note:: **apt** and **yum** repositories only need to be added to your system a single time. Once you've added them, you don't need to run these scripts again. You need only run the installation commands to get new versions of PipelineDB.
 
