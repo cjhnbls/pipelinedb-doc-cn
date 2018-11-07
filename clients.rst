@@ -3,7 +3,7 @@
 Clients
 ============
 
-Since PipelineDB runs as an extension of PostgreSQL 10.2+, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.
+Since PipelineDB runs as an extension of PostgreSQL 10.1+ and 11.0+, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.
 
 Here you'll find examples of a simple PipelineDB application written in a few different languages and clients. The application simply creates the continuous view:
 

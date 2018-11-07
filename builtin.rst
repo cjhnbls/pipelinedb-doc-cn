@@ -6,7 +6,7 @@ Built-in Functionality
 General
 ----------
 
-We strive to ensure that PipelineDB maintains full compatibility with PostgreSQL 10.2+. As a result, all of `PostgreSQL's built-in functionality`_ is available to PipelineDB users.
+We strive to ensure that PipelineDB maintains full compatibility with PostgreSQL 10.1+ and 11.0+. As a result, all of `PostgreSQL's built-in functionality`_ is available to PipelineDB users.
 
 .. _`PostgreSQL's built-in functionality`: http://www.postgresql.org/docs/current/static/functions.html
 
