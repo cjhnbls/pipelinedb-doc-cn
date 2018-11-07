@@ -130,4 +130,32 @@ For example, to allow incoming connections from any host:
 
 -------------
 
+Docker
+---------------------
+
+PipelineDB is available as a Docker image, making it very easy to run on platforms that don't currently have official packages.
+
+Retrieve the image via :code:`docker pull`:
+
+.. code-block:: sh
+
+  # PostgreSQL 10
+  docker pull pipelinedb/pipelinedb-postgresql-10
+
+  # PostgreSQL 11
+  docker pull pipelinedb/pipelinedb-postgresql-11
+
+Once you have the image, you can run PipelineDB via :code:`docker run`:
+
+.. code-block:: sh
+  
+  docker run pipelinedb/pipelinedb-postgresql-{postgresql version}
+
+The PipelineDB Docker image uses the `PostgreSQL image`_ as its parent, so all configuration and customization can be done via the interface that the `PostgreSQL image`_ provides.
+
+.. _`PostgreSQL image`: https://hub.docker.com/_/postgres/
+
+-----------------
+
 Now you're ready to put PipelineDB to work! Check out the :ref:`continuous-views` or :ref:`quickstart` sections to get started.
+
