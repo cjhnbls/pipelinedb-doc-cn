@@ -14,7 +14,7 @@ Statistics broken down by worker and combiner processes. These statistics only l
 
 .. code-block:: psql
 
-			View "pipelinedb.proc_stats"
+		View "pipelinedb.proc_stats"
             Column     |           Type           | Modifiers
 	---------------+--------------------------+-----------
 	 type          | text                     |
@@ -38,9 +38,9 @@ Continuous view-level statistics (views and transforms).
 
 .. code-block:: psql
 
-                        View "pipelinedb.query_stats"
+		View "pipelinedb.query_stats"
             Column        |           Type           | Modifiers
-	---------------+--------------------------+-----------
+	------------------+--------------------------+-----------
 	 type             | text                     |
 	 namespace        | text                     |
 	 continuous_query | text                     |
@@ -62,9 +62,9 @@ Stream-level statistics.
 
 .. code-block:: psql
 
-                        View "pipelinedb.stream_stats"
-            Column        |           Type           | Modifiers
-	---------------+--------------------------+-----------
+		View "pipelinedb.stream_stats"
+            Column       |           Type           | Modifiers
+	-----------------+--------------------------+-----------
 	 namespace       | text                     |
 	 stream          | text                     |
 	 input_rows      | bigint                   |
@@ -79,9 +79,9 @@ Database-wide statistics.
 
 .. code-block:: psql
 
-                        View "pipelinedb.db_stats"
+		View "pipelinedb.db_stats"
             Column        |           Type           | Modifiers
-	---------------+--------------------------+-----------
+	------------------+--------------------------+-----------
 	 type             | text                     |
 	 input_rows       | bigint                   |
 	 output_rows      | bigint                   |
