@@ -159,8 +159,6 @@ Distribution Functions
 
 	Given a **tdigest**, returns the value at the given quantile, **float**. **float** must be in :code:`[0, 1]`.
 
-.. note:: See also: :ref:`pipeline-aggs`, which are typically how these types are actually created.
-
 See :ref:`tdigest-aggs` for aggregates that can be used to generate **tdigest** objects.
 
 .. _misc-funcs:
