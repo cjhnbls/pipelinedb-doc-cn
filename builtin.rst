@@ -15,7 +15,7 @@ We strive to ensure that PipelineDB maintains full compatibility with PostgreSQL
 Aggregates
 -------------
 
-As one of PipelineDB's fundamental design goals is to **facilitate high-performance continuous aggregation**, PostgreSQL aggregate functions are fully supported for use in :ref:`continuous-views` (with a couple of rare exceptions). In addition to this large suite of standard aggregates, PipelineDB has also added some of its own :ref:`pipeline-aggs` that are purpose-built for continuous time-series data processing.
+As one of PipelineDB's fundamental design goals is to **facilitate high-performance continuous aggregation**, PostgreSQL aggregate functions are fully supported for use in :ref:`continuous-views` (with a couple of rare exceptions). In addition to this large suite of standard aggregates, PipelineDB has also added some of its own :ref:`aggregates` that are purpose-built for continuous time-series data processing.
 
 See :ref:`aggregates` for more information about some of PipelineDB's most useful features.
 

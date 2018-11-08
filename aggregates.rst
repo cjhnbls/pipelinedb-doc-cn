@@ -11,13 +11,12 @@ But for more complicated aggregates, such as avg_, stddev_, percentile_cont_, et
 
 Below you'll find a description of all the aggregates that PipelineDB supports. A few of them behave slightly differently than their standard counterparts in order to efficiently operate on infinite streams of data. Such aggregates have been annotated with an explanation of how exactly their behavior differs.
 
-.. note:: For the aggregates that have PostgreSQL and PostGIS equivalents, it may be helpful for you to consult the excellent `PostgreSQL aggregates`_ or `PostGIS aggregates`_ documentation.
+.. note:: It may be helpful for you to consult the excellent `PostgreSQL aggregates`_ documentation.
 
 .. _`PostgreSQL aggregates`: http://www.postgresql.org/docs/current/static/functions-aggregate.html
 
 ----------------------------
 
-.. _pipeline-aggs:
 .. _bloom-aggs:
 
 Bloom Filter Aggregates
