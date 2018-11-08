@@ -82,7 +82,7 @@ Top-K Functions
 
 	Increments the frequency of the given expression within the given **topk** and returns the resulting :ref:`topk`.
 
-**topk_increment ( fss, expression, weight )**
+**topk_increment ( topk, expression, weight )**
 
 	Increments the frequency of the given expression by the specified weight within the given :ref:`topk` and returns the resulting :ref:`topk`.
 
