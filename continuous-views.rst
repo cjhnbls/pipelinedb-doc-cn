@@ -14,7 +14,7 @@ Continuous views are defined as PostgreSQL views with the :code:`action` paramet
 
 .. code-block:: sql
 
-	CREATE name [WITH (action=materialize [, ...])]  AS query
+	CREATE VIEW name [WITH (action=materialize [, ...])]  AS query
 
 .. note:: The default :code:`action` is :code:`materialize`, and thus :code:`action` may be ommitted for creating continuous views. As long as a stream is being selected from, PipelineDB will interpret the :code:`CREATE VIEW` statement with an :code:`action` of :code:`materialize`.
 
