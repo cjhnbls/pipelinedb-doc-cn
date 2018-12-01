@@ -54,7 +54,7 @@ To view the continuous transforms and their definitions currently in the system,
 
 .. code-block:: sql
 
-	SELECT * pipelinedb.transforms;
+	SELECT * FROM pipelinedb.transforms;
 
 .. _ct-output-streams:
 
