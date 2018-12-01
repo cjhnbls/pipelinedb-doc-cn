@@ -88,7 +88,7 @@ To view the continuous views and their definitions currently in the system, you 
 
 .. code-block:: sql
 
-	SELECT * pipelinedb.views;
+	SELECT * FROM pipelinedb.views;
 
 Data Retrieval
 -------------------
