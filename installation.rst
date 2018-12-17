@@ -159,3 +159,18 @@ The PipelineDB Docker image uses the `PostgreSQL image`_ as its parent, so all c
 
 Now you're ready to put PipelineDB to work! Check out the :ref:`continuous-views` or :ref:`quickstart` sections to get started.
 
+macOS/OSX
+---------------------
+
+Since there is no standard PostgreSQL installation location on macOS/OSX, we provide a generic tarball package for these platforms from which you may install the PipelineDB binaries against an existing PostgreSQL installation.
+
+After downloading the latest release tarball from our `release archives`_, you just need to run the simple :code:`install.sh` script:
+
+.. code-block:: sh
+
+  $ tar -xvf pipelinedb-postgresql-<pg version>-<pipelinedb version>.osx.tar.gz
+  $ cd pipelinedb-postgresql-<pg version>-<pipelinedb version>
+  $ sudo ./install.sh
+  PipelineDB installation complete.
+
+From here you may proceed by :ref:`creating-extension`.
