@@ -42,7 +42,7 @@ Top-K
 
 Instead, FSS works by hashing incoming values into buckets, where each bucket has a collection of values already added. If the incoming element already exists at a given bucket, its frequency is incremented. If the element doesn't exist, it will be added as long as a few certain configurable conditions are met.
 
-Currently no PipelineDB functionality implicitly uses FSS. The FSS type and its associated functions can be accessed via the various :ref:`pipeline-funcs` and :ref:`pipeline-aggs` that expose them.
+Currently no PipelineDB functionality implicitly uses FSS. The FSS type and its associated functions can be accessed via the various :ref:`pipeline-funcs` and :ref:`aggregates` that expose them.
 
 .. _`Filtered-Space Saving`: http://www.l2f.inesc-id.pt/~fmmb/wiki/uploads/Work/dict.refd.pdf
 
