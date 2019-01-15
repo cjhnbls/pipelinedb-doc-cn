@@ -8,7 +8,7 @@ Install PostgreSQL
 
 Since PipelineDB runs as an extension to PostreSQL, begin by `installing PostgreSQL`_.
 
-.. note:: PipelineDB currently supports PostgreSQL versions 10.1, 10.2, 10.3, 10.4, 10.5, and 11.0.
+.. note:: PipelineDB currently supports PostgreSQL versions 10.1, 10.2, 10.3, 10.4, 10.5, and 11.0 on **64-bit architectures**.
 
 .. _`installing PostgreSQL`: https://www.postgresql.org/download/
 
