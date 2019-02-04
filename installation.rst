@@ -143,7 +143,7 @@ For example, to allow incoming connections from any host:
 Docker
 ---------------------
 
-PipelineDB is available as a Docker image, making it very easy to run on platforms that don't currently have official packages. The PipelineDB extension will automatically be created upon database initialization, so :ref:`creating-extension` is is not necessary with the Docker image.
+PipelineDB is available as a `Docker image`_, making it very easy to run on platforms that don't currently have official packages. The PipelineDB extension will automatically be created upon database initialization, so :ref:`creating-extension` is is not necessary with the Docker image.
 
 You can run a PipelineDB Docker container via :code:`docker run`:
 
@@ -153,6 +153,7 @@ You can run a PipelineDB Docker container via :code:`docker run`:
 
 The PipelineDB Docker image uses the `PostgreSQL image`_ as its parent, so all configuration and customization can be done via the interface that the `PostgreSQL image`_ provides.
 
+.. _`Docker image`: https://hub.docker.com/r/pipelinedb/pipelinedb-postgresql-11
 .. _`PostgreSQL image`: https://hub.docker.com/_/postgres/
 
 -----------------
