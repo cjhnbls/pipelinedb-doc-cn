@@ -187,7 +187,7 @@ See :ref:`misc-aggs` for aggregates that can be used to generate **bucket_agg** 
 .. code-block:: sql
 
     CREATE VIEW v AS SELECT
-      date_round(arrival_timestam, '10 minutes') AS bucket_10m, COUNT(*) FROM stream
+      date_round(arrival_timestamp, '10 minutes') AS bucket_10m, COUNT(*) FROM stream
       GROUP BY bucket_10m;
 
 **year ( timestamp )**
