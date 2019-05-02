@@ -1,11 +1,16 @@
 .. _quickstart:
 
-Quickstart
+..
+    Quickstart
+快速开始
 =======================
+..
+    First, complete the :ref:`installation` process.
+首先，请完成 :ref:`installation` 步骤
 
-First, complete the :ref:`installation` process.
-
-Wikipedia Traffic
+..
+    Wikipedia Traffic
+维基百科流量统计
 -----------------
 
 In this example we'll compute some basic statistics on a day's worth of `Wikipedia page view data`_. Each record in the dataset contains hourly page view statistics for every Wikipedia page. The record format is as follows:

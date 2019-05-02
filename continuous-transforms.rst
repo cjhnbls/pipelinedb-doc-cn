@@ -1,6 +1,8 @@
 .. _continuous-transforms:
 
-Continuous Transforms
+.. Continuous Transforms
+
+流转换
 ========================
 
 Continuous transforms can be used to continuously transform incoming time-series data without storing it. Since no data is stored, continuous transforms don't support aggregations. The result of the transformation can be piped into another stream or written to an external data store.

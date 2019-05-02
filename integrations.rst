@@ -1,6 +1,8 @@
 .. _integrations:
 
-Integrations
+..  Integrations
+
+应用集成
 ============================
 
 Apache Kafka

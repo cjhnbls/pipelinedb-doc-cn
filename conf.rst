@@ -1,6 +1,8 @@
 .. _conf:
 
-Configuration
+..  Configuration
+
+配置
 ==============
 
 **pipelinedb.stream_insert_level**

@@ -1,9 +1,13 @@
 .. _installation:
 
-PipelineDB Installation
+..  PipelineDB Installation
+
+PipelineDB安装
 ===========================
 
-Install PostgreSQL
+..  Install PostgreSQL
+
+安装PostgreSQL
 ---------------------------
 
 Since PipelineDB runs as an extension to PostreSQL, begin by `installing PostgreSQL`_.

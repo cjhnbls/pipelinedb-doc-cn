@@ -1,6 +1,8 @@
 .. _continuous-views:
 
-Continuous Views
+..  Continuous Views
+
+流视图
 =================
 
 PipelineDB's fundamental abstraction is called a continuous view. A continuous view is much like a regular view, except that it selects from a combination of streams and tables as its inputs and is incrementally updated in realtime as new data is written to those inputs.

@@ -1,6 +1,8 @@
 .. _builtin:
 
-Built-in Functionality
+..  Built-in Functionality
+
+内置功能
 =======================
 
 General

@@ -1,6 +1,8 @@
 .. _joins:
 
-Continuous JOINs
+..  Continuous JOINs
+
+流关联
 ============================
 
 :ref:`continuous-views` are not limited to selecting exclusively from :ref:`streams`. Often it can be useful to augment or combine incoming time-series data with static data stored in PipelineDB tables. This can be easily accomplished using what are called stream-table joins.

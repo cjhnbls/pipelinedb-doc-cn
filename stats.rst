@@ -1,6 +1,8 @@
 .. _stats:
 
-Statistics
+..  Statistics
+
+内置统计视图
 ==============
 
 PipelineDB includes a number of statistics-gathering views that provide insight into how the system is behaving. Statistics can be broken down by process, continuous view, stream, or viewed globally across the entire installation.

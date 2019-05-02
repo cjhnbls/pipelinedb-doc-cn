@@ -1,6 +1,8 @@
 .. _clients:
 
-Clients
+..  Clients
+
+客户端
 ============
 
 Since PipelineDB runs as an extension of PostgreSQL 10.1+ and 11.0+, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.

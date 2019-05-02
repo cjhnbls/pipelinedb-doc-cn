@@ -1,6 +1,8 @@
 .. _replication:
 
-Replication
+..  Replication
+
+主从复制集
 =======================
 
 Setting up replication for PipelineDB is identical to how you would set up replication on regular PostgreSQL. If you've already done so in the past, all of this might sound extremely familiar. If not, then it might be worth a read because setting up replication on PostgreSQL has a lot of quirks, mostly as a result of how replication has evolved overtime. `The history of replication in PostgreSQL <http://peter.eisentraut.org/blog/2015/03/03/the-history-of-replication-in-postgresql/>`_ by Peter Eisentraut is a fun read if you want to learn more about this evolution.

@@ -1,6 +1,8 @@
 .. _streams:
 
-Streams
+..  Streams
+
+流（foreign table）
 =================
 
 Streams are the abstraction that allows clients to push time-series data through :ref:`continuous-views`. A stream row, or simply **event**, looks exactly like a regular table row, and the interface for writing data to streams is identical to the one for writing to tables. However, the semantics of streams are fundamentally different from tables.

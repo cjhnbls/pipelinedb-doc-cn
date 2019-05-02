@@ -1,6 +1,8 @@
 .. _backups:
 
-Backups
+..  Backups
+
+备份
 ==============
 
 Since PipelineDB objects are represented by standard PostgreSQL objects, backups can be taken using PostgreSQL's `pg_dump`_ and `pg_dumpall`_ tools. Other PostgreSQL backup and restore tooling will work as well, since a PipelineDB database is just a regular PostgreSQL database.

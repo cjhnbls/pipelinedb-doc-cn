@@ -1,6 +1,8 @@
 .. _aggregates:
 
-Continuous Aggregates
+..  Continuous Aggregates
+
+流聚合
 ======================
 
 One of the fundamental goals of PipelineDB is to **facilitate high-performance continuous aggregation**, so not suprisingly aggregates are a central component of PipelineDB's utility. Continuous aggregates can be very powerful--in the most general sense they make it possible to keep the amount of data persisted in PipelineDB constant relative to the amount of data that has been pushed through it. This can enable sustainable and very high data throughput on modest hardware.

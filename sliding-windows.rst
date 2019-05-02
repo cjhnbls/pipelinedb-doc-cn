@@ -1,6 +1,8 @@
 .. _sliding-windows:
 
-Sliding Windows
+..  Sliding Windows
+
+滑动窗口
 ============================
 
 Since :ref:`continuous-views` are continuously and incrementally updated over time, PipelineDB has the capability to consider the current time when updating the result of a continuous view. Queries that include a :code:`WHERE` clause with a temporal component relating to the **current time** are called **sliding-window queries**. The set of events that a sliding :code:`WHERE` clause filters or accepts perpetually changes over time.
