@@ -2,3 +2,5 @@
 _build
 .*project
 *.class
+.idea/
+
