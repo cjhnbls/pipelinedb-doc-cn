@@ -104,6 +104,7 @@
     SELECT t.y FROM some_stream s JOIN some_table t ON s.x = t.x;
 
 ..	This transform now writes values from the joined table out to its output stream, which can be read using :code:`output_of`:
+
 这个流转换将join后的结果写入到其对应的输出流中，可以通过 :code:`output_of` 读到输出流中的数据：
 
 
@@ -136,6 +137,7 @@
 
 .. important::
 	..	All arguments to :code:`pipelinedb.insert_into_stream` must be valid names of streams that already exist in the system, otherwise an error will be thrown.
+
 	传入 :code:`pipelinedb.insert_into_stream` 的参数必须是系统中已存在的流（foreign table）。
 
 ..	Creating Your Own Output Function
