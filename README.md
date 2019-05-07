@@ -1,18 +1,20 @@
-readthedocs: [PipelineDB中文文档](https://pipelinedb-doc-cn.readthedocs.io/zh_CN/latest/)
+English: [PipelineDB Document](http://docs.pipelinedb.com/)
 
-安装依赖：
+Chinese: [PipelineDB中文文档](https://pipelinedb-doc-cn.readthedocs.io/zh_CN/latest/)
+
+dependency：
 ``` shell
 pip install sphinx sphinx_rtd_theme sphinx-autobuild awscli
 ```
-生成文档：
+generate doc：
 ``` shell
 make
 ```
-开启本地服务
+run local server
 ``` shell
 make serve
 ```
-查看文档:
+browse doc:
 ```
 localhost:8000
 ```
