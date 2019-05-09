@@ -43,7 +43,7 @@
 **data_type**
 	..	The data type of the column. This can include array specifiers. For more information on the data types supported by PipelineDB, see :ref:`builtin` and the `PostgreSQL supported types`_ .
 
-	列的数据类型，可以声明为数组。您可以查看 :ref:`内置功能<builtin>` 和 `PostgreSQL类型支持`_ 了解更多PipelineDB支持的数据类型。
+	列的数据类型，可以声明为数组。您可以查看 :ref:`内置函数<builtin>` 和 `PostgreSQL类型支持`_ 了解更多PipelineDB支持的数据类型。
 
 .. _PostgreSQL supported types: https://www.postgresql.org/docs/current/static/datatype.html
 .. _PostgreSQL类型支持: https://www.postgresql.org/docs/current/static/datatype.html
@@ -380,4 +380,4 @@ Event Expiration
 
 ..	Now that you know what :ref:`continuous-views` are and how to write to streams, it's time to learn about PipelineDB's expansive :ref:`builtin`!
 
-现在您已经知道了 :ref:`流视图<continuous-views>` 的相关信息以及如何向流中写入数据，是时候学习PipelineDB丰富的 :ref:`内置功能<builtin>` 了！
+现在您已经知道了 :ref:`流视图<continuous-views>` 的相关信息以及如何向流中写入数据，是时候学习PipelineDB丰富的 :ref:`内置函数<builtin>` 了！
