@@ -5,16 +5,22 @@
 客户端
 ============
 
-Since PipelineDB runs as an extension of PostgreSQL 10.1+ and 11.0+, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.
+..  Since PipelineDB runs as an extension of PostgreSQL 10.1+ and 11.0+, it doesn't have its own client libraries. Instead, any client that works with PostgreSQL (or any SQL database for that matter) will work with PipelineDB.
 
-Here you'll find examples of a simple PipelineDB application written in a few different languages and clients. The application simply creates the continuous view:
+由于PipelineDB在PostgreSQL 10.1+和11.0+中是以插件方式运行的，它没有自己的客户端，直接使用PostgreSQL客户端即可。
+
+..  Here you'll find examples of a simple PipelineDB application written in a few different languages and clients. The application simply creates the continuous view:
+
+下面将给您展示一些不同语言及客户端在PipelineDB中创建流视图的示例。
 
 .. code-block:: sql
 
   CREATE VIEW continuous view WITH (action=materialize) AS
 	SELECT x::integer, COUNT(*) FROM stream GROUP BY x;
 
-The application then emits :code:`100,000` events resulting in :code:`10` unique groupings for the continuous view, and prints out the results.
+..  The application then emits :code:`100,000` events resulting in :code:`10` unique groupings for the continuous view, and prints out the results.
+
+下面的程序向流中插入包含10个分组的10万条记录，并将结果输出：
 
 Python
 ----------------
@@ -68,7 +74,9 @@ For this example in Python, you'll need to have psycopg2_ installed.
 Ruby
 ----------------
 
-This example in Ruby uses the pg_ gem.
+..  This example in Ruby uses the pg_ gem.
+
+下面基于Ruby的例子使用 pg_ gem。
 
 .. _pg: https://rubygems.org/gems/pg/versions/0.18.2
 
@@ -135,7 +143,9 @@ This example in Ruby uses the pg_ gem.
 Java
 ----------------
 
-For this example you'll need to have JDBC_ installed and on your :code:`CLASSPATH`.
+..  For this example you'll need to have JDBC_ installed and on your :code:`CLASSPATH`.
+
+下面的例子需要先在 :code:`CLASSPATH` 中安装 JDBC_。
 
 ..  _JDBC: http://docs.oracle.com/javase/tutorial/jdbc/basics/gettingstarted.html
 
