@@ -51,7 +51,7 @@ PostgreSQL的 `流复制 <http://www.postgresql.org/docs/9.3/static/warm-standby
 
 ..  Last we will create a `replication slot <http://www.postgresql.org/docs/9.4/static/warm-standby.html#STREAMING-REPLICATION-SLOTS>`_ for the standby. Replication slots are a means for the standby to *register* with the primary, so that it is always aware of what WAL segments need to be kept around. Once a standby has consumed a WAL segment, it updates the :code:`restart_lsn` column in the `pg_replication_slots <http://www.postgresql.org/docs/9.4/static/catalog-pg-replication-slots.html>`_ catalog so that the primary knows it can now garbage collect that WAL segment.
 
-最后，为从节点创建一个 `replication slot <http://www.postgresql.org/docs/9.4/static/warm-standby.html#STREAMING-REPLICATION-SLOTS>`_。Replication slots用于从节点在主节点上*注册* 工具，它使主节点能获悉需要保留的WAL片段。一旦从节点消费了一个WAL片段，它就会更新 `pg_replication_slots <http://www.postgresql.org/docs/9.4/static/catalog-pg-replication-slots.html>`_ 目录中的 :code:`restart_lsn` 列，以便主节点知悉当前可回收的WAL片段。
+最后，为从节点创建一个 `replication slot <http://www.postgresql.org/docs/9.4/static/warm-standby.html#STREAMING-REPLICATION-SLOTS>`_。Replication slots用于从节点在主节点上 *注册* 工具，它使主节点能获悉需要保留的WAL片段。一旦从节点消费了一个WAL片段，它就会更新 `pg_replication_slots <http://www.postgresql.org/docs/9.4/static/catalog-pg-replication-slots.html>`_ 目录中的 :code:`restart_lsn` 列，以便主节点知悉当前可回收的WAL片段。
 
 .. code-block:: bash
 
