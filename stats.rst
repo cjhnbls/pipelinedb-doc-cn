@@ -5,14 +5,20 @@
 内置统计视图
 ==============
 
-PipelineDB includes a number of statistics-gathering views that provide insight into how the system is behaving. Statistics can be broken down by process, continuous view, stream, or viewed globally across the entire installation.
+..	PipelineDB includes a number of statistics-gathering views that provide insight into how the system is behaving. Statistics can be broken down by process, continuous view, stream, or viewed globally across the entire installation.
 
-Each statistics view is described below.
+PipelineDB提供一系列包含系统运行情况的统计-收集视图，这些统计会被进程、流视图、以及全局操作打断。
+
+..	Each statistics view is described below.
+
+每个统计视图如下所示：
 
 pipelinedb.proc_stats
 ----------------------
 
-Statistics broken down by worker and combiner processes. These statistics only last for the duration of the underlying processes.
+..	Statistics broken down by worker and combiner processes. These statistics only last for the duration of the underlying processes.
+
+统计会被worker和combiner进程打算，只适用于一些基础流程。
 
 .. code-block:: psql
 
@@ -36,7 +42,9 @@ Statistics broken down by worker and combiner processes. These statistics only l
 pipelinedb.query_stats
 ----------------------
 
-Continuous view-level statistics (views and transforms).
+..	Continuous view-level statistics (views and transforms).
+
+流视图和流转换统计信息
 
 .. code-block:: psql
 
@@ -60,7 +68,9 @@ Continuous view-level statistics (views and transforms).
 pipelinedb.stream_stats
 -----------------------------
 
-Stream-level statistics.
+..	Stream-level statistics.
+
+流（foreign table）统计信息
 
 .. code-block:: psql
 
@@ -77,7 +87,9 @@ Stream-level statistics.
 pipelinedb.db_stats
 ------------------------
 
-Database-wide statistics.
+..	Database-wide statistics.
+
+库（database）统计信息
 
 .. code-block:: psql
 
