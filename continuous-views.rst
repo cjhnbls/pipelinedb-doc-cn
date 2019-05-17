@@ -178,16 +178,16 @@ derek     30
 
 ..	Time-to-Live (TTL) Expiration
 
-保留时间（TTL）
+存活时间（TTL）
 ---------------------------------
 
 ..	A common PipelineDB pattern is to include a time-based column in aggregate groupings and removing old rows that are no longer needed, as determined by that column. While there are a number of ways to achieve this behavior, PipelineDB provides native support for row expiration via time-to-live (TTL) critera specified at the continuous view level.
 
-PipelineDB可以通过指定一个时间类型列并且设置保留时间（TTL）来清理流视图中的过期数据。
+PipelineDB可以通过指定一个时间类型列并且设置存活时间（TTL）来清理流视图中的过期数据。
 
 ..	TTL expiration behavior can be assigned to continuous views via the :code:`ttl` and :code:`ttl_column` storage parameters. Expiration is handled by one or more **"reaper"** processes that will :code:`DELETE` any rows having a :code:`ttl_column` value that is older than the interval specified by :code:`ttl` (relative to wall time). Here's an example of a continuous view definition that will tell the reaper to delete any rows whose **minute** column is older than one month:
 
-保留时间（TTL）可以通过 :code:`ttl` 和 :code:`ttl_column` 参数来设定。过期数据会在 **"reaper"** 阶段被 :code:`DELETE`。任何 :code:`ttl_column` 值小于 当前时间减去 :code:`ttl` 的数据都会被删除。下面的指令创建了一个过期时间为 **1个月** 的流视图：
+存活时间（TTL）可以通过 :code:`ttl` 和 :code:`ttl_column` 参数来设定。过期数据会在 **"reaper"** 阶段被 :code:`DELETE`。任何 :code:`ttl_column` 值小于 当前时间减去 :code:`ttl` 的数据都会被删除。下面的指令创建了一个过期时间为 **1个月** 的流视图：
 
 .. code-block:: sql
 
