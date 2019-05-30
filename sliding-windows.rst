@@ -5,37 +5,55 @@
 滑动窗口
 ============================
 
-Since :ref:`continuous-views` are continuously and incrementally updated over time, PipelineDB has the capability to consider the current time when updating the result of a continuous view. Queries that include a :code:`WHERE` clause with a temporal component relating to the **current time** are called **sliding-window queries**. The set of events that a sliding :code:`WHERE` clause filters or accepts perpetually changes over time.
+..	Since :ref:`continuous-views` are continuously and incrementally updated over time, PipelineDB has the capability to consider the current time when updating the result of a continuous view. Queries that include a :code:`WHERE` clause with a temporal component relating to the **current time** are called **sliding-window queries**. The set of events that a sliding :code:`WHERE` clause filters or accepts perpetually changes over time.
 
-There are two important components of a sliding :code:`WHERE` clause:
+由于 :ref:`流视图<continuous-views>` 是实时增量更新的，PipelineDB可以在更新流视图结果集时考虑当前时间。:code:`WHERE` 子句中包含与 **当前时间** 相关信息的查询被称作 **滑动窗口查询**。滑动的 :code:`WHERE` 子句过滤或接收到的 **event** 集合是随时间持续变化的。
+
+..	There are two important components of a sliding :code:`WHERE` clause:
+
+滑动 :code:`WHERE` 子句包含两个重要元素：
 
 **clock_timestamp ( )**
 
-	A built-in function that always returns the current timestamp.
+	..	A built-in function that always returns the current timestamp.
+
+	内置函数，总返回当前时间戳。
 
 **arrival_timestamp**
 
-	A special attribute of all incoming events containing the time at which PipelineDB received them, as described in :ref:`arrival-ordering`.
+	..	A special attribute of all incoming events containing the time at which PipelineDB received them, as described in :ref:`arrival-ordering`.
 
-However, it is not necessary to explicitly add a :code:`WHERE` clause referencing these values. PipelineDB does this internally and it is only necessary to specify
-the :code:`sw` storage parameter in a continuous view's definition.
+	**event** 的特殊属性，它包含 PipelineDB接收数据的时间，在 :ref:`arrival-ordering` 中有详细描述。
 
-These concepts are probably best illustrated by an example.
+..	However, it is not necessary to explicitly add a :code:`WHERE` clause referencing these values. PipelineDB does this internally and it is only necessary to specify the :code:`sw` storage parameter in a continuous view's definition.
+
+然而，我们无须显式添加 :code:`WHERE` 子句来引用这些值，PipelineDB已经在内部执行了，我们在定义流视图时指定 :code:`sw` 存储参数即可。
+
+..	These concepts are probably best illustrated by an example.
+下面的例子可以很好地阐明这些概念。
 
 
-Examples
+..	Examples
+
+示例
 ------------
 
-Even though sliding windows are a new concept for a SQL database, PipelineDB does not use any sort of new or proprietary windowing syntax. Instead, PipelineDB uses standard PostgreSQL 9.5 syntax. Here's a simple example:
+..	Even though sliding windows are a new concept for a SQL database, PipelineDB does not use any sort of new or proprietary windowing syntax. Instead, PipelineDB uses standard PostgreSQL 9.5 syntax. Here's a simple example:
 
-**What users have I seen in the last minute?**
+即使滑动窗口对SQL数据库来说是一个新概念，PipelineDB没有引入任何新的或特有的窗口语法，而是使用PostgreSQL 9.5的标准语法，如下所示：
+
+..	**What users have I seen in the last minute?**
+
+**最近一分钟的用户**
 
 .. code-block:: sql
 
 	CREATE VIEW recent_users WITH (sw = '1 minute') AS
 	   SELECT user_id::integer FROM stream;
 
-Internally, PipelineDB will rewrite this query to the following:
+..	Internally, PipelineDB will rewrite this query to the following:
+
+可以通过如下SQL实现相同的逻辑：
 
 .. code-block:: sql
 
@@ -43,18 +61,33 @@ Internally, PipelineDB will rewrite this query to the following:
      SELECT user_id::integer FROM stream
   WHERE (arrival_timestamp > clock_timestamp() - interval '1 minute');
 
-.. note:: PipelineDB allows users to manually construct a sliding window :code:`WHERE` clause when defining sliding-window continuous views, although it is recommended that :code:`sw` be used in order to avoid tedium. 
+.. note::
+	..	PipelineDB allows users to manually construct a sliding window :code:`WHERE` clause when defining sliding-window continuous views, although it is recommended that :code:`sw` be used in order to avoid tedium.
 
-The result of a :code:`SELECT` on this continuous view would only contain the specific users seen within the last minute. That is, repeated :code:`SELECT` s would contain different rows, even if the continuous view wasn't explicitly updated.
+	尽管 :code:`sw` 显得更加简洁，PipelineDB仍然允许用户通过 :code:`WHERE` 手动构造基于滑动窗口的流视图。
 
-Let's break down what's going on with the :code:`(arrival_timestamp > clock_timestamp() - interval '1 minute')` predicate.
+..	The result of a :code:`SELECT` on this continuous view would only contain the specific users seen within the last minute. That is, repeated :code:`SELECT` s would contain different rows, even if the continuous view wasn't explicitly updated.
 
-Each time :code:`clock_timestamp() - interval '1 minute'` is evaluated, it will return a timestamp corresponding to 1 minute in the past. Adding in :code:`arrival_timestamp` and :code:`>` means that this predicate will evaluate to :code:`true` if the :code:`arrival_timestamp` for a given event is greater than 1 minute in the past. Since the predicate is evaluated every time a new event is read, this effectively gives us a sliding window that is 1 minute width.
+上面的流视图只会包含最后一分钟的用户。也就是说，即使流视图中的数据没有更新，每次 :code:`SELECT` 查询仍然会返回不同的结果，
 
-.. note:: PipelineDB exposes the :code:`current_date`, :code:`current_time`, and :code:`current_timestamp` values to use within queries, but by design these don't work with sliding-window queries because they remain constant within a transaction and thus don't necessarily represent the current moment in time.
+..	Let's break down what's going on with the :code:`(arrival_timestamp > clock_timestamp() - interval '1 minute')` predicate.
+
+让我们对 :code:`(arrival_timestamp > clock_timestamp() - interval '1 minute')` 语句进行分解。
+
+..	Each time :code:`clock_timestamp() - interval '1 minute'` is evaluated, it will return a timestamp corresponding to 1 minute in the past. Adding in :code:`arrival_timestamp` and :code:`>` means that this predicate will evaluate to :code:`true` if the :code:`arrival_timestamp` for a given event is greater than 1 minute in the past. Since the predicate is evaluated every time a new event is read, this effectively gives us a sliding window that is 1 minute width.
+
+:code:`clock_timestamp() - interval '1 minute'` 每次执行时，它将返回一分钟前的时间戳。如果 :code:`arrival_timestamp` 大于一分钟前的时间， :code:`arrival_timestamp` and :code:`>` 将返回 :code:`true`。由于每次读取到新的 **event** 时这个不等式都会被执行，所以窗口中总是维系着最近一分钟的数据。
+
+.. note::
+
+	..	exposes the :code:`current_date`, :code:`current_time`, and :code:`current_timestamp` values to use within queries, but by design these don't work with sliding-window queries because they remain constant within a transaction and thus don't necessarily represent the current moment in time.
+
+	虽然PipelineDB曝露了 :code:`current_date`、:code:`current_time`以及 :code:`current_timestamp` 来配合查询使用，但他们不是被设计用于滑动窗口的，因为他们在一次事务中是常量，所以不能准备地表示当前时间。
 
 
-Sliding Aggregates
+..	Sliding Aggregates
+
+滑动聚合
 -------------------
 
 Sliding-window queries also work with aggregate functions. Sliding aggregates work by aggregating their inputs as much as possible, but without losing the granularity needed to know how to remove information from the window as time progresses. This partial aggregatation is all transparent to the user--only fully aggregated results will be visible within sliding-window aggregates.
