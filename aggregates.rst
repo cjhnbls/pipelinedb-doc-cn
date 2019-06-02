@@ -5,17 +5,30 @@
 流聚合
 ======================
 
-One of the fundamental goals of PipelineDB is to **facilitate high-performance continuous aggregation**, so not suprisingly aggregates are a central component of PipelineDB's utility. Continuous aggregates can be very powerful--in the most general sense they make it possible to keep the amount of data persisted in PipelineDB constant relative to the amount of data that has been pushed through it. This can enable sustainable and very high data throughput on modest hardware.
+..	One of the fundamental goals of PipelineDB is to **facilitate high-performance continuous aggregation**, so not suprisingly aggregates are a central component of PipelineDB's utility. Continuous aggregates can be very powerful--in the most general sense they make it possible to keep the amount of data persisted in PipelineDB constant relative to the amount of data that has been pushed through it. This can enable sustainable and very high data throughput on modest hardware.
 
-Continuous aggregates are **incrementally updated** in real time as new events are read by the the continuous view that they're a part of. For simple aggregates such as count_ and sum_, it is easy to see how their results can be incrementally updated--just add the new value to the existing result.
+PipelineDB最核心的追求之一就是 **促进高性能的连续聚合**，所以聚合函数毫无疑问是PipelineDB的核心功能。连续聚合在大多数通用场景是非常有用的，它使得PipelineDB中持久化的数据始终与写入的数据保持同步。它可以通过一定的硬件实现稳定和高吞度量的服务。
 
-But for more complicated aggregates, such as avg_, stddev_, percentile_cont_, etc., more advanced infrastructure is required to support efficient incremental updates, and PipelineDB handles all of that complexity for you transparently.
+..	Continuous aggregates are **incrementally updated** in real time as new events are read by the the continuous view that they're a part of. For simple aggregates such as count_ and sum_, it is easy to see how their results can be incrementally updated--just add the new value to the existing result.
 
-Below you'll find a description of all the aggregates that PipelineDB supports. A few of them behave slightly differently than their standard counterparts in order to efficiently operate on infinite streams of data. Such aggregates have been annotated with an explanation of how exactly their behavior differs.
+连续聚合是随着流视图新 **event** 的生成实时 **增量更新的**。对于如 count_ 和 sum_ 之类的简单聚合，我们很容易理解结果是如何增量更新的--将新值累加到已有结果上而已。
 
-.. note:: It may be helpful for you to consult the excellent `PostgreSQL aggregates`_ documentation.
+..	But for more complicated aggregates, such as avg_, stddev_, percentile_cont_, etc., more advanced infrastructure is required to support efficient incremental updates, and PipelineDB handles all of that complexity for you transparently.
 
-.. _`PostgreSQL aggregates`: http://www.postgresql.org/docs/current/static/functions-aggregate.html
+但对更加复杂的聚合而言，如  avg_, stddev_, percentile_cont_ 等，需要更优化的架构来支持高效的增量更新，PipelineDB在内部自动实现了这些复杂的逻辑。
+
+..	Below you'll find a description of all the aggregates that PipelineDB supports. A few of them behave slightly differently than their standard counterparts in order to efficiently operate on infinite streams of data. Such aggregates have been annotated with an explanation of how exactly their behavior differs.
+
+下面是所有PipelineDB支持的聚合函数的说明。有一些函数与标准的聚合函数有略微的差别以高效处理源源不断的流式数据，文中已经标注出了这部分函数的区别。
+
+.. note::
+	..	It may be helpful for you to consult the excellent `PostgreSQL aggregates`_ documentation.
+
+	阅读下面的说明前建议您想阅读 `PostgreSQL聚合函数`_ 文档。
+
+
+..	.. _`PostgreSQL aggregates`: http://www.postgresql.org/docs/current/static/functions-aggregate.html
+.. _`PostgreSQL聚合函数`: http://www.postgresql.org/docs/current/static/functions-aggregate.html
 
 ----------------------------
 
@@ -26,21 +39,31 @@ Bloom Filter Aggregates
 
 **bloom_agg ( expression )**
 
-	Adds all input values to a :ref:`bloom-filter`
+	..	Adds all input values to a :ref:`bloom-filter`
+
+	将所有输入的值添加到 :ref:`bloom-filter`
 
 **bloom_agg ( expression , p , n )**
 
-	Adds all input values to a Bloom filter and sizes it according to the given parameters. **p** is the desired false-positive rate, and **n** is the expected number of unique elements to add.
+	..	Adds all input values to a Bloom filter and sizes it according to the given parameters. **p** is the desired false-positive rate, and **n** is the expected number of unique elements to add.
+
+	将所有输入的值添加到Bloom filter中并且根据给定参数计算大小。**p** 是期待的假阳率，**n** 是期望添加的唯一元素数量。
 
 **bloom_union_agg ( bloom filter )**
 
-	Takes the union of all input Bloom filters, resulting in a single Bloom filter containing all of the input Bloom filters' information.
+	..	Takes the union of all input Bloom filters, resulting in a single Bloom filter containing all of the input Bloom filters' information.
+
+	对所有输入的Bloom filters取并集。
 
 **bloom_intersection_agg ( bloom filter )**
 
-	Takes the intersection of all input Bloom filters, resulting in a single Bloom filter containing only the information shared by all of the input Bloom filters.
+	..	Takes the intersection of all input Bloom filters, resulting in a single Bloom filter containing only the information shared by all of the input Bloom filters.
 
-See :ref:`bloom-funcs` for functionality that can be used to manipulate Bloom filters.
+	对所有输入的Bloom filters取交集。
+
+..	See :ref:`bloom-funcs` for functionality that can be used to manipulate Bloom filters.
+
+其它与Bloom filters相关的函数可查看 :ref:`Bloom Filter函数<bloom-funcs>`。
 
 .. _cmsketch-aggs:
 
