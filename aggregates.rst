@@ -72,17 +72,25 @@ Frequency Tracking Aggregates
 
 **freq_agg ( expression )**
 
-	Adds all input values to an internal :ref:`count-min-sketch`, enabling efficient online computation of the frequency of each input expression.
+	..	Adds all input values to an internal :ref:`count-min-sketch`, enabling efficient online computation of the frequency of each input expression.
+
+	将所有输入的值添加到 :ref:`count-min-sketch` 中，实现实时高效计算所有输入的频数。
 
 **freq_agg ( expression, epsilon, p )**
 
-	Same as above, but accepts **epsilon** and **p** as parameters for the underlying **cmsketch**. **epsilon** determines the acceptable error rate of the **cmsketch**, and defaults to **0.002** (0.2%). **p** determines the confidence, and defaults to **0.995** (99.5%). Lower **epsilon** and **p** will result in smaller **cmsketch** structures, and vice versa.
+	..	Same as above, but accepts **epsilon** and **p** as parameters for the underlying **cmsketch**. **epsilon** determines the acceptable error rate of the **cmsketch**, and defaults to **0.002** (0.2%). **p** determines the confidence, and defaults to **0.995** (99.5%). Lower **epsilon** and **p** will result in smaller **cmsketch** structures, and vice versa.
+
+	同上，可以给 **cmsketch** 指定 **epsilon** 和 **p** 参数。 **epsilon** 决定 **cmsketch** 可接受的错误率，默认为 **0.002** (0.2%)。**p** 代表可信度，默认为 **0.995** (99.5%)。**epsilon** 和 **p** 越小，**cmsketch** 的空间占用越小，反之亦然。
 
 **freq_merge_agg ( count-min sketch )**
 
-	Merges all input Count-min sketches into a single one containing all of the information of the input Count-min sketches.
+	..	Merges all input Count-min sketches into a single one containing all of the information of the input Count-min sketches.
 
-See :ref:`cmsketch-funcs` for functionality that can be used to manipulate Count-Min sketches.
+	对所有输入的cms取并集。
+
+..	See :ref:`cmsketch-funcs` for functionality that can be used to manipulate Count-Min sketches.
+
+其它与Count-Min sketches相关的函数可查看 :ref:`Frequency函数<cmsketch-funcs>`。
 
 .. _topk-aggs:
 
