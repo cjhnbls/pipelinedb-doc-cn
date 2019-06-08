@@ -201,7 +201,7 @@ Frequency函数
 
 ..	See :ref:`cmsketch-aggs` for aggregates that can be used to generate **cmsketches**.
 
-查看 :ref:`cmsketch-aggs` 张杰了解 **cmsketches** 的相关聚合操作。
+查看 :ref:`cmsketch-aggs` 章节了解 **cmsketches** 的相关聚合操作。
 
 .. _hll-funcs:
 
