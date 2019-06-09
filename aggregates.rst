@@ -99,17 +99,25 @@ Top-K Aggregates
 
 **topk_agg ( expression , k )**
 
-	Tracks the top k input expressions by adding all input values to a :ref:`topk` data structure sized for the given **k**, incrementing each value's count by **1** each time it is added.
+	..	Tracks the top k input expressions by adding all input values to a :ref:`topk` data structure sized for the given **k**, incrementing each value's count by **1** each time it is added.
+
+	根据输入的参数 **k** 对输入的 **expression** 取 :ref:`topk`，每添加一个元素，其对应的值会加1。
 
 **topk_agg (expression, k, weight )**
 
-	Same as above, but associates the given weight to the input expression (rather than a default weight of 1).
+	..	Same as above, but associates the given weight to the input expression (rather than a default weight of 1).
+
+	同上，但会为 **expression** 赋予指定权重（而不是默认的1）。
 
 **topk_merge_agg ( topk )**
 
-	Merges all **topk** inputs into a single **topk** data structure.
+	..	Merges all **topk** inputs into a single **topk** data structure.
 
-See :ref:`topk-funcs` for functionality that can be used to manipulate **topk** objects.
+	将所有的 **topk** 合并到一个 **topk** 中。
+
+..	See :ref:`topk-funcs` for functionality that can be used to manipulate **topk** objects.
+
+查看 :ref:`Top-K 函数<topk-funcs>` 了解更多 **topk** 相关函数。
 
 .. _hll-aggs:
 
@@ -118,17 +126,25 @@ HyperLogLog Aggregates
 
 **hll_agg ( expression )**
 
-	Adds all input values to a :ref:`hll`.
+	..	Adds all input values to a :ref:`hll`.
+
+	将所有输入的 **expression** 添加到 :ref:`hll` 中。
 
 **hll_agg ( expression, p )**
 
-	Adds all input values to a :ref:`hll` with the given **p**. A larger **p** reduces the HyperLogLog's error rate, at the expense of a larger size.
+	..	Adds all input values to a :ref:`hll` with the given **p**. A larger **p** reduces the HyperLogLog's error rate, at the expense of a larger size.
+
+	将所有输入的 **expression** 添加到 :ref:`hll` 中，指定参数 **p**， **p** 越大，:ref:`hll` 的偏差越小，内存占用越大。
 
 **hll_union_agg ( hyperloglog )**
 
-	Takes the union of all input HyperLogLogs, resulting in a single HyperLogLog that contains all of the information of the input HyperLogLogs.
+	..	Takes the union of all input HyperLogLogs, resulting in a single HyperLogLog that contains all of the information of the input HyperLogLogs.
 
-See :ref:`hll-funcs` for functionality that can be used to manipulate HyperLogLog objects.
+	对所有输入的 HyperLogLogs 取并集。
+
+..	See :ref:`hll-funcs` for functionality that can be used to manipulate HyperLogLog objects.
+
+查看 :ref:`HyperLogLog函数<hll-funcs>` 了解更多 **HyperLogLog** 相关函数。
 
 .. _tdigest-aggs:
 
@@ -137,13 +153,19 @@ Distribution Aggregates
 
 **dist_agg ( expression )**
 
-	Adds all input values to a :ref:`t-digest` in order to track the distribution of all input expressions.
+	..	Adds all input values to a :ref:`t-digest` in order to track the distribution of all input expressions.
+
+	将所有输入的值添加到 :ref:`t-digest` 中来追溯数据分布。
 
 **dist_agg ( expression, compression )**
 
-	Same as above, but builds the underyling **tdigest** using the given **compression**. **compression** must be an integer in the range :code:`[20, 1000]`. A higher value for **compression** will yield a larger **tdigest** with but with more precision than a smaller **tdigest** with a lower **compression** value.
+	..	Same as above, but builds the underyling **tdigest** using the given **compression**. **compression** must be an integer in the range :code:`[20, 1000]`. A higher value for **compression** will yield a larger **tdigest** with but with more precision than a smaller **tdigest** with a lower **compression** value.
 
-See :ref:`tdigest-funcs` for functionality that can be used to manipulate **tdigest** objects.
+	同上，但使用给定的 **compression** 构建底层 **tdigest**。**compression** 必须是 :code:`[20, 1000]` 中的整数。**compression** 越大，**tdigest** 空间占用越高，精确度也越高。
+
+..	See :ref:`tdigest-funcs` for functionality that can be used to manipulate **tdigest** objects.
+
+查看 :ref:`Distribution函数<tdigest-funcs>` 了解更多 **tdigest** 相关函数。
 
 .. _misc-aggs:
 
@@ -152,13 +174,19 @@ Miscellaneous Aggregates
 
 **bucket_agg ( expression , bucket_id )**
 
-  Adds 4-byte hashes of each input expression to the bucket with the given **bucket_id**. Each hash may only be present precisely once in one bucket at any given time. Buckets can therefore be thought of as exclusive sets of hashes of the input expressions.
+  ..	Adds 4-byte hashes of each input expression to the bucket with the given . Each hash may only be present precisely once in one bucket at any given time. Buckets can therefore be thought of as exclusive sets of hashes of the input expressions.
+
+  根据 **bucket_id** 为每个输入的 **expression** 添加4字节的哈希值。在任意给定时间，每个哈希值可能只在一个桶中出现一次。因此，这些桶可以被认定为输入的 **expressions** 的排它散列集。
 
 **bucket_agg ( expression , bucket_id , timestamp )**
 
-  Same as above, but allows a **timestamp** expression to determine bucket entry order. That is, only a value's *latest* entry will cause it to change buckets.
+  ..	Same as above, but allows a **timestamp** expression to determine bucket entry order. That is, only a value's *latest* entry will cause it to change buckets.
 
-See :ref:`misc-funcs` for functionality that can be used to manipulate **bucket_agg** objects.
+  同上，但允许通过 **timestamp** 表达式来决定桶的条目顺序。也就是说，只有一个值 *最后的* 条目才会使它切换到别的桶中。
+
+..	See :ref:`misc-funcs` for functionality that can be used to manipulate **bucket_agg** objects.
+
+查看 :ref:`Miscellaneous函数<misc-funcs>` 了解更多 **bucket_agg** 相关函数。
 
 **exact_count_distinct ( expression )**
 
