@@ -180,7 +180,7 @@ Miscellaneous Aggregates
 
 **bucket_agg ( expression , bucket_id , timestamp )**
 
-  ..	Same as above, but allows a **timestamp** expression to determine bucket entry order. That is, only a value's *latest* entry will cause it to change buckets.
+  ..    Same as above, but allows a **timestamp** expression to determine bucket entry order. That is, only a value's *latest* entry will cause it to change buckets.
 
   同上，但允许通过 **timestamp** 表达式来决定桶的条目顺序。也就是说，只有一个值 *最后的* 条目才会使它切换到别的桶中。
 
@@ -190,31 +190,47 @@ Miscellaneous Aggregates
 
 **exact_count_distinct ( expression )**
 
-  Counts the exact number of distinct values for the given expression. Since **count distinct** used in continuous views implicitly uses HyperLogLog for efficiency, **exact_count_distinct** can be used when the small margin of error inherent to using HyperLogLog is not acceptable.
+  ..    Counts the exact number of distinct values for the given expression. Since **count distinct** used in continuous views implicitly uses HyperLogLog for efficiency, **exact_count_distinct** can be used when the small margin of error inherent to using HyperLogLog is not acceptable.
 
-.. important:: **exact_count_distinct** must store all unique values observed in order to determine uniqueness, so it is not recommended for use when many unique values are expected.
+  对给定的 **expression** 进行精确的去重计数。由于流视图中的 **count distinct** 内部使用HyperLogLog以提高效率，如果不能接受Hyperloglog产生的小概率误差，可以使用 **exact_count_distinct**。
+
+..  .. important:: **exact_count_distinct** must store all unique values observed in order to determine uniqueness, so it is not recommended for use when many unique values are expected.
+
+.. important:: **exact_count_distinct** 必须存储所有去重后的值以确定值的唯一性，所以不建议在基数很大的情况下使用。
 
 **first_values ( n ) WITHIN GROUP (ORDER BY sort_expression)**
 
-  An ordered-set aggregate that stores the first **n** values ordered by the provided sort expression.
+  ..    An ordered-set aggregate that stores the first **n** values ordered by the provided sort expression.
 
-.. note:: See also: :ref:`pipeline-funcs`, which explains some of the PipelineDB's non-aggregate functionality for manipulating Bloom filters, Count-min sketches, HyperLogLogs and T-Digests. Also, check out :ref:`probabilistic` for more information about what they are and how you can leverage them.
+  一个有序的聚合集合，按序保存前 **n** 个值。
+
+..  .. note:: See also: :ref:`pipeline-funcs`, which explains some of the PipelineDB's non-aggregate functionality for manipulating Bloom filters, Count-min sketches, HyperLogLogs and T-Digests. Also, check out :ref:`probabilistic` for more information about what they are and how you can leverage them.
+
+.. note:: 可见 :ref:`PipelineDB特有函数<pipeline-funcs>`，其中介绍了与Bloom filters, Count-min sketches, HyperLogLogs 以及 T-Digests相关的非聚合函数。您可以查看 :ref:`概率数据结构和算法<probabilistic>` 了解其原理及使用方法。
 
 **keyed_max ( key, value )**
 
-	Returns the **value** associated with the "highest" **key**.
+	.. Returns the **value** associated with the "highest" **key**.
+
+    返回与 “最高的” **key** 相关的 **value**。
 
 **keyed_min ( key, value )**
 
-	Returns the **value** associated with the "lowest" **key**.
+	.. Returns the **value** associated with the "lowest" **key**.
+
+    返回与 “最低的” **key** 相关的 **value**。
 
 .. _set-agg:
 
 **set_agg ( expression )**
 
-  Adds all input values to a set.
+  .. Adds all input values to a set.
 
-See :ref:`misc-funcs` for functionality that can be used to manipulate sets.
+  将所有输入值加入到集合中。
+
+.. See :ref:`misc-funcs` for functionality that can be used to manipulate sets.
+
+查看 :ref:`Miscellaneous函数<misc-funcs>` 了解更多可用于操作集合的函数。
 
 ------------------------------------
 
@@ -223,19 +239,29 @@ See :ref:`misc-funcs` for functionality that can be used to manipulate sets.
 Combine
 ------------
 
-Since PipelineDB can incrementally update aggregate values, it has the capability to combine existing aggregates using more information than simply their current raw values. For example, combining multiple averages isn't simply a matter of taking the average of the averages. Their weights must be taken into account.
+..  Since PipelineDB can incrementally update aggregate values, it has the capability to combine existing aggregates using more information than simply their current raw values. For example, combining multiple averages isn't simply a matter of taking the average of the averages. Their weights must be taken into account.
 
-For this type of operation, PipelineDB exposes the special **combine** aggregate. Its description is as follows:
+由于PipelineDB实现增量更新聚合后的值，所以它可以将当前数据之外的信息同已有的聚合相结合。比如，我们无法在不加权的情况下通过对各个子区间的平均值取平均值来算出总区间的平均值。
+
+..  For this type of operation, PipelineDB exposes the special **combine** aggregate. Its description is as follows:
+
+对于这类操作，PipelineDB提供 **combine** 聚合，具体功能如下：
 
 **combine ( aggregate column )**
 
-	Given an aggregate column, combines all values into a single value as if all of the individual aggregates' inputs were aggregated a single time.
+	.. Given an aggregate column, combines all values into a single value as if all of the individual aggregates' inputs were aggregated a single time.
 
-.. note:: **combine** only works on aggregate columns that belong to continuous views.
+    给定一个聚合列，将所有值结合到单个值中，如同所有独立的聚合任务的输入同时输入到了当前的聚合任务中。
 
-Let's look at an example:
+..  .. note:: **combine** only works on aggregate columns that belong to continuous views.
 
-.. code-block:: psql
+.. note:: **combine** 只能作用与流视图的聚合列上。
+
+..  Let's look at an example:
+
+下面是一些例子：
+
+..  .. code-block:: psql
 
   postgres=# CREATE VIEW v AS SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
   CREATE VIEW
@@ -271,90 +297,160 @@ Let's look at an example:
   postgres=# -- needed two rows to do it.
 
 
+.. code-block:: psql
+
+    postgres=# CREATE VIEW v AS SELECT g::integer, AVG(x::integer) FROM stream GROUP BY g;
+    CREATE VIEW
+    postgres=# INSERT INTO stream (g, x) VALUES (0, 10), (0, 10), (0, 10), (0, 10), (0, 10);
+    INSERT 0 5
+    postgres=# INSERT INTO stream (g, x) VALUES (1, 20);
+    INSERT 0 1
+    postgres=# SELECT * FROM v;
+     g |         avg
+    ---+---------------------
+     0 | 10.0000000000000000
+     1 | 20.0000000000000000
+    (2 rows)
+
+    postgres=# SELECT avg(avg) FROM v;
+             avg
+    ---------------------
+     15.0000000000000000
+    (1 row)
+
+    postgres=# -- 上面这种求平均值的方式没有考虑到：10写入了5次，而20只写入了1次。
+    postgres=#
+    postgres=# SELECT combine(avg) FROM v;
+           combine
+    ---------------------
+     11.6666666666666667
+    (1 row)
+
+    postgres=# -- 如上所示，combine(avg)的计算方式是（10*5+20*1）/（5+1），而不仅仅是（10+20）/2。
+
 ------------------------------
 
-General Aggregates
+  General Aggregates
 ----------------------
 
 **array_agg ( expression )**
 
-	Input values, including nulls, concatenated into an array
+	.. Input values, including nulls, concatenated into an array
+
+    将包括null在内的所有值连接到数组中。
 
 .. _avg:
 
 **avg ( expression )**
 
-	The average of all input values
+	.. The average of all input values
+
+    取平均值。
 
 **bit_and ( expression )**
 
-	The bitwise AND of all non-null input values, or null if none
+	.. The bitwise AND of all non-null input values, or null if none
+
+    对所有非空输入执行 **按位与** 操作，无输入的情况下按照null处理。
 
 **bit_or ( expression )**
 
-	The bitwise OR of all non-null input values, or null if none
+	.. The bitwise OR of all non-null input values, or null if none
+
+    对所有非空输入执行 **按位或** 操作，无输入的情况下按照null处理。
 
 **bool_and ( expression )**
 
-	True if all input values are true, otherwise false
+	.. True if all input values are true, otherwise false
+
+    输入全部为true时才返回true，否则为false。
 
 **bool_or ( expression )**
 
-	True if at least one input value is true, otherwise false
+	.. True if at least one input value is true, otherwise false
+
+    只要输入中有一个为true，就返回true。
 
 .. _count:
 
 **count ( * )**
 
-	Number of input rows
+	.. Number of input rows
+
+    计算行数。
 
 **count ( DISTINCT expression)**
 
-	Number of rows for which **expression** is distinct.
+	.. Number of rows for which **expression** is distinct.
 
-	.. note:: Counting the distinct number of expressions on an infinite stream would require infinite memory, so continuous views use :ref:`hll` to accomplish distinct counting in constant space and time, at the expense of a small margin of error. Empirically, PipelineDB's implementation of :ref:`hll` has an error rate of ~0.81%. For example, **count distinct** might show :code:`1008` when the actual number of unique expressions was :code:`1000`.
+    **expression** 去重后的行数。
+
+	.. .. note:: Counting the distinct number of expressions on an infinite stream would require infinite memory, so continuous views use :ref:`hll` to accomplish distinct counting in constant space and time, at the expense of a small margin of error. Empirically, PipelineDB's implementation of :ref:`hll` has an error rate of ~0.81%. For example, **count distinct** might show :code:`1008` when the actual number of unique expressions was :code:`1000`.
+
+	.. note:: 在连续不断的流上进行去重计数需要无限大的内存，所以流视图通过 :ref:`hll` 以常数空间和时间的代价完成去重计数任务，代价就是会有小概率的误差。通常情况下，PipelineDB的 :ref:`hll` 有大约0.81%的误差。比如，当去重后的实际数量为 :code:`1000` 时，**count distinct** 的结果可能为 :code:`1008`。
+
 
 **count ( expression )**
 
-	Number of rows for which **expression** is non-null.
+	.. Number of rows for which **expression** is non-null.
+
+    **expression** 的非空个数。
 
 **every ( expression )**
 
-	Equivalent to **bool_and**
+	.. Equivalent to **bool_and**
+
+    同 **bool_and**。
 
 **json_agg ( expression )**
 
-	Aggregates values as a JSON array
+	.. Aggregates values as a JSON array
+
+    将结果聚合为JSON数组。
 
 **json_object_agg ( key, value )**
 
-	Aggregates **key**-**value** pairs as a JSON object
+	.. Aggregates **key**-**value** pairs as a JSON object
+
+    将键值对聚合为JSON。
 
 **jsonb_agg ( expression )**
 
-	Aggregates values as a JSONB array
+	.. Aggregates values as a JSONB array
+
+    将结果聚合为JSONB数组。
 
 **jsonb_object_agg ( key, value )**
 
-	Aggregates **key**-**value** pairs as a JSONB object
+	.. Aggregates **key**-**value** pairs as a JSONB object
+
+    将键值对聚合为JSONB。
 
 **max ( expression )**
 
-	Maximum value of expression across all input values
+	.. Maximum value of expression across all input values
+
+    对 **expression** 取最大值。
 
 **min ( expression )**
 
-	Minimum value of expression across all input values
+	.. Minimum value of expression across all input values
+
+    对 **expression** 取最小值。
 
 **string_agg ( expression, delimiter )**
 
-	Input values concatenated into a string, separated by **delimiter**
+	.. Input values concatenated into a string, separated by **delimiter**
+
+    将 **expression** 以 **delimiter** 连接为字符串。
 
 .. _sum:
 
 **sum ( expression )**
 
-	Sum of **expression** across all input values
+    ..  Sum of **expression** across all input values
+
+    对所有输入的 **expression** 求和。
 
 ----------------------------
 
@@ -363,90 +459,130 @@ Statistical Aggregates
 
 **corr ( y, x )**
 
-	Correlation coefficient
+	.. Correlation coefficient
+
+    相关系数。
 
 **covar_pop ( y, x )**
 
-	Population covariance
+	.. Population covariance
+
+    总体协方差。
 
 **covar_samp ( y, x )**
 
-	Sample covariance
+	.. Sample covariance
+
+    样本协方差。
 
 **regr_avgx ( y, x )**
 
-	Average of the independent variable :code:`(sum(x)/N)`
+	.. Average of the independent variable :code:`(sum(x)/N)`
+
+    自变量平均值：:code:`(sum(x)/N)`。
 
 **regr_avgy ( y, x )**
 
-	Average of the independent variable :code:`(sum(y)/N)`
+	.. Average of the independent variable :code:`(sum(y)/N)`
+
+    自变量平均值：:code:`(sum(y)/N)`。
 
 **regr_count ( y, x )**
 
-	Number of input rows in which both expressions are non-null
+	.. Number of input rows in which both expressions are non-null
+
+    x,y都不为空的数量。
 
 **regr_intercept ( y, x )**
 
-	y-intercept of the least-squares-fit linear equation determined by the (x, y) pairs
+	.. y-intercept of the least-squares-fit linear equation determined by the (x, y) pairs
+
+    基于（x，y），按照最小二乘法拟合得到的方程的y轴截距。
 
 **regr_r2 ( y, x )**
 
-	Square of the correlation coefficient
+	.. Square of the correlation coefficient
+
+    相关系数的平方。
 
 **regr_slope ( y, x )**
 
-	Slope of the least-squares-fit linear equation determined by the (x, y) pairs
+	.. Slope of the least-squares-fit linear equation determined by the (x, y) pairs
+
+    基于（x，y），按照最小二乘法拟合得到的方程的斜率。
 
 **regr_sxx ( y, x )**
 
-	:code:`sum(X^2) - sum(X)^2/N` -- sum of squares of the independent variable
+	.. :code:`sum(X^2) - sum(X)^2/N` -- sum of squares of the independent variable
+
+    x的离差平方和，即：:code:`sum(X^2) - sum(X)^2/N`。
 
 **regr_sxy ( y, x )**
 
-	:code:`sum(X*Y) - sum(X) * sum(Y)/N` -- sum of products of independent times dependent variable
+	.. :code:`sum(X*Y) - sum(X) * sum(Y)/N` -- sum of products of independent times dependent variable
+
+    x,y的离差积和，即：:code:`sum(X*Y) - sum(X) * sum(Y)/N`。
 
 **regr_syy ( y, x )**
 
-	:code:`sum(Y^2) - sum(Y)^2/N` -- sum of squares of the independent variable
+	.. :code:`sum(Y^2) - sum(Y)^2/N` -- sum of squares of the independent variable
+
+    y的离差平方和，即：:code:`sum(Y^2) - sum(Y)^2/N`
 
 .. _stddev:
 
 **stddev ( expression )**
 
-	Sample standard deviation of the input values
+	.. Sample standard deviation of the input values
+
+    样本标准差。
 
 **stddev_pop ( expression )**
 
-	Population standard deviation of the input values
+	.. Population standard deviation of the input values
+
+    总体标准差。
 
 **variance ( expression )**
 
-	Sample variance of the input values (square of the sample standard deviation)
+	.. Sample variance of the input values (square of the sample standard deviation)
+
+    样本方差，即样本标准差的平方。
 
 **var_pop ( expression )**
 
-	Population variance of the input values (square of the population standard deviation)
+	.. Population variance of the input values (square of the population standard deviation)
+
+    整体方差，即整体标准差的平方。
 
 ----------------------------
 
 Ordered-set Aggregates
 ------------------------
 
-**ordered-set** aggregates apply ordering to their input in order to obtain their results, so they use the :code:`WITHIN GROUP` clause. Its syntax is as follows:
+..  **ordered-set** aggregates apply ordering to their input in order to obtain their results, so they use the :code:`WITHIN GROUP` clause. Its syntax is as follows:
+
+**ordered-set** 聚合对输入进行排序并得到结果，所以用 :code:`WITHIN GROUP` 语句。语法如下：
 
 .. code-block:: sql
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
-Let's look at a couple examples.
+..  Let's look at a couple examples.
 
-Compute the 99th percentile of **value**:
+下面是一些例子：
+
+..  Compute the 99th percentile of **value**:
+
+计算99分位数：
 
 .. code-block:: sql
 
 	SELECT percentile_cont(0.99) WITHIN GROUP (ORDER BY value) FROM some_table;
 
-Or with a continuous view:
+..  Or with a continuous view:
+
+应用于流视图：
 
 .. code-block:: sql
 
@@ -458,28 +594,40 @@ Or with a continuous view:
 
 **percentile_cont ( fraction )**
 
-	Continuous percentile: returns a value corresponding to the specified fraction in the ordering, interpolating between adjacent input items if needed
+	.. Continuous percentile: returns a value corresponding to the specified fraction in the ordering, interpolating between adjacent input items if needed
+
+    流式百分位数：返回对应排序中特定分位的值。如有必要，可在相邻的输入项间进行插入值。
 
 **percentile_cont ( array of fractions )**
 
-	Multiple continuous percentile: returns an array of results matching the shape of the fractions parameter, with each non-null element replaced by the value corresponding to that percentile
+	.. Multiple continuous percentile: returns an array of results matching the shape of the fractions parameter, with each non-null element replaced by the value corresponding to that percentile
 
-	.. note:: Computing percentiles on infinite streams would require infinite memory, so both forms of **percentile_cont**, when used by continuous views, use :ref:`t-digest` as a way to estimate percentiles with a very high degree of accuracy. In general, percentiles in continuous views are more accurate the closer they are to the upper or lower bounds of :code:`[0, 1)`.
+    多重流式百分位数：返回与分数参数形状匹配的结果数组，将每个非空元素替换为其对应的百分位数。
+
+	.. .. note:: Computing percentiles on infinite streams would require infinite memory, so both forms of **percentile_cont**, when used by continuous views, use :ref:`t-digest` as a way to estimate percentiles with a very high degree of accuracy. In general, percentiles in continuous views are more accurate the closer they are to the upper or lower bounds of :code:`[0, 1)`.
+
+    .. note:: 在连续不断的流上计算百分位数需要无限大的内存，因此当流视图使用 **percentile_cont** 的两种形式时，都使用 :ref:`t-digest` 来计算高精度的百分位数。通常，流视图中的百分位数越接近 :code:`[0, 1)` 的上下界，结果就越精确。
 
 ----------------------------
 
 Hypothetical-set Aggregates
 -------------------------------
 
-**hypothetical-set** aggregates take an expression and compute something about it within the context of a set of input rows. For example, **rank(2)** computes the :code:`rank` of :code:`2` within the context of whatever the input rows end up being.
+..  **hypothetical-set** aggregates take an expression and compute something about it within the context of a set of input rows. For example, **rank(2)** computes the :code:`rank` of :code:`2` within the context of whatever the input rows end up being.
 
-The hypothetical-set aggregates use the :code:`WITHIN GROUP` clause to define the input rows. Its syntax is as follows:
+**hypothetical-set** 聚合通过一个 **表达式** 在上下文中进行计算。比如，**rank(2)** 会计算 :code:`2` 的 :code:`rank`，无论输入的是什么。
+
+..  The hypothetical-set aggregates use the :code:`WITHIN GROUP` clause to define the input rows. Its syntax is as follows:
+
+hypothetical-set聚合通过 :code:`WITHIN GROUP` 语句来定义输入，语法如下：
 
 .. code-block:: sql
 
 	aggregate_name ( [ expression [ , ... ] ] ) WITHIN GROUP ( order_by_clause )
 
-Here is an example of of a hypothetical-set aggregate being used by a continuous view:
+..  Here is an example of of a hypothetical-set aggregate being used by a continuous view:
+
+下面是一些hypothetical-set聚合在流视图上应用的例子：
 
 .. code-block:: sql
 
@@ -487,40 +635,58 @@ Here is an example of of a hypothetical-set aggregate being used by a continuous
 	SELECT rank(42) WITHIN GROUP (ORDER BY value::float8)
 	FROM some_stream;
 
-This continuous view will continuously update the rank of :code:`42` given all of the events it has read.
+..  This continuous view will continuously update the rank of :code:`42` given all of the events it has read.
+
+流视图将不断更新 :code:`42` 的 :code:`rank`。
 
 **rank ( arguments )**
 
 	Rank of the hypothetical row, with gaps for duplicate rows
 
+    行的rank，存在并列的情况。
+
 .. _dense-rank:
 
 **dense_rank ( arguments )**
 
-	Rank of the hypothetical row, without gaps
+	.. Rank of the hypothetical row, without gaps
 
-	.. note:: Computing the hypothetical **dense_rank** of a value given an infinite stream of values would require infinite memory, so continuous views use :ref:`hll` to do it in constant time and space, at the expense of a small margin of error. Empirically, PipelineDB's implementation of :ref:`hll` has an error rate of ~0.2%. In other words, **dense_rank (1000)** in a continuous view might show 998 when the actual number of unique lower-ranking values seen was :code:`1000`.
+    行的rank，不存在并列的情况。
+
+	.. .. note:: Computing the hypothetical **dense_rank** of a value given an infinite stream of values would require infinite memory, so continuous views use :ref:`hll` to do it in constant time and space, at the expense of a small margin of error. Empirically, PipelineDB's implementation of :ref:`hll` has an error rate of ~0.2%. In other words, **dense_rank (1000)** in a continuous view might show 998 when the actual number of unique lower-ranking values seen was :code:`1000`.
+
+    .. note:: 在连续不断的流上计算 **dense_rank**  需要无限大的内存，所以流视图通过 :ref:`hll` 以常数时间和空间实现 **dense_rank**，代价就是小概率的误差。通常PipelineDB 实现的 :ref:`hll` 存在大约0.2%的误差。换言之，在流视图中，当真正的rank值为1000时，计算出的结果可能为998。
 
 **percent_rank ( arguments )**
 
-	Relative rank of the hypothetical row, ranging from 0 to 1
+	.. Relative rank of the hypothetical row, ranging from 0 to 1
+
+    假定行的分位数，0到1。
 
 **cume_dist ( arguments )**
 
-	Relative rank of the hypothetical row, ranging from 1/N to 1
+	.. Relative rank of the hypothetical row, ranging from 1/N to 1
+
+    假定行的相对分位数，1/N到1。
 
 ----------------------------
 
-Unsupported Aggregates
+..  Unsupported Aggregates
+
+不支持的聚合
 ---------------------------------
 
 **mode ( )**
 
-	Future releases of PipelineDB will include an implementation of an online mode estimation algorithm, but for now it's not supported
+	.. Future releases of PipelineDB will include an implementation of an online mode estimation algorithm, but for now it's not supported
+
+    PipelineDB未来的版本将实现一种实时的模式估计算法，但目前还不支持。
 
 **percentile_disc ( arguments )**
 
-	Given an input percentile (such as 0.99), **percentile_disc** returns the very first value in the input set that is within that percentile. This requires actually sorting the input set, which is obviously impractical on an infinite stream, and doesn't even allow for a highly accurate estimation algorithm such as the one we use for **percentile_cont**.
+	.. Given an input percentile (such as 0.99), **percentile_disc** returns the very first value in the input set that is within that percentile. This requires actually sorting the input set, which is obviously impractical on an infinite stream, and doesn't even allow for a highly accurate estimation algorithm such as the one we use for **percentile_cont**.
+
+    给定一个输入百分位数(比如0.99)，**percentile_disc** 返回该百分位数内输入集中的第一个值。实际上这需要对输入集进行排序，这在连续不断的流中显然是不切实际的，甚至不允许我们使用 **percentile_cont** 中的那种高精度估计算法。
 
 **xmlagg ( xml )**
 
@@ -528,4 +694,10 @@ Unsupported Aggregates
 
 **<aggregate_name> (DISTINCT expression)**
 
-	Only the :code:`count` aggregate function is supported with a :code:`DISTINCT` expression as noted above in the General Aggregates section. In future releases, we might leverage :ref:`bloom-filter` to allow :code:`DISTINCT` expressions for all aggregate functions.
+	.. Only the :code:`count` aggregate function is supported with a :code:`DISTINCT` expression as noted above in the General Aggregates section. In future releases, we might leverage :ref:`bloom-filter` to allow :code:`DISTINCT` expressions for all aggregate functions.
+
+    在通常的聚合中，只有 :code:`count` 聚合函数支持 :code:`DISTINCT`。在未来的版本中，我们可能让 :ref:`bloom-filter` 也支持 :code:`DISTINCT`。
+
+.. note::
+
+	鉴于PipelineDB已被Confluent收购，所有原来规划的新功能只能指望社区来实现了。
