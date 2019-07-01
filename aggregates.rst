@@ -641,7 +641,7 @@ hypothetical-set聚合通过 :code:`WITHIN GROUP` 语句来定义输入，语法
 
 **rank ( arguments )**
 
-	Rank of the hypothetical row, with gaps for duplicate rows
+	.. Rank of the hypothetical row, with gaps for duplicate rows
 
     行的rank，存在并列的情况。
 
